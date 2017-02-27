@@ -1,0 +1,64 @@
+
+
+****原始版本****
+
+
+Driver SD5107P3-A22 IO:
+O-OUTC -- PA0
+O-CCW  -- PA1 -- T2C2
+O-CW   -- PA2 -- T2C3
+I-TIM_ORG -- PA15(Need Remap)
+
+Sensor of PG615 IO:
+I-LS_S -- PA8
+I-LS_M -- PB11
+I-LS_E -- PB10
+
+Driver 2-Phase Motor IO:
+O-SM_EN1_B  -- PA5
+O-SM_CLK1_B -- PA6
+O-SM_DIR1_B -- PA7
+
+Two A3992 driver IO:
+O-SLEEPX -- PB3(Need Remap)
+O-SLEEPY -- PB4(Need Remap)
+O-SDI	 -- PB5
+O-SCK    -- PB6
+O-CSX    -- PB7
+O-CSY    -- PB8
+
+Buf ENABLE of 74LVC4245 IO:
+O-BUF_OE -- PB9
+
+DAC8830 SPI IO:
+O-SPI1_CS -- PB12
+O-SPI1_SCK -- PB13
+I-SPI1_MISO -- PB14
+O-SPI1_MOSI -- PB15
+
+Sensor AI&DI IO:
+I-DI_N1 -- PA11
+I-DI_N2 -- PA12
+I-AI1  -- PB0 -- ADC123_IN8
+I-AI2  -- PB1 -- ADC123_IN9
+
+USART1 IO:
+O-USART1_Tx -- PA9
+I-USART1_Rx -- PA10
+
+LED Control IO:
+LEDS1_B -- PA3
+LEDS2_B -- PA4
+
+*****2017/2/7*****
+
+//程序版本V1.1
+//更新内容：
+
+Laser Cutoff Motor
+
+PA12 -- L9110->IA
+PB1 -- L9110->IB
+
+
+

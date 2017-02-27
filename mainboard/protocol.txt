@@ -1,0 +1,50 @@
+/******************** (C) COPYRIGHT 2017  **********************************
+*Copyright(c)2017,杭州维勘科技有限公司
+*All rights reserved
+*
+*文件名称：protocol.txt
+*文件标识：
+*摘    要：communication protocol		 
+*当前版本：1.0
+*作    者：yangxi
+*完成日期：2017/2/17
+*****************************************************************************/
+
+/*****communication protocol****/
+
+relevant document:
+spi.h/spi.c		sensor.h/sensor.c		control.h/control.c
+
+spi module
+
+Master[HEAD,(MASTER_CMD),DUMY]	<-------------------> [SYS_STATE]Slave
+DUMY = 0x00;	//占位用，无意义
+HEAD = 0x01;	//spi通信的标志头
+COMFIRM = 0x02; //从机收到命令信号后返回的确认符
+CHECK = 0x02;	//主机向从机查询状态时发送的查询符
+
+sensor module:
+MASTER_CMD = CHECK(CHECK值固定), 发送该指令以获取从机状态SYS_STATE;
+SYS_STATE表示为8位二进制数，依次代表不同的含义。
+0/1
+0/1			从机初始化完成。
+0/1			上位机发来开始信号。
+0/1
+0/1
+0/1
+0/1
+0/1
+
+
+control module:
+MASTER_CMD = CMDn,发送该指令后从机返回确认信息SYS_STATE=CHECK;
+MASTER_CMD表示为8位二进制数，依次代表不同的含义。
+0/1			从机初始化完成。
+0/1			上位机发来开始信号。
+0/1
+0/1
+0/1
+0/1
+0/1
+
+/******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

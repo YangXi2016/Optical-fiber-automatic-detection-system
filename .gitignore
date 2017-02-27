@@ -6,13 +6,15 @@
 #all/
 #/all
 
-.bak
-.ini
-.uvopt
-.dep
-.yangxi
-.map
-.lst
+*.bak
+*.ini
+*.uvopt
+*.uvoptx
+*.dep
+*.yangxi
+*.map
+*.lst
+*.uvgui.*
 
 Output/
 Listing/
