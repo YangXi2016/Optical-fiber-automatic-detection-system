@@ -21,7 +21,7 @@ void STMFLASH_Write_NoCheck(u32 WriteAddr,u16 *pBuffer,u16 NumToWrite)
 	for(i=0;i<NumToWrite;i++)
 	{
 		FLASH_ProgramHalfWord(WriteAddr,pBuffer[i]);
-	    WriteAddr+=2;//地址增加2.
+	  WriteAddr+=2;//地址增加2.
 	}  
 } 
 //从指定地址开始写入指定长度的数据

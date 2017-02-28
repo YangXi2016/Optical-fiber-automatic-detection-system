@@ -605,6 +605,16 @@
               <FileType>1</FileType>
               <FilePath>..\System\StepperMotor.c</FilePath>
             </File>
+            <File>
+              <FileName>control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\System\control.c</FilePath>
+            </File>
+            <File>
+              <FileName>stmflash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\System\stmflash.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
