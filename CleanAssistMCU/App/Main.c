@@ -19,7 +19,7 @@ extern u8 MASTER_CMD,SYS_STATE;
 int main(void)
 {
 	InitAll();
-	
+	//MotorEN('P','E');
 	SYS_STATE = READY_STATE;
 	printf("CLEAN ready\n");
 	
@@ -39,8 +39,10 @@ int main(void)
 				SYS_STATE = WORK_STATE;
 				Clean_Stop();
 			}
+			MASTER_CMD = DUMY;
 		}
 	}
 }
+
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

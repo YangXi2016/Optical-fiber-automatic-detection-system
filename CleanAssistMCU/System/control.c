@@ -26,7 +26,7 @@ void Clean(void)
 	//while(IsMotActDone()==0);
 	if(clean_position == 0){
 		SYS_STATE = WORK_STATE;
-		StepMotion(SM_ANGLE, '+', SM_SPEED);
+		StepMotion(SM_ANGLE, '-', SM_SPEED);
 		while(IsStepMotActDone()==0);
 		SYS_STATE = READY_STATE;
 		clean_position = 1;
@@ -34,7 +34,7 @@ void Clean(void)
 	}
 	else if(clean_position == 1){
 		SYS_STATE = WORK_STATE;
-		StepMotion(SM_ANGLE, '+', SM_SPEED);
+		StepMotion(SM_ANGLE, '-', SM_SPEED);
 		while(IsStepMotActDone() == 0);
 		SYS_STATE = READY_STATE;
 		
@@ -48,14 +48,14 @@ void Clean(void)
 	}
 	else if(clean_position == 2){
 		SYS_STATE = WORK_STATE;
-		StepMotion(SM_ANGLE, '-', SM_SPEED);
+		StepMotion(SM_ANGLE, '+', SM_SPEED);
 		while(IsStepMotActDone() == 0);
 		SYS_STATE = READY_STATE;
 		clean_position = 3;
 	}
 	else if(clean_position == 3){
 		SYS_STATE = WORK_STATE;
-		StepMotion(SM_ANGLE, '-', SM_SPEED);
+		StepMotion(SM_ANGLE, '+', SM_SPEED);
 		while(IsStepMotActDone() == 0);
 		SYS_STATE = READY_STATE;
 		
@@ -74,13 +74,17 @@ void Clean(void)
 	STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
 	
 	if(wipe_time>=MAX_TIME)	SYS_STATE = DROPOUT_STATE;
-	
+	printf("D\n");
 }
 
 void Clean_Reset(void)
 {
-	StepMotion(2*SM_ANGLE, '-', SM_SPEED);
-	while(IsStepMotActDone() == 0);
+	u8 temp = 0;
+	StepMotion(2*SM_ANGLE, '+', SM_SPEED);
+	while(1){
+		temp = IsStepMotActDone();
+		if(temp == 1) break;
+	}
 }
 
 void Clean_Stop(void){

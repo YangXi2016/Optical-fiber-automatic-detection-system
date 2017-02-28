@@ -254,7 +254,7 @@ void TIM4_IRQHandler(void)   //TIM4中断
 		s_sum = 0;
 	}
 
-	printf("%0.1f %d %d\n",spd,s_sum,g_mmTargPulse);
+	//printf("TIM4_IRQHandler:%0.1f %d %d\n",spd,s_sum,g_mmTargPulse);
 
 	 
 }

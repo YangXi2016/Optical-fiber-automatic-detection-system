@@ -24,7 +24,7 @@ u8 open_period = 2;	//0代表收到动作命令，1代表中间电机开始松�
 int main(void)
 {
 	InitAll();
-	
+	printf("Push Ready\n");
 	while(1)
 	{
 		if((push_period == 4) && (draw_period == 6) && (close_period == 2) && (open_period ==2)) READY_STATE;
