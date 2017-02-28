@@ -27,37 +27,37 @@ void CCW_CW_Pulse_Init()
 	GPIO_InitTypeDef GPIO_InitStructure;
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
-	/* TIM2◊‹œﬂ ±÷”¥Úø™£¨…Ë÷√TIM2CLKŒ™72MHz */
+	/* TIM2ÊÄªÁ∫øÊó∂ÈíüÊâìÂºÄÔºåËÆæÁΩÆTIM2CLK‰∏∫72MHz */
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 	
-	TIM2->CR1		&= ~(1<<4);			//œÚ…œº∆ ˝
+	TIM2->CR1		&= ~(1<<4);			//Âêë‰∏äËÆ°Êï∞
 	TIM2->CR1		&= ~(1<<5);			
-	TIM2->CR1		&= ~(1<<6);			//±ﬂ‘µ∂‘∆Îƒ£ Ω	
-	TIM2->CR1		|=  (1<<7);			// πƒ‹TIM2‘§◊∞‘ÿ÷ÿ◊∞‘ÿºƒ¥Ê∆˜		
+	TIM2->CR1		&= ~(1<<6);			//ËæπÁºòÂØπÈΩêÊ®°Âºè	
+	TIM2->CR1		|=  (1<<7);			//‰ΩøËÉΩTIM2È¢ÑË£ÖËΩΩÈáçË£ÖËΩΩÂØÑÂ≠òÂô®		
 
 	//T2C2 Config	
 	TIM2->CCMR1 &= ~(1<<8);  
-	TIM2->CCMR1 &= ~(1<<9);			//CC2≈‰÷√Œ™ ‰≥ˆ
-	TIM2->CCMR1 |=  (1<<11);		// πƒ‹±»Ωœ2‘§◊∞‘ÿºƒ¥Ê∆˜ 
-	TIM2->CCER  &= ~(1<<5);			//”––ßµÁ∆ΩŒ™High		
+	TIM2->CCMR1 &= ~(1<<9);			//CC2ÈÖçÁΩÆ‰∏∫ËæìÂá∫
+	TIM2->CCMR1 |=  (1<<11);		//‰ΩøËÉΩÊØîËæÉ2È¢ÑË£ÖËΩΩÂØÑÂ≠òÂô® 
+	TIM2->CCER  &= ~(1<<5);			//ÊúâÊïàÁîµÂπ≥‰∏∫High		
 	TIM2->CCMR1 |=  (1<<12); 		
 	TIM2->CCMR1 &= ~(1<<13); 
-	TIM2->CCMR1 |=  (1<<14);		//OC2M[2:0]=101,«ø÷∆ ‰≥ˆŒ™High
-	TIM2->CCER  |= (1<<4);			// πƒ‹OC3 ‰≥ˆ		
+	TIM2->CCMR1 |=  (1<<14);		//OC2M[2:0]=101,Âº∫Âà∂ËæìÂá∫‰∏∫High
+	TIM2->CCER  |= (1<<4);			//‰ΩøËÉΩOC3ËæìÂá∫		
 
 	
 	//T2C3 Config	
 	TIM2->CCMR2 &= ~(1<<0);  
-	TIM2->CCMR2 &= ~(1<<1);		//CC3≈‰÷√Œ™ ‰≥ˆ
-	TIM2->CCMR2 |=  (1<<3);		// πƒ‹±»Ωœ3‘§◊∞‘ÿºƒ¥Ê∆˜ 		
+	TIM2->CCMR2 &= ~(1<<1);		//CC3ÈÖçÁΩÆ‰∏∫ËæìÂá∫
+	TIM2->CCMR2 |=  (1<<3);		//‰ΩøËÉΩÊØîËæÉ3È¢ÑË£ÖËΩΩÂØÑÂ≠òÂô® 		
 	TIM2->CCMR2 |=  (1<<4); 		
 	TIM2->CCMR2 &= ~(1<<5); 
-	TIM2->CCMR2 |=  (1<<6);		//OC3M[2:0]=101,«ø÷∆ ‰≥ˆŒ™High
-	TIM2->CCER  &= ~(1<<9);		//”––ßµÁ∆ΩŒ™High
-	TIM2->CCER  |= (1<<8);		// πƒ‹OC3 ‰≥ˆ		
+	TIM2->CCMR2 |=  (1<<6);		//OC3M[2:0]=101,Âº∫Âà∂ËæìÂá∫‰∏∫High
+	TIM2->CCER  &= ~(1<<9);		//ÊúâÊïàÁîµÂπ≥‰∏∫High
+	TIM2->CCER  |= (1<<8);		//‰ΩøËÉΩOC3ËæìÂá∫		
 
 	TIM2->EGR		|=  (1<<0);
-	TIM2->PSC		 = 0x0002;			//‘§∑÷∆µ…ËŒ™2+1
+	TIM2->PSC		 = 0x0002;			//È¢ÑÂàÜÈ¢ëËÆæ‰∏∫2+1
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
@@ -66,8 +66,8 @@ void CCW_CW_Pulse_Init()
 }
 
 /**
-  * @brief   ‰≥ˆ’ºø’±»Œ™50%÷∏∂®∆µ¬ µƒPWM–≈∫≈£¨Ã·π©∏¯CCWÕ®µ¿
-  * @param  periodº∆ ˝÷‹∆⁄£¨»∑∂®∆µ¬ 
+  * @brief  ËæìÂá∫Âç†Á©∫ÊØî‰∏∫50%ÊåáÂÆöÈ¢ëÁéáÁöÑPWM‰ø°Âè∑ÔºåÊèê‰æõÁªôCCWÈÄöÈÅì
+  * @param  periodËÆ°Êï∞Âë®ÊúüÔºåÁ°ÆÂÆöÈ¢ëÁéá
   * @retval None
   */
 void CCW_Pulse_Output(uint16_t period)
@@ -81,22 +81,22 @@ void CCW_Pulse_Output(uint16_t period)
 	------------------------------------------------------------- */
 	TIM2->CCMR1 &=  ~(1<<12); 		
 	TIM2->CCMR1 |=  (1<<13);
-	TIM2->CCMR1 |=  (1<<14);	//OC2M[2:0]=110,PWM1 ‰≥ˆ
+	TIM2->CCMR1 |=  (1<<14);	//OC2M[2:0]=110,PWM1ËæìÂá∫
 	
 	TIM2->CCMR2 |=  (1<<4); 		
 	TIM2->CCMR2 &= ~(1<<5); 
-	TIM2->CCMR2 |=  (1<<6);		//OC3M[2:0]=101,«ø÷∆ ‰≥ˆŒ™High
+	TIM2->CCMR2 |=  (1<<6);		//OC3M[2:0]=101,Âº∫Âà∂ËæìÂá∫‰∏∫High
 	
-	TIM2->ARR		= period;				//TIM2_ARR∏≥÷µ
+	TIM2->ARR		= period;				//TIM2_ARRËµãÂÄº
 	TIM2->CCR2	= (period+1)/2;
-	TIM2->CR1	 |= (1<<0);				// πƒ‹º∆ ˝∆˜ 
+	TIM2->CR1	 |= (1<<0);				//‰ΩøËÉΩËÆ°Êï∞Âô® 
 	
 	Stage_Dir = Stage_Forward;
 }
 
 /**
-  * @brief   ‰≥ˆ’ºø’±»Œ™50%÷∏∂®∆µ¬ µƒPWM–≈∫≈£¨Ã·π©∏¯CWÕ®µ¿
-  * @param  periodº∆ ˝÷‹∆⁄£¨»∑∂®∆µ¬ 
+  * @brief  ËæìÂá∫Âç†Á©∫ÊØî‰∏∫50%ÊåáÂÆöÈ¢ëÁéáÁöÑPWM‰ø°Âè∑ÔºåÊèê‰æõÁªôCWÈÄöÈÅì
+  * @param  periodËÆ°Êï∞Âë®ÊúüÔºåÁ°ÆÂÆöÈ¢ëÁéá
   * @retval None
   */
 void CW_Pulse_Output(uint16_t period)
@@ -110,15 +110,15 @@ void CW_Pulse_Output(uint16_t period)
 	------------------------------------------------------------- */	
 	TIM2->CCMR2 &= ~(1<<4); 		
 	TIM2->CCMR2 |=  (1<<5); 
-	TIM2->CCMR2 |=  (1<<6);		//OC3M[2:0]=110,π§◊˜ƒ£ Ω «PWM1
+	TIM2->CCMR2 |=  (1<<6);		//OC3M[2:0]=110,Â∑•‰ΩúÊ®°ÂºèÊòØPWM1
 	
 	TIM2->CCMR1 |=  (1<<12); 		
 	TIM2->CCMR1 &= ~(1<<13); 
-	TIM2->CCMR1 |=  (1<<14);		//OC2M[2:0]=101,«ø÷∆ ‰≥ˆŒ™High
+	TIM2->CCMR1 |=  (1<<14);		//OC2M[2:0]=101,Âº∫Âà∂ËæìÂá∫‰∏∫High
 	
-	TIM2->ARR		= period;				//TIM2_ARR∏≥÷µ
+	TIM2->ARR		= period;				//TIM2_ARRËµãÂÄº
 	TIM2->CCR3	= (period+1)/2;
-	TIM2->CR1	 |= (1<<0);				// πƒ‹º∆ ˝∆˜ 
+	TIM2->CR1	 |= (1<<0);				//‰ΩøËÉΩËÆ°Êï∞Âô® 
 	
 	Stage_Dir = Stage_Backward;
 }
@@ -128,21 +128,21 @@ void Pulse_Disable()
 	TIM_Cmd(TIM2,DISABLE);
 }
 
-/* …Ë÷√TIM2“Á≥ˆ÷–∂œ */
+/* ËÆæÁΩÆTIM2Ê∫¢Âá∫‰∏≠Êñ≠ */
 void TIM2_ITConfigure()
 {
 	NVIC_TIM2_Configure();
-	TIM2->CR1 |= TIM_CR1_URS;		// πTIM2÷ª”–‘⁄º∆ ˝“Á≥ˆ ±≤≈≤˙…˙∏¸–¬÷–∂œ
+	TIM2->CR1 |= TIM_CR1_URS;		//‰ΩøTIM2Âè™ÊúâÂú®ËÆ°Êï∞Ê∫¢Âá∫Êó∂Êâç‰∫ßÁîüÊõ¥Êñ∞‰∏≠Êñ≠
 	TIM_ClearFlag(TIM2,TIM_FLAG_Update);	
 	TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);
 }
 
-/* NVIC…Ë÷√TIM2÷–∂œ */
+/* NVICËÆæÁΩÆTIM2‰∏≠Êñ≠ */
 static void NVIC_TIM2_Configure()
 {
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);						//«¿’º1Œª£¨œÏ”¶3Œª 
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);						//Êä¢Âç†1‰ΩçÔºåÂìçÂ∫î3‰Ωç 
 	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;

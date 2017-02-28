@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖİÎ¬¿±¿Æ¼¼ÓĞÏŞ¹«Ë¾
+*Copyright(c)2017,æ­å·ç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼şÃû³Æ£ºMotor.c
-*ÎÄ¼ş±êÊ¶£º
-*Õª    Òª£º²ÁÊÃ½á¹¹µÄÖ±Á÷µç»úÅäÖÃµÈ			 
-*µ±Ç°°æ±¾£º1.0
-*×÷    Õß£ºÀî»ª±ø
-*Íê³ÉÈÕÆÚ£º2017/2/9
+*æ–‡ä»¶åç§°ï¼šMotor.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜    è¦ï¼šæ“¦æ‹­ç»“æ„çš„ç›´æµç”µæœºé…ç½®ç­‰			 
+*å½“å‰ç‰ˆæœ¬ï¼š1.0
+*ä½œ    è€…ï¼šæåå…µ
+*å®Œæˆæ—¥æœŸï¼š2017/2/9
 *****************************************************************************/
 #include "Motor.h"
 
@@ -17,7 +17,7 @@ u8 g_dirFlg = '+';
 
 void MotorGPIOInit(void)
 {
-	//GPIO¶Ë¿ÚÉèÖÃ
+	//GPIOç«¯å£è®¾ç½®
 	GPIO_InitTypeDef GPIO_InitStructure;
 	 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB, ENABLE);
@@ -56,13 +56,13 @@ void MotorTIMInit(void)
 	TIM_OCInitTypeDef TIM_OCInitStructure;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4 | RCC_APB1Periph_TIM3, ENABLE);
   
-	//TIM4_CH4 ÉèÖÃ £¬¶ÔÓ¦Ö÷µç»ú
+	//TIM4_CH4 è®¾ç½® ï¼Œå¯¹åº”ä¸»ç”µæœº
 	TIM_TimeBaseStructure.TIM_Period = MM_DEFAULT_PERIOD;       
 	TIM_TimeBaseStructure.TIM_Prescaler =MM_DEFAULT_PRE; 
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0; 
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure); 
-	TIM_ITConfig(  TIM4, TIM_IT_Update,  ENABLE);//¿ªÆôTIM4µÄÖĞ¶ÏÔ´
+	TIM_ITConfig(  TIM4, TIM_IT_Update,  ENABLE);//å¼€å¯TIM4çš„ä¸­æ–­æº
 	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; 
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
@@ -73,13 +73,13 @@ void MotorTIMInit(void)
 	
 	
 	
-	//TIM3_CH3 ÉèÖÃ £¬¶ÔÓ¦¾íÖ½µç»ú
+	//TIM3_CH3 è®¾ç½® ï¼Œå¯¹åº”å·çº¸ç”µæœº
 	TIM_TimeBaseStructure.TIM_Period = CM_DEFAULT_PERIOD;       
 	TIM_TimeBaseStructure.TIM_Prescaler =CM_DEFAULT_PRE; 
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0; 
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure); 
-	//TIM_ITConfig(  TIM3, TIM_IT_Update,  ENABLE);//¿ªÆôTIM3µÄÖĞ¶ÏÔ´
+	//TIM_ITConfig(  TIM3, TIM_IT_Update,  ENABLE);//å¼€å¯TIM3çš„ä¸­æ–­æº
 	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; 
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
@@ -87,12 +87,12 @@ void MotorTIMInit(void)
 	TIM_OC3Init(TIM3, &TIM_OCInitStructure);
 	TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Enable);	
 
-	//ÅäÖÃ¶¨Ê±Æ÷ÖĞ¶Ï
+	//é…ç½®å®šæ—¶å™¨ä¸­æ–­
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;  //TIM4È«¾ÖÖĞ¶Ï
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //ÏÈÕ¼ÓÅÏÈ¼¶1£¬ÓÅÏÈ¼¶´Î¸ß
+	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;  //TIM4å…¨å±€ä¸­æ–­
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //å…ˆå ä¼˜å…ˆçº§1ï¼Œä¼˜å…ˆçº§æ¬¡é«˜
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;  
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQÍ¨µÀ±»Ê¹ÄÜ
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQé€šé“è¢«ä½¿èƒ½
 	NVIC_Init(&NVIC_InitStructure);  
 	
 }
@@ -101,16 +101,16 @@ void EncoderInit(void)
 	EXTI_InitTypeDef EXTI_InitStructure; 
 	NVIC_InitTypeDef NVIC_InitStructure; 
 
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOA,GPIO_PinSource0 ); //Ö¸¶¨Íâ²¿ÖĞ¶ÏÊäÈëÊÇPA0
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOA,GPIO_PinSource0 ); //æŒ‡å®šå¤–éƒ¨ä¸­æ–­è¾“å…¥æ˜¯PA0
 
-	//Íâ²¿ÖĞ¶Ï³õÊ¼»¯
+	//å¤–éƒ¨ä¸­æ–­åˆå§‹åŒ–
 	EXTI_InitStructure.EXTI_Line=EXTI_Line0;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; 
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);		
 
-	//ÖĞ¶Ï²ÎÊıÉè¶¨
+	//ä¸­æ–­å‚æ•°è®¾å®š
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;	
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	  
@@ -137,18 +137,18 @@ void MMotMotion(float angleDeg, u8 spd,u8 dir)
 	g_mmTargPulse = (u32)((1.0 * angleDeg / 360 * MM_REDUCT_RAT * MM_PULSE_R)+0.5);
 	TIM_Cmd(TIM4,ENABLE);
 	TIM4->CCR4=spd;
-	TIM4->CCER |= TIM_CCER_CC4E;//Ê¹ÄÜTime2 Í¨µÀ4£¬¿ªÆôµç»ú
+	TIM4->CCER |= TIM_CCER_CC4E;//ä½¿èƒ½Time2 é€šé“4ï¼Œå¼€å¯ç”µæœº
 	g_mmActDFlg = 0;
 }
 void CMotStart(u8 spd)
 {
 	TIM_Cmd(TIM3,ENABLE);	
 	TIM3->CCR3=spd;
-	TIM3->CCER|=TIM_CCER_CC3E;//Ê¹ÄÜTime3 Í¨µÀ3£¬¿ªÆôµç»ú	
+	TIM3->CCER|=TIM_CCER_CC3E;//ä½¿èƒ½Time3 é€šé“3ï¼Œå¼€å¯ç”µæœº	
 }
 void CMotStop(void)
 {
-	TIM3->CCER &= ~TIM_CCER_CC3E;//¹Ø±ÕTime3 Í¨µÀ3£¬¹Ø±Õµç»ú		
+	TIM3->CCER &= ~TIM_CCER_CC3E;//å…³é—­Time3 é€šé“3ï¼Œå…³é—­ç”µæœº		
 }
 
 void MMotSetSpd(u8 spd)
@@ -158,7 +158,7 @@ void MMotSetSpd(u8 spd)
 
 void MMotStop(void)
 {
-	TIM4->CCER &= ~TIM_CCER_CC4E;//¹Ø±ÕTime2 Í¨µÀ4£¬¹Ø±Õµç»ú	
+	TIM4->CCER &= ~TIM_CCER_CC4E;//å…³é—­Time2 é€šé“4ï¼Œå…³é—­ç”µæœº	
 }
 u8 IsDCMotActDone(void)
 {
@@ -186,7 +186,7 @@ void EXTI0_IRQHandler(void)
 	}
 }
 
-void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï
+void TIM4_IRQHandler(void)   //TIM4ä¸­æ–­
 {
 	float spd = 0;
 	static int  s_sum = 0;
@@ -205,13 +205,13 @@ void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï
 	if (g_mmActDFlg == 1)
 	{
 		return ;
-	}//¶¯×÷ÒÑ¾­Íê³É£¬²»ĞèÒªÔÙ¼ÆËã
+	}//åŠ¨ä½œå·²ç»å®Œæˆï¼Œä¸éœ€è¦å†è®¡ç®—
 	else
 	{;}
 		
-	s_sum += g_mmTargPulse; //»ı·Ö
+	s_sum += g_mmTargPulse; //ç§¯åˆ†
 		
-	//»ı·ÖÏŞ·ù
+	//ç§¯åˆ†é™å¹…
 	if (s_sum > MM_MAX_INTEGRA )
 	{
 		s_sum = MM_MAX_INTEGRA;
@@ -221,10 +221,10 @@ void TIM4_IRQHandler(void)   //TIM4ÖĞ¶Ï
 		s_sum = -MM_MAX_INTEGRA;
 	}
 	
-	//¼ÆËã×ªËÙ
+	//è®¡ç®—è½¬é€Ÿ
 	spd = (1.0*g_mmTargPulse * MM_PID_P  + 1.0 * s_sum * MM_PID_I);
 
-	//ËÙ¶ÈÏŞ·ù¼°µ÷Ïò
+	//é€Ÿåº¦é™å¹…åŠè°ƒå‘
 	if (spd < 0)
 	{
 		MM_CCW;

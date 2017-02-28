@@ -1,41 +1,41 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖÝÎ¬¿±¿Æ¼¼ÓÐÏÞ¹«Ë¾
+*Copyright(c)2017,æ­å·žç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼þÃû³Æ£ºDectection.c
-*ÎÄ¼þ±êÊ¶£º
-*Õª	   Òª£º´÷Ã±²¿·Ö¼ì²âÓÃ½Ó¿ÚÅäÖÃ£¬²¢Ìá¹©½Ó¿Ú		 
-*µ±Ç°°æ±¾£º1.0
-*×÷    Õß£ºÀî»ª±ø
-*Íê³ÉÈÕÆÚ£º2017/2/14
+*æ–‡ä»¶åç§°ï¼šDectection.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜	   è¦ï¼šæˆ´å¸½éƒ¨åˆ†æ£€æµ‹ç”¨æŽ¥å£é…ç½®ï¼Œå¹¶æä¾›æŽ¥å£		 
+*å½“å‰ç‰ˆæœ¬ï¼š1.0
+*ä½œ    è€…ï¼šæŽåŽå…µ
+*å®Œæˆæ—¥æœŸï¼š2017/2/14
 *****************************************************************************/
 #include "Dectection.h"
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºHatExistDectInit
-*º¯ÊýËµÃ÷£º±£»¤Ã±¶ÏÁÏ¼ì²â³õÊ¼»¯
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šHatExistDectInit
+*å‡½æ•°è¯´æ˜Žï¼šä¿æŠ¤å¸½æ–­æ–™æ£€æµ‹åˆå§‹åŒ–
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void HatExistDectInit(void)
 {	
 	GPIO_InitTypeDef GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA, ENABLE); // Ê¹ÄÜPA¶Ë¿ÚÊ±ÖÓ
+	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA, ENABLE); // ä½¿èƒ½PAç«¯å£æ—¶é’Ÿ
 	
-	//¼ì²â½Ó¿Ú PA3
+	//æ£€æµ‹æŽ¥å£ PA3
 	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_3;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //ÄÚ²¿ÉÏÀ­
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //å†…éƒ¨ä¸Šæ‹‰
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºIsHatExist
-*º¯ÊýËµÃ÷£º±£»¤Ã±¶ÏÁÏÓë·ñ
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎ´¶ÏÁÏ·µ»Ø1£¬¶ÏÁÏ·µ»Ø0
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šIsHatExist
+*å‡½æ•°è¯´æ˜Žï¼šä¿æŠ¤å¸½æ–­æ–™ä¸Žå¦
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæœªæ–­æ–™è¿”å›ž1ï¼Œæ–­æ–™è¿”å›ž0
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 u8 IsHatExist(void)
 {

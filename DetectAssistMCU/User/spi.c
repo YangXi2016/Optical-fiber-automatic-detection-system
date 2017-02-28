@@ -1,31 +1,31 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖİÎ¬¿±¿Æ¼¼ÓĞÏŞ¹«Ë¾
+*Copyright(c)2017,æ­å·ç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼şÃû³Æ£ºspi.c
-*ÎÄ¼ş±êÊ¶£º
-*Õª	   Òª£º¼ì²âÒÇÉÏSTM32f103C8T6×ö´Ó»úÓëÖ÷¿ØSTM32µÄÍ¨ĞÅ	 
-*µ±Ç°°æ±¾£º1.2
-*×÷    Õß£ºyangxi
-*Íê³ÉÈÕÆÚ£º2017/2/15
+*æ–‡ä»¶åç§°ï¼šspi.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜	   è¦ï¼šæ£€æµ‹ä»ªä¸ŠSTM32f103C8T6åšä»æœºä¸ä¸»æ§STM32çš„é€šä¿¡	 
+*å½“å‰ç‰ˆæœ¬ï¼š1.2
+*ä½œ    è€…ï¼šyangxi
+*å®Œæˆæ—¥æœŸï¼š2017/2/15
 *****************************************************************************/
 
 
 #include "spi.h"
 //#include "delay.h"
  	  
-/*STM_STATEÎªÈ«¾Ö±äÁ¿£¬¿É´ú±íµ±Ç°µÄÏµÍ³×´Ì¬*/ 
+/*STM_STATEä¸ºå…¨å±€å˜é‡ï¼Œå¯ä»£è¡¨å½“å‰çš„ç³»ç»ŸçŠ¶æ€*/ 
 u8 STM_STATE = DUMY;
 u8 MASTER_CMD = DUMY;
-/*MASTER_CMDÎª½ÓÊÕµ½µÄÖ¸Áî£¬ÓĞÃüÁîºÍ²éÑ¯Á½ÖÖ*/
-//ÊÕ·¢¹ı³ÌÓÉÖĞ¶ÏÍê³É
+/*MASTER_CMDä¸ºæ¥æ”¶åˆ°çš„æŒ‡ä»¤ï¼Œæœ‰å‘½ä»¤å’ŒæŸ¥è¯¢ä¸¤ç§*/
+//æ”¶å‘è¿‡ç¨‹ç”±ä¸­æ–­å®Œæˆ
 
-/*¾Ö²¿±äÁ¿,½ÓÊÕÖĞ¶ÏÖĞÊ¹ÓÃ*/
+/*å±€éƒ¨å˜é‡,æ¥æ”¶ä¸­æ–­ä¸­ä½¿ç”¨*/
 static u8 head_flag=0,Slave_Temp = 0 ;
 
 					  
-//SPI¿Ú³õÊ¼»¯
-//ÕâÀïÕëÊÇ¶ÔSPI1µÄ³õÊ¼»¯
+//SPIå£åˆå§‹åŒ–
+//è¿™é‡Œé’ˆæ˜¯å¯¹SPI1çš„åˆå§‹åŒ–
 
 SPI_InitTypeDef  SPI_InitStructure;
 
@@ -33,7 +33,7 @@ void SPI1_Init(uint16_t Mode)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-	NVIC_InitTypeDef NVIC_InitStructure;//¶¨ÒåÖĞ¶Ï½á¹¹Ìå
+	NVIC_InitTypeDef NVIC_InitStructure;//å®šä¹‰ä¸­æ–­ç»“æ„ä½“
 	
 	RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA|RCC_APB2Periph_SPI1, ENABLE );	
 	
@@ -53,20 +53,20 @@ void SPI1_Init(uint16_t Mode)
   NVIC_Init(&NVIC_InitStructure);	 
 	
 	
-	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //ÉèÖÃSPIµ¥Ïò»òÕßË«ÏòµÄÊı¾İÄ£Ê½:SPIÉèÖÃÎªË«ÏßË«ÏòÈ«Ë«¹¤
-	SPI_InitStructure.SPI_Mode = Mode;// SPI_Mode_Master;		//ÉèÖÃSPI¹¤×÷Ä£Ê½:ÉèÖÃÎªÖ÷SPI
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;		//ÉèÖÃSPIµÄÊı¾İ´óĞ¡:SPI·¢ËÍ½ÓÊÕ8Î»Ö¡½á¹¹
-	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;		//Ñ¡ÔñÁË´®ĞĞÊ±ÖÓµÄÎÈÌ¬:Ê±ÖÓĞü¿Õ¸ß
-	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;	//Êı¾İ²¶»ñÓÚµÚ¶ş¸öÊ±ÖÓÑØ
-	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;		//NSSĞÅºÅÓÉÓ²¼ş£¨NSS¹Ü½Å£©»¹ÊÇÈí¼ş£¨Ê¹ÓÃSSIÎ»£©¹ÜÀí:ÄÚ²¿NSSĞÅºÅÓĞSSIÎ»¿ØÖÆ
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;		//¶¨Òå²¨ÌØÂÊÔ¤·ÖÆµµÄÖµ:²¨ÌØÂÊÔ¤·ÖÆµÖµÎª256
-	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;	//Ö¸¶¨Êı¾İ´«Êä´ÓMSBÎ»»¹ÊÇLSBÎ»¿ªÊ¼:Êı¾İ´«Êä´ÓMSBÎ»¿ªÊ¼
-	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRCÖµ¼ÆËãµÄ¶àÏîÊ½
-	SPI_Init(SPI1, &SPI_InitStructure);  //¸ù¾İSPI_InitStructÖĞÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯ÍâÉèSPIx¼Ä´æÆ÷
+	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //è®¾ç½®SPIå•å‘æˆ–è€…åŒå‘çš„æ•°æ®æ¨¡å¼:SPIè®¾ç½®ä¸ºåŒçº¿åŒå‘å…¨åŒå·¥
+	SPI_InitStructure.SPI_Mode = Mode;// SPI_Mode_Master;		//è®¾ç½®SPIå·¥ä½œæ¨¡å¼:è®¾ç½®ä¸ºä¸»SPI
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;		//è®¾ç½®SPIçš„æ•°æ®å¤§å°:SPIå‘é€æ¥æ”¶8ä½å¸§ç»“æ„
+	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;		//é€‰æ‹©äº†ä¸²è¡Œæ—¶é’Ÿçš„ç¨³æ€:æ—¶é’Ÿæ‚¬ç©ºé«˜
+	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;	//æ•°æ®æ•è·äºç¬¬äºŒä¸ªæ—¶é’Ÿæ²¿
+	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;		//NSSä¿¡å·ç”±ç¡¬ä»¶ï¼ˆNSSç®¡è„šï¼‰è¿˜æ˜¯è½¯ä»¶ï¼ˆä½¿ç”¨SSIä½ï¼‰ç®¡ç†:å†…éƒ¨NSSä¿¡å·æœ‰SSIä½æ§åˆ¶
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;		//å®šä¹‰æ³¢ç‰¹ç‡é¢„åˆ†é¢‘çš„å€¼:æ³¢ç‰¹ç‡é¢„åˆ†é¢‘å€¼ä¸º256
+	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;	//æŒ‡å®šæ•°æ®ä¼ è¾“ä»MSBä½è¿˜æ˜¯LSBä½å¼€å§‹:æ•°æ®ä¼ è¾“ä»MSBä½å¼€å§‹
+	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRCå€¼è®¡ç®—çš„å¤šé¡¹å¼
+	SPI_Init(SPI1, &SPI_InitStructure);  //æ ¹æ®SPI_InitStructä¸­æŒ‡å®šçš„å‚æ•°åˆå§‹åŒ–å¤–è®¾SPIxå¯„å­˜å™¨
  	
-	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//¿ªÆôÖĞ¶Ï	
-	//SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_TXE,ENABLE);//¿ªÆôÖĞ¶Ï
-	SPI_Cmd(SPI1, ENABLE); //Ê¹ÄÜSPIÍâÉè
+	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//å¼€å¯ä¸­æ–­	
+	//SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_TXE,ENABLE);//å¼€å¯ä¸­æ–­
+	SPI_Cmd(SPI1, ENABLE); //ä½¿èƒ½SPIå¤–è®¾
 	SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
 	 
 }   
@@ -79,7 +79,7 @@ void SPI1_IRQHandler(void)
 
 			Slave_Temp = SPI_I2S_ReceiveData(SPI1);
 			USART1->DR=Slave_Temp;
-			while((USART1->SR&0X40)==0);//µÈ´ı·¢ËÍ½áÊø
+			while((USART1->SR&0X40)==0);//ç­‰å¾…å‘é€ç»“æŸ
 		if(head_flag == 1){
 			if(Slave_Temp == DUMY){
 				while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
@@ -95,10 +95,10 @@ void SPI1_IRQHandler(void)
 					SPI_I2S_SendData(SPI1, CMD_COMFIRM);
 					//printf("%c",STM_STATE);
 					//USART1->DR=STM_STATE;
-					//while((USART1->SR&0X40)==0);//µÈ´ı·¢ËÍ½áÊø
+					//while((USART1->SR&0X40)==0);//ç­‰å¾…å‘é€ç»“æŸ
 				}
 				USART1->DR=STM_STATE;
-				while((USART1->SR&0X40)==0);//µÈ´ı·¢ËÍ½áÊø
+				while((USART1->SR&0X40)==0);//ç­‰å¾…å‘é€ç»“æŸ
 			}
 		}else{
 			if(Slave_Temp == HEAD) head_flag=1;

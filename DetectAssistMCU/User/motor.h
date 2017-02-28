@@ -34,8 +34,8 @@
 #define GetStatus_LSORG()			GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11)	
 #define GetStatus_LSCW()			GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_8)		
 
-#define Stage_Forward					'+'				//CCW£¬ÏòÕı·½Ïò
-#define Stage_Backward				'-'				//CW£¬Ïò¸º·½Ïò
+#define Stage_Forward					'+'				//CCWï¼Œå‘æ­£æ–¹å‘
+#define Stage_Backward				'-'				//CWï¼Œå‘è´Ÿæ–¹å‘
 #define Stage_Range_Upper			8500
 #define Stage_Range_Lower			-4000
 

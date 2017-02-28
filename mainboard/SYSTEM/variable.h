@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,����ά���Ƽ����޹�˾
+*Copyright(c)2017,杭州维勘科技有限公司
 *All rights reserved
 *
-*�ļ����ƣ�variable.h
-*�ļ���ʶ��
-*ժ    Ҫ��ժ¼��Э������ʹ�õ�IO��			 
-*��ǰ�汾��1.0
-*��    �ߣ�yangxi
-*������ڣ�2017/2/15
+*文件名称：variable.h
+*文件标识：
+*摘    要：摘录本协处理器使用的IO口			 
+*当前版本：1.0
+*作    者：yangxi
+*完成日期：2017/2/15
 *****************************************************************************/
 
 #ifndef __VARIABLE_H
@@ -15,12 +15,12 @@
 
 //system parameter
 #define NUM_TOTAL 20
-#define DISTANCE  4			//����ͨ�����ⷴ�䶨λʱ���о�����ù�λ�ľ���
+#define DISTANCE  4			//弹夹通过红外反射定位时弹夹距离擦拭工位的距离
 #define DISTANCE1 8
 #define DISTANCE2 6
 
-u8 g_status[20] = {0};	//20���о�20����λ������λ�����19����
-u8 g_num_clean  = 0;		//����ͳһ��0��ʼ��19����
+u8 g_status[20] = {0};	//20个夹具20个工位，但工位间距是19个。
+u8 g_num_clean  = 0;		//计数统一从0开始，19结束
 u8 g_num_detect = 0;
 u8 g_num_hat  = 0;			
 

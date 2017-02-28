@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖÝÎ¬¿±¿Æ¼¼ÓÐÏÞ¹«Ë¾
+*Copyright(c)2017,æ­å·žç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼þÃû³Æ£ºMain.c
-*ÎÄ¼þ±êÊ¶£º
-*Õª    Òª£ºÍÆ¼Ð¾ßÐ­´¦ÀíÆ÷Ö÷³ÌÐò				 
-*µ±Ç°°æ±¾£º1.0
-*×÷    Õß£ºÀî»ª±ø
-*Íê³ÉÈÕÆÚ£º2017/2/9
+*æ–‡ä»¶åç§°ï¼šMain.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜    è¦ï¼šæŽ¨å¤¹å…·åå¤„ç†å™¨ä¸»ç¨‹åº				 
+*å½“å‰ç‰ˆæœ¬ï¼š1.0
+*ä½œ    è€…ï¼šæŽåŽå…µ
+*å®Œæˆæ—¥æœŸï¼š2017/2/9
 *****************************************************************************/
 #include "stm32f10x.h"
 #include "init.h"
@@ -17,10 +17,10 @@ void CntIOInit(void);
 
 extern u8 SYS_STATE,MASTER_CMD;
 
-u8 push_period = 4;	//0´ú±íÊÕµ½¶¯×÷ÃüÁî£¬1´ú±íÈý¸öµç»ú¿ªÊ¼¼Ð£¬2±íÊ¾Èý¸öµç»ú¼Ð½ôÁË£¬3´ú±í¿ªÊ¼ÏòÇ°ÍÆ£¬4±íÊ¾ÏòÇ°ÍÆµ½µ×ÁË¡£//£¬5´ú±íÖÐ¼äµç»ú¿ªÊ¼ËÉ¿ª£¬6±íÊ¾µç»úÍêÈ«ËÉ¿ªÁË£¨¼´¶¯×÷Íê³É£©¡£
-u8 draw_period = 6;	//0´ú±íÊÕµ½¶¯×÷ÃüÁî£¬1´ú±íÖÐ¼äµç»ú¿ªÊ¼¼Ð£¬2±íÊ¾ÖÐ¼äµç»ú¼Ð½ôÁË£¬3´ú±í¿ªÊ¼ÏòºóÀ­£¬4±íÊ¾ÏòºóÀ­µ½µ×ÁË£¬5´ú±íÈý¸öµç»ú¿ªÊ¼ËÉ¿ª£¬6±íÊ¾µç»úÍêÈ«ËÉ¿ªÁË£¨¼´¶¯×÷Íê³É£©¡£
-u8 close_period= 2;	//0´ú±íÊÕµ½¶¯×÷ÃüÁî£¬1´ú±íÖÐ¼äµç»ú¿ªÊ¼¼Ð£¬2±íÊ¾ÖÐ¼äµç»ú¼Ð½ôÁË¡£
-u8 open_period = 2;	//0´ú±íÊÕµ½¶¯×÷ÃüÁî£¬1´ú±íÖÐ¼äµç»ú¿ªÊ¼ËÉ£¬2±íÊ¾ÖÐ¼äµç»úËÉ¿ªÁË¡£
+u8 push_period = 4;	//0ä»£è¡¨æ”¶åˆ°åŠ¨ä½œå‘½ä»¤ï¼Œ1ä»£è¡¨ä¸‰ä¸ªç”µæœºå¼€å§‹å¤¹ï¼Œ2è¡¨ç¤ºä¸‰ä¸ªç”µæœºå¤¹ç´§äº†ï¼Œ3ä»£è¡¨å¼€å§‹å‘å‰æŽ¨ï¼Œ4è¡¨ç¤ºå‘å‰æŽ¨åˆ°åº•äº†ã€‚//ï¼Œ5ä»£è¡¨ä¸­é—´ç”µæœºå¼€å§‹æ¾å¼€ï¼Œ6è¡¨ç¤ºç”µæœºå®Œå…¨æ¾å¼€äº†ï¼ˆå³åŠ¨ä½œå®Œæˆï¼‰ã€‚
+u8 draw_period = 6;	//0ä»£è¡¨æ”¶åˆ°åŠ¨ä½œå‘½ä»¤ï¼Œ1ä»£è¡¨ä¸­é—´ç”µæœºå¼€å§‹å¤¹ï¼Œ2è¡¨ç¤ºä¸­é—´ç”µæœºå¤¹ç´§äº†ï¼Œ3ä»£è¡¨å¼€å§‹å‘åŽæ‹‰ï¼Œ4è¡¨ç¤ºå‘åŽæ‹‰åˆ°åº•äº†ï¼Œ5ä»£è¡¨ä¸‰ä¸ªç”µæœºå¼€å§‹æ¾å¼€ï¼Œ6è¡¨ç¤ºç”µæœºå®Œå…¨æ¾å¼€äº†ï¼ˆå³åŠ¨ä½œå®Œæˆï¼‰ã€‚
+u8 close_period= 2;	//0ä»£è¡¨æ”¶åˆ°åŠ¨ä½œå‘½ä»¤ï¼Œ1ä»£è¡¨ä¸­é—´ç”µæœºå¼€å§‹å¤¹ï¼Œ2è¡¨ç¤ºä¸­é—´ç”µæœºå¤¹ç´§äº†ã€‚
+u8 open_period = 2;	//0ä»£è¡¨æ”¶åˆ°åŠ¨ä½œå‘½ä»¤ï¼Œ1ä»£è¡¨ä¸­é—´ç”µæœºå¼€å§‹æ¾ï¼Œ2è¡¨ç¤ºä¸­é—´ç”µæœºæ¾å¼€äº†ã€‚
 int main(void)
 {
 	InitAll();
@@ -113,9 +113,9 @@ int main(void)
 			else if(Is_Stop(MASTER_CMD)){
 				Fixture_Stop();
 			}
-			//else if(MASTER_CMD == CHECK)	//²éÑ¯ÃüÁî
+			//else if(MASTER_CMD == CHECK)	//æŸ¥è¯¢å‘½ä»¤
 			//	;
-			//else	SYS_STATE = ERROR;			//½ÓÊÕÃüÁî³ö´í
+			//else	SYS_STATE = ERROR;			//æŽ¥æ”¶å‘½ä»¤å‡ºé”™
 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;
 		}

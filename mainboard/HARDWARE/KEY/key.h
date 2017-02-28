@@ -2,23 +2,23 @@
 #define __KEY_H	
 #include "sys.h"
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖİÎ¬¿±¿Æ¼¼ÓĞÏŞ¹«Ë¾
+*Copyright(c)2017,æ­å·ç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼şÃû³Æ£ºIO.txt
-*ÎÄ¼ş±êÊ¶£º
-*Õª    Òª£ºÕªÂ¼±¾Ğ­´¦ÀíÆ÷Ê¹ÓÃµÄIO¿Ú			 
-*µ±Ç°°æ±¾£º1.0
-*×÷    Õß£ºyangxi
-*Íê³ÉÈÕÆÚ£º2017/2/10
+*æ–‡ä»¶åç§°ï¼šIO.txt
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜    è¦ï¼šæ‘˜å½•æœ¬åå¤„ç†å™¨ä½¿ç”¨çš„IOå£			 
+*å½“å‰ç‰ˆæœ¬ï¼š1.0
+*ä½œ    è€…ï¼šyangxi
+*å®Œæˆæ—¥æœŸï¼š2017/2/10
 *****************************************************************************/ 
  
 
-#define HOLDER_PLACE_1  GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_1)//¶ÁÈ¡Î¢¶¯¿ª¹Ø1
-#define HOLDER_PLACE_2  GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_2)//¶ÁÈ¡Î¢¶¯¿ª¹Ø2
-//#define SYS_START				GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_8)//¶ÁÈ¡¿ªÊ¼ÔİÍ£
+#define HOLDER_PLACE_1  GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_1)//è¯»å–å¾®åŠ¨å¼€å…³1
+#define HOLDER_PLACE_2  GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_2)//è¯»å–å¾®åŠ¨å¼€å…³2
+//#define SYS_START				GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_8)//è¯»å–å¼€å§‹æš‚åœ
 
 
-void KEY_Init(void);//IO³õÊ¼»¯
-u8 Check_ready(void);  	//°´¼üÉ¨Ãèº¯Êı					    
+void KEY_Init(void);//IOåˆå§‹åŒ–
+u8 Check_ready(void);  	//æŒ‰é”®æ‰«æå‡½æ•°					    
 #endif

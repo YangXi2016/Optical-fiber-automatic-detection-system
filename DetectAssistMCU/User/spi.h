@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,����ά���Ƽ����޹�˾
+*Copyright(c)2017,杭州维勘科技有限公司
 *All rights reserved
 *
-*�ļ����ƣ�spi.c
-*�ļ���ʶ��
-*ժ	   Ҫ���������STM32f103C8T6���ӻ�������STM32��ͨ��	 
-*��ǰ�汾��1.2
-*��    �ߣ�yangxi
-*������ڣ�2017/2/15
+*文件名称：spi.c
+*文件标识：
+*摘	   要：检测仪上STM32f103C8T6做从机与主控STM32的通信	 
+*当前版本：1.2
+*作    者：yangxi
+*完成日期：2017/2/15
 *****************************************************************************/
 
 #ifndef __SPI_H
@@ -19,12 +19,12 @@
 #define HEAD				0x01
 
 /**
-SPIͨѶЭ�飺
-���յ�[HEAD,MASTER_CMD,DUMY];
-DUMY��Ϊ�����ṩʱ���źţ����������塣���յ�����������ΪMASTER_CMD;
-MASTER_CMD | 0x0F ==0xFF��������ָ��(��λȫΪ1)
-MASTER_CMD | 0x0F ==0x0F������ѯָ��(��λȫΪ0)
-�������� STM_STATE CMD_COMFIRM
+SPI通讯协议：
+接收到[HEAD,MASTER_CMD,DUMY];
+DUMY仅为主机提供时钟信号，数据无意义。接收到的意义数据为MASTER_CMD;
+MASTER_CMD | 0x0F ==0xFF代表命令指令(高位全为1)
+MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
+返回数据 STM_STATE CMD_COMFIRM
 */
 //u8 STM_STATE = 0x00;
 //u8 MASTER_CMD = 0x00;
@@ -35,7 +35,7 @@ MASTER_CMD | 0x0F ==0x0F������ѯָ��(��λȫΪ0)
 
 #define CHECK					0x02
 
-//�жϴ�STM32���յ�������
+//判断从STM32接收到的命令
 #define Is_Detect(CMD)			((CMD & 0x40) == 0x40)
 #define Is_Clamp(CMD)				((CMD & 0x20) == 0x20)
 #define Is_Loosen(CMD)			((CMD & 0x10) == 0x10)
@@ -43,13 +43,13 @@ MASTER_CMD | 0x0F ==0x0F������ѯָ��(��λȫΪ0)
 #define Is_Tail(CMD)				((CMD & 0x04) == 0x04)
 
 
-//׼�����͸�STM32��״̬
+//准备发送给STM32的状态
 #define TRUE_RESULT			0x60 //STM_STATE =
 #define FALSE_RESULT		0x40 //
 #define READY_STATE			0x40 //STM_STATE = (STM_STATE | 0x40)
 #define WORK_STATE			0x00 //STM_STATE = (STM_STATE & 0xBF)
 	
 
-void SPI1_Init(uint16_t Mode);			 //��ʼ��SPI��
+void SPI1_Init(uint16_t Mode);			 //初始化SPI口
 #endif
 

@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,����ά���Ƽ����޹�˾
+*Copyright(c)2017,杭州维勘科技有限公司
 *All rights reserved
 *
-*�ļ����ƣ�Motor.h
-*�ļ���ʶ��
-*ժ    Ҫ��		 
-*��ǰ�汾��1.0
-*��    �ߣ����
-*������ڣ�2017/2/15
+*文件名称：Motor.h
+*文件标识：
+*摘    要：		 
+*当前版本：1.0
+*作    者：李华兵
+*完成日期：2017/2/15
 *****************************************************************************/
 #ifndef _CONTROL_H_
 #define _CONTROL_H_
@@ -22,9 +22,9 @@
 #define SM_ANGLE		(360*5)
 #define SM_SPEED		1000
 
-//#define WIPE_LEN		3 //һ�β��ÿ��� mm
+//#define WIPE_LEN		3 //一次擦拭宽度 mm
 //#define CLOTH_LEN		(50*1000)
-#define MAX_TIME		(30000) //�������ƶ�����
+#define MAX_TIME		(30000) //仅横向移动次数
 
 void Clean(void);
 void Clean_Reset(void);

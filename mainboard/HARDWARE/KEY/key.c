@@ -2,43 +2,43 @@
 #include "delay.h"
 
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖİÎ¬¿±¿Æ¼¼ÓĞÏŞ¹«Ë¾
+*Copyright(c)2017,æ­å·ç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼şÃû³Æ£ºreadme.txt
-*ÎÄ¼ş±êÊ¶£º
-*Õª    Òª£º			 
-*µ±Ç°°æ±¾£º0.1
-*×÷    Õß£ºyangxx
-*Íê³ÉÈÕÆÚ£º2017/2/10
+*æ–‡ä»¶åç§°ï¼šreadme.txt
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜    è¦ï¼š			 
+*å½“å‰ç‰ˆæœ¬ï¼š0.1
+*ä½œ    è€…ï¼šyangxx
+*å®Œæˆæ—¥æœŸï¼š2017/2/10
 *****************************************************************************/
 
-//°´¼ü³õÊ¼»¯º¯Êı 
-//PD1,PD2ÉèÖÃ³ÉÊäÈë
+//æŒ‰é”®åˆå§‹åŒ–å‡½æ•° 
+//PD1,PD2è®¾ç½®æˆè¾“å…¥
 void KEY_Init(void)
 {
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
 
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOC,ENABLE);//Ê¹ÄÜPORTA,PORTCÊ±ÖÓ
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOC,ENABLE);//ä½¿èƒ½PORTA,PORTCæ—¶é’Ÿ
 
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);//¹Ø±Õjtag£¬Ê¹ÄÜSWD£¬¿ÉÒÔÓÃSWDÄ£Ê½µ÷ÊÔ
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);//å…³é—­jtagï¼Œä½¿èƒ½SWDï¼Œå¯ä»¥ç”¨SWDæ¨¡å¼è°ƒè¯•
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_1 |GPIO_Pin_2;// |GPIO_Pin_8;//PA15
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //ÉèÖÃ³ÉÉÏÀ­ÊäÈë
- 	GPIO_Init(GPIOD, &GPIO_InitStructure);//³õÊ¼»¯3¸ö¿ª¹Ø
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //è®¾ç½®æˆä¸Šæ‹‰è¾“å…¥
+ 	GPIO_Init(GPIOD, &GPIO_InitStructure);//åˆå§‹åŒ–3ä¸ªå¼€å…³
 	
 
 } 
 
-//°´¼ü¼ì²â
-//·µ»Ø×´Ì¬
+//æŒ‰é”®æ£€æµ‹
+//è¿”å›çŠ¶æ€
 u8 Check_ready()
 {	 
 	if(HOLDER_PLACE_1==0||HOLDER_PLACE_2==1)
 	{
-		delay_ms(10);//È¥¶¶¶¯ 
+		delay_ms(10);//å»æŠ–åŠ¨ 
 		if(HOLDER_PLACE_1==0 && HOLDER_PLACE_2==1)return 1;
 	}     
-	return 0;// ÎŞ°´¼ü°´ÏÂ
+	return 0;// æ— æŒ‰é”®æŒ‰ä¸‹
 }

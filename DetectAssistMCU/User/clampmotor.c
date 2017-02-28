@@ -31,7 +31,7 @@ void ClampMotor_Init()
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1; 
 	GPIO_Init(GPIOB,&GPIO_InitStructure); 
 	
-	ClampMotor_Up();//Ĭ�Ͻ��벻����״̬
+	ClampMotor_Up();//默认进入不挡光状态
 	
 }
 

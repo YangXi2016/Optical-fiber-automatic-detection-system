@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,����ά���Ƽ����޹�˾
+*Copyright(c)2017,杭州维勘科技有限公司
 *All rights reserved
 *
-*�ļ����ƣ�control.h
-*�ļ���ʶ��
-*ժ    Ҫ���Զ����ϵͳ������ļ���ƻ���	 
-*��ǰ�汾��0.1
-*��    �ߣ�yangxi
-*������ڣ�2017/2/19
+*文件名称：control.h
+*文件标识：
+*摘    要：自动检测系统中所需的检控制汇总	 
+*当前版本：0.1
+*作    者：yangxi
+*完成日期：2017/2/19
 *****************************************************************************/
 
 #ifndef __CONTROL_H
@@ -15,15 +15,15 @@
 #include "StepperMotor.h"
 #include "LinearCCD.h"
 
-//��ñ�õ������
+//戴帽用电机参数
 #define HAT_ANGLE		(360*3)
 #define HAT_SPEED		(1000)
 
-//����ƶ�һ��λ����
+//电机移动一工位参数
 #define RAIL_STATION_ANGLE	(360*1)
 #define RAIL_STATION_SPEED	(1000)
 
-//��������ƶ�����
+//电机自由移动参数
 #define RAIL_FREE_ANGLE		(360*100)
 #define RAIL_FREE_SPEED		(1000)
 

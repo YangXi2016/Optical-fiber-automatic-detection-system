@@ -10,10 +10,10 @@
 
 
 struct STATUS{
-	u8 Union_Status;		//0����������ǣ�1�����Զ����ϵͳ
-	u8 Detect_Status;		//��ʼ����ź�
-	u8 Clamp_Status;		//�н�״̬
-	u8 Period_Status;		//0��������δ���빤λ��1�����ڵ�һ����λ��2�������м乤λ��3���������һ����λ��4�����뿪��λ
+	u8 Union_Status;		//0代表仅检测仪，1代表自动检测系统
+	u8 Detect_Status;		//开始检测信号
+	u8 Clamp_Status;		//夹紧状态
+	u8 Period_Status;		//0代表弹夹未进入工位，1代表在第一个工位，2代表在中间工位，3代表在最后一个工位，4代表离开工位
 } ;
 
 void USART1_Config(void);

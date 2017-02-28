@@ -75,7 +75,7 @@ void Go_Limit(u8 stage_dir)
 	{
 		if(stage_dir == '+')
 		{
-			while(GetStatus_LSCCW() == RESET)   //pb10- io¿Ú¶Á 
+			while(GetStatus_LSCCW() == RESET)   //pb10- ioå£è¯» 
 			{
 				if(i < 11)
 				{
@@ -362,11 +362,11 @@ void Move(uint8_t dir,uint16_t pace)
 		}
 		if((stage_tar_coord >= Stage_Range_Lower)&&(stage_tar_coord <= Stage_Range_Upper))
 		{
-			if((pace > 0)&&(pace < 900)) //¹Ì¶¨ÆµÂÊÂıËÙ×ª¶¯ 
+			if((pace > 0)&&(pace < 900)) //å›ºå®šé¢‘ç‡æ…¢é€Ÿè½¬åŠ¨ 
 			{
 				Stage_Run(dir,1000,pace);
 			}
-			else if(pace>=900)        //×öµç»úÇúÏßÆµÂÊ±ä»¯µÄ×ª¶¯ 
+			else if(pace>=900)        //åšç”µæœºæ›²çº¿é¢‘ç‡å˜åŒ–çš„è½¬åŠ¨ 
 			{
 				ACC_Move(dir,pace);    
 			}

@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2016,º¼ÖÝÎ¬¿±¿Æ¼¼ÓÐÏÞ¹«Ë¾
+*Copyright(c)2016,æ­å·žç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼þÃû³Æ£ºStepperMotor.c
-*ÎÄ¼þ±êÊ¶£º
-*Õª	   Òª£º¶Ô²½½øµç»ú¼°ÆäÉ²³µ×ÊÔ´³õÊ¼»¯£¬²¢Ìá¹©Çý¶¯º¯Êý		 
-*µ±Ç°°æ±¾£º1.0
-*×÷    Õß£ºÀî»ª±ø
-*Íê³ÉÈÕÆÚ£º2017/2/14
+*æ–‡ä»¶åç§°ï¼šStepperMotor.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜	   è¦ï¼šå¯¹æ­¥è¿›ç”µæœºåŠå…¶åˆ¹è½¦èµ„æºåˆå§‹åŒ–ï¼Œå¹¶æä¾›é©±åŠ¨å‡½æ•°		 
+*å½“å‰ç‰ˆæœ¬ï¼š1.0
+*ä½œ    è€…ï¼šæŽåŽå…µ
+*å®Œæˆæ—¥æœŸï¼š2017/2/14
 *****************************************************************************/
 #include "StepperMotor.h"
 #include "math.h"
@@ -15,45 +15,45 @@
 #include "usart.h"
 
 
-static u16 gs_hAccPrescTab[H_ACC_NUM] = {0};//´÷Ã±µç»ú¼Ó/¼õËÙÔ¤·ÖÆµ±í
-static u16 gs_mtAccPrescTab[MT_ACC_NUM] = {0};//Ö÷Æ½ÒÆÌ¨µç»ú¼Ó/¼õËÙÔ¤·ÖÆµ±í
+static u16 gs_hAccPrescTab[H_ACC_NUM] = {0};//æˆ´å¸½ç”µæœºåŠ /å‡é€Ÿé¢„åˆ†é¢‘è¡¨
+static u16 gs_mtAccPrescTab[MT_ACC_NUM] = {0};//ä¸»å¹³ç§»å°ç”µæœºåŠ /å‡é€Ÿé¢„åˆ†é¢‘è¡¨
 
 
 
-u32 g_hStps = 0;//ÖÐ¼ä¼ÐÏßµç»úÐèÒªÔË×ªµÄ²½Êý
-u16 g_thPresc = 0;//ÖÐ¼ä¼ÐÏßµç»úÄ¿±êËÙ¶È¶ÔÓ¦µÄÔ¤·ÖÆµÊý
-u8  g_nhActFlg = 0; //ÖÐ¼ä¼ÐÏßµç»úÐÂ¶¯×÷±êÖ¾Î»
-u8  g_hActDFlg = 0; //ÖÐ¼ä¼ÐÏßµç»ú¶¯×÷½áÊø±êÖ¾Î»
-u8  g_hClkFlg  = 0; //ÖÐ¼ä¼ÐÏßµç»úÂö³åÊä³öÊ¹ÄÜ±êÖ¾Î»
+u32 g_hStps = 0;//ä¸­é—´å¤¹çº¿ç”µæœºéœ€è¦è¿è½¬çš„æ­¥æ•°
+u16 g_thPresc = 0;//ä¸­é—´å¤¹çº¿ç”µæœºç›®æ ‡é€Ÿåº¦å¯¹åº”çš„é¢„åˆ†é¢‘æ•°
+u8  g_nhActFlg = 0; //ä¸­é—´å¤¹çº¿ç”µæœºæ–°åŠ¨ä½œæ ‡å¿—ä½
+u8  g_hActDFlg = 0; //ä¸­é—´å¤¹çº¿ç”µæœºåŠ¨ä½œç»“æŸæ ‡å¿—ä½
+u8  g_hClkFlg  = 0; //ä¸­é—´å¤¹çº¿ç”µæœºè„‰å†²è¾“å‡ºä½¿èƒ½æ ‡å¿—ä½
 
-u32 g_mtStps = 0;//Á½±ß¼ÐÏßµç»úÐèÒªÔË×ªµÄ²½Êý
-u16 g_tmtPresc = 0;//Á½±ß¼ÐÏßµç»úÄ¿±êËÙ¶È¶ÔÓ¦µÄÔ¤·ÖÆµÊý
-u8  g_nmtActFlg = 0; //Á½±ß¼ÐÏßµç»úÐÂ¶¯×÷±êÖ¾Î»
-u8  g_mtActDFlg = 0; //Á½±ß¼ÐÏßµç»ú¶¯×÷½áÊø±êÖ¾Î»
-u8  g_mtClkFlg  = 0; //Á½±ß¼ÐÏßµç»úÂö³åÊä³öÊ¹ÄÜ±êÖ¾Î»
+u32 g_mtStps = 0;//ä¸¤è¾¹å¤¹çº¿ç”µæœºéœ€è¦è¿è½¬çš„æ­¥æ•°
+u16 g_tmtPresc = 0;//ä¸¤è¾¹å¤¹çº¿ç”µæœºç›®æ ‡é€Ÿåº¦å¯¹åº”çš„é¢„åˆ†é¢‘æ•°
+u8  g_nmtActFlg = 0; //ä¸¤è¾¹å¤¹çº¿ç”µæœºæ–°åŠ¨ä½œæ ‡å¿—ä½
+u8  g_mtActDFlg = 0; //ä¸¤è¾¹å¤¹çº¿ç”µæœºåŠ¨ä½œç»“æŸæ ‡å¿—ä½
+u8  g_mtClkFlg  = 0; //ä¸¤è¾¹å¤¹çº¿ç”µæœºè„‰å†²è¾“å‡ºä½¿èƒ½æ ‡å¿—ä½
 
 
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºStepMotorGPIOInit
-*º¯ÊýËµÃ÷£º¿ØÖÆ²½½øµç»úµÄGPIOÅäÖÃ 
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šStepMotorGPIOInit
+*å‡½æ•°è¯´æ˜Žï¼šæŽ§åˆ¶æ­¥è¿›ç”µæœºçš„GPIOé…ç½® 
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void StepMotorGPIOInit(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA
-						  | RCC_APB2Periph_GPIOB, ENABLE); // Ê¹ÄÜPC¶Ë¿ÚÊ±ÖÓ
+						  | RCC_APB2Periph_GPIOB, ENABLE); // ä½¿èƒ½PCç«¯å£æ—¶é’Ÿ
 	
-	// Ö÷Æ½ÒÆÌ¨µç»ú CLK - PB0   DIR - PB3   EN - PB4  
+	// ä¸»å¹³ç§»å°ç”µæœº CLK - PB0   DIR - PB3   EN - PB4  
 	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_4;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	// ´÷Ã±µç»ú CLK - PA8   DIR - PA11   EN - PA12
+	// æˆ´å¸½ç”µæœº CLK - PA8   DIR - PA11   EN - PA12
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_11 | GPIO_Pin_12;	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;							 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -61,11 +61,11 @@ void StepMotorGPIOInit(void)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºStepMotorTIMInit
-*º¯ÊýËµÃ÷£º¿ØÖÆ²½½øµç»úµÄ¶¨Ê±Æ÷¡¢ÖÐ¶ÏÅäÖÃ 
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šStepMotorTIMInit
+*å‡½æ•°è¯´æ˜Žï¼šæŽ§åˆ¶æ­¥è¿›ç”µæœºçš„å®šæ—¶å™¨ã€ä¸­æ–­é…ç½® 
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void StepMotorTIMInit(void)
 {
@@ -74,19 +74,19 @@ void StepMotorTIMInit(void)
 	
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 , ENABLE);
 	
- 	//µç»úÊ±ÖÓÅäÖÃ TIM2
+ 	//ç”µæœºæ—¶é’Ÿé…ç½® TIM2
 	TIM_TimeBaseStructure.TIM_Period = DEFAULT_PERIOD - 1;	 
 	TIM_TimeBaseStructure.TIM_Prescaler = DEFAULT_PRESCALE - 1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-	TIM_ITConfig( TIM2, TIM_IT_Update  |  TIM_IT_Trigger,  ENABLE);//¿ªÆôTIM2µÄÖÐ¶ÏÔ´ºÍ´¥·¢ÖÐ¶Ï
+	TIM_ITConfig( TIM2, TIM_IT_Update  |  TIM_IT_Trigger,  ENABLE);//å¼€å¯TIM2çš„ä¸­æ–­æºå’Œè§¦å‘ä¸­æ–­
 
-	//ÅäÖÃ¶¨Ê±Æ÷ÖÐ¶Ï
+	//é…ç½®å®šæ—¶å™¨ä¸­æ–­
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM1~3È«¾ÖÖÐ¶Ï
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //ÏÈÕ¼ÓÅÏÈ¼¶1£¬ÓÅÏÈ¼¶´Î¸ß
+	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM1~3å…¨å±€ä¸­æ–­
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //å…ˆå ä¼˜å…ˆçº§1ï¼Œä¼˜å…ˆçº§æ¬¡é«˜
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
 	NVIC_Init(&NVIC_InitStructure); 
@@ -95,11 +95,11 @@ void StepMotorTIMInit(void)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºStepMotorInit
-*º¯ÊýËµÃ÷£º²½½øµç»úGPIO¡¢¶¨Ê±Æ÷³õÊ¼»¯£¬¼ÓËÙ±í³õÊ¼»¯
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šStepMotorInit
+*å‡½æ•°è¯´æ˜Žï¼šæ­¥è¿›ç”µæœºGPIOã€å®šæ—¶å™¨åˆå§‹åŒ–ï¼ŒåŠ é€Ÿè¡¨åˆå§‹åŒ–
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void StepMotorInit(void)
 {
@@ -109,19 +109,19 @@ void StepMotorInit(void)
 	double t_sx = 0; //
 	double TIFreq = 0;
 		
-	StepMotorGPIOInit();//GPIO³õÊ¼»¯
-	StepMotorTIMInit();//¶¨Ê±Æ÷ºÍÖÐ¶Ï³õÊ¼»¯
+	StepMotorGPIOInit();//GPIOåˆå§‹åŒ–
+	StepMotorTIMInit();//å®šæ—¶å™¨å’Œä¸­æ–­åˆå§‹åŒ–
 	
 	GPIO_SetBits(GPIOA,GPIO_Pin_8);
 	GPIO_SetBits(GPIOB,GPIO_Pin_0);
 
 	
-	//ÒÀ´Î¸üÐÂÔ¤·ÖÆµ±íÖÐµÄÃ¿Ò»Ïî °´ÕÕ f = fmin + (fmax - fmin)/(1 + e^(-a(i/num -1)))
-	//½øÐÐ¼Ó¼õËÙ£¬´Ë´¦½«f×ª»¯µ½ÁËÔ¤·ÖÆµÉÏ£¬Òò´Ë¹«Ê½ÓÐ±äÐÍ
-	TIFreq = 72000000.0 / DEFAULT_PERIOD /DEFAULT_PRESCALE;//Ê±ÖÓÖÐ¶ÏÆµÂÊ¼ÆËã
+	//ä¾æ¬¡æ›´æ–°é¢„åˆ†é¢‘è¡¨ä¸­çš„æ¯ä¸€é¡¹ æŒ‰ç…§ f = fmin + (fmax - fmin)/(1 + e^(-a(i/num -1)))
+	//è¿›è¡ŒåŠ å‡é€Ÿï¼Œæ­¤å¤„å°†fè½¬åŒ–åˆ°äº†é¢„åˆ†é¢‘ä¸Šï¼Œå› æ­¤å…¬å¼æœ‰å˜åž‹
+	TIFreq = 72000000.0 / DEFAULT_PERIOD /DEFAULT_PRESCALE;//æ—¶é’Ÿä¸­æ–­é¢‘çŽ‡è®¡ç®—
 	
-	//¸üÐÂ´÷Ã±µç»ú¼Ó¼õËÙÔ¤·ÖÆµ±í
-	prescMin =  TIFreq / (H_MAX_SPD * 1.0 / 60 * H_MOTOR_DIV);//¼ÆËãÉè¶¨µÄ×î´ó×îÐ¡Ô¤·ÖÆµ
+	//æ›´æ–°æˆ´å¸½ç”µæœºåŠ å‡é€Ÿé¢„åˆ†é¢‘è¡¨
+	prescMin =  TIFreq / (H_MAX_SPD * 1.0 / 60 * H_MOTOR_DIV);//è®¡ç®—è®¾å®šçš„æœ€å¤§æœ€å°é¢„åˆ†é¢‘
 	prescMax = TIFreq /  (H_MIN_SPD * 1.0 / 60 * H_MOTOR_DIV);
 	for (i=0; i<H_ACC_NUM; i++)
 	{
@@ -130,8 +130,8 @@ void StepMotorInit(void)
 		printf("hPrescTab[%d]:%d\n",i,gs_hAccPrescTab[i]);
 	}	
 
-	//¸üÐÂÖ÷Æ½ÒÆÌ¨µç»ú¼Ó¼õËÙÔ¤·ÖÆµ±í
-	prescMin =  TIFreq / (MT_MAX_SPD * 1.0 / 60 * MT_MOTOR_DIV);//¼ÆËãÉè¶¨µÄ×î´ó×îÐ¡Ô¤·ÖÆµ
+	//æ›´æ–°ä¸»å¹³ç§»å°ç”µæœºåŠ å‡é€Ÿé¢„åˆ†é¢‘è¡¨
+	prescMin =  TIFreq / (MT_MAX_SPD * 1.0 / 60 * MT_MOTOR_DIV);//è®¡ç®—è®¾å®šçš„æœ€å¤§æœ€å°é¢„åˆ†é¢‘
 	prescMax = TIFreq /  (MT_MIN_SPD * 1.0 / 60 * MT_MOTOR_DIV);
 	for (i=0; i<MT_ACC_NUM; i++)
 	{
@@ -143,12 +143,12 @@ void StepMotorInit(void)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºMotorEN
-*º¯ÊýËµÃ÷£º²½½øµç»úÊ¹ÄÜ
-*ÊäÈë²ÎÊý£ºmotor : H´÷Ã±¡¢TÖ÷Æ½ÒÆÌ¨
+*å‡½æ•°åç§°ï¼šMotorEN
+*å‡½æ•°è¯´æ˜Žï¼šæ­¥è¿›ç”µæœºä½¿èƒ½
+*è¾“å…¥å‚æ•°ï¼šmotor : Hæˆ´å¸½ã€Tä¸»å¹³ç§»å°
 		   oper: E enable ; D disable
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void MotorEN(u8 motor,u8 oper)
 {
@@ -166,7 +166,7 @@ void MotorEN(u8 motor,u8 oper)
 				GPIO_ResetBits(GPIOA,GPIO_Pin_12);	
 			}
 			break;			
-		}//´÷Ã±µç»ú
+		}//æˆ´å¸½ç”µæœº
 		
 		case 'T':
 		{
@@ -179,18 +179,18 @@ void MotorEN(u8 motor,u8 oper)
 				GPIO_ResetBits(GPIOB,GPIO_Pin_4);	
 			}
 			break;			
-		}//Æ½ÒÆÌ¨µç»ú
+		}//å¹³ç§»å°ç”µæœº
 		default:break;
 	}
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºMotorDir
-*º¯ÊýËµÃ÷£º²½½øµç»ú×ªÏò
-*ÊäÈë²ÎÊý£ºmotor : H´÷Ã±¡¢TÖ÷Æ½ÒÆÌ¨
-		   oper: + ÕýÏò ; -·´Ïò£»¹æ¶¨ÃæÏòµç»ú³öÖá£¬Ë³Ê±ÕëÎªÕý
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šMotorDir
+*å‡½æ•°è¯´æ˜Žï¼šæ­¥è¿›ç”µæœºè½¬å‘
+*è¾“å…¥å‚æ•°ï¼šmotor : Hæˆ´å¸½ã€Tä¸»å¹³ç§»å°
+		   oper: + æ­£å‘ ; -åå‘ï¼›è§„å®šé¢å‘ç”µæœºå‡ºè½´ï¼Œé¡ºæ—¶é’ˆä¸ºæ­£
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void MotorDir(u8 motor,u8 oper)
 {
@@ -226,23 +226,23 @@ void MotorDir(u8 motor,u8 oper)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºHMotion
-*º¯ÊýËµÃ÷£º´÷Ã±²½½øµç»ú¶¯×÷µ÷ÓÃ½Ó¿Ú
-*ÊäÈë²ÎÊý£ºangleDeg : ²½½øµç»úÐèÒª×ª¹ýµÄ¶ÈÊý µ¥Î»¡ã
-		   dir: + ÕýÏò ; -·´Ïò£»¹æ¶¨ÃæÏòµç»ú³öÖá£¬Ë³Ê±ÕëÎªÕý
-		   spd:ËÙ¶È£¬µ¥Î»r/min
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šHMotion
+*å‡½æ•°è¯´æ˜Žï¼šæˆ´å¸½æ­¥è¿›ç”µæœºåŠ¨ä½œè°ƒç”¨æŽ¥å£
+*è¾“å…¥å‚æ•°ï¼šangleDeg : æ­¥è¿›ç”µæœºéœ€è¦è½¬è¿‡çš„åº¦æ•° å•ä½Â°
+		   dir: + æ­£å‘ ; -åå‘ï¼›è§„å®šé¢å‘ç”µæœºå‡ºè½´ï¼Œé¡ºæ—¶é’ˆä¸ºæ­£
+		   spd:é€Ÿåº¦ï¼Œå•ä½r/min
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void HMotion(float angleDeg, u8 dir, u16 spd)
 {
-	float TIFreq = 0;  //¶¨Ê±Æ÷²úÉúÖÐ¶ÏµÄÆµÂÊ
-	float spdFreq = 0; //´ïµ½ÏàÓ¦ËÙ¶ÈÐèÒªµÄÂö³åÆµÂÊ	
+	float TIFreq = 0;  //å®šæ—¶å™¨äº§ç”Ÿä¸­æ–­çš„é¢‘çŽ‡
+	float spdFreq = 0; //è¾¾åˆ°ç›¸åº”é€Ÿåº¦éœ€è¦çš„è„‰å†²é¢‘çŽ‡	
 	
-	MotorEN('H','E');//Ê¹ÄÜÍÆ¼Ð¾ßµç»ú
-	MotorDir('H',dir);//Éè¶¨×ªÏò
+	MotorEN('H','E');//ä½¿èƒ½æŽ¨å¤¹å…·ç”µæœº
+	MotorDir('H',dir);//è®¾å®šè½¬å‘
 	
-	//ËÙ¶ÈÏÞÖÆ
+	//é€Ÿåº¦é™åˆ¶
 	if (spd > H_MAX_SPD)
 	{
 		spd = H_MAX_SPD;
@@ -252,13 +252,13 @@ void HMotion(float angleDeg, u8 dir, u16 spd)
 		spd = H_MIN_SPD;
 	}
 	
-	//¸üÐÂÈ«¾Ö±äÁ¿	
-	//¸üÐÂÈ«¾Ö±äÁ¿
-	TIFreq = 72000000.0 / DEFAULT_PERIOD / DEFAULT_PRESCALE;//¶¨Ê±Æ÷ÖÐ¶ÏÆµÂÊ
-	spdFreq = spd * 1.0 / 60 * H_MOTOR_DIV;//´ïµ½Ö¸¶¨ËÙ¶ÈÐèÒªµÄÂö³åÆµÂÊ	
+	//æ›´æ–°å…¨å±€å˜é‡	
+	//æ›´æ–°å…¨å±€å˜é‡
+	TIFreq = 72000000.0 / DEFAULT_PERIOD / DEFAULT_PRESCALE;//å®šæ—¶å™¨ä¸­æ–­é¢‘çŽ‡
+	spdFreq = spd * 1.0 / 60 * H_MOTOR_DIV;//è¾¾åˆ°æŒ‡å®šé€Ÿåº¦éœ€è¦çš„è„‰å†²é¢‘çŽ‡	
 	
-	g_thPresc = (u16)( TIFreq / spdFreq  +0.5);//¸üÐÂ×î´óËÙ¶È¶ÔÓ¦µÄÔ¤·ÖÆµÖµ		
-	g_hStps = (u32)((angleDeg * 1.0 / 360 * H_MOTOR_DIV)+0.5);//¸üÐÂ´ýÔË¶¯µÄ²½Êý
+	g_thPresc = (u16)( TIFreq / spdFreq  +0.5);//æ›´æ–°æœ€å¤§é€Ÿåº¦å¯¹åº”çš„é¢„åˆ†é¢‘å€¼		
+	g_hStps = (u32)((angleDeg * 1.0 / 360 * H_MOTOR_DIV)+0.5);//æ›´æ–°å¾…è¿åŠ¨çš„æ­¥æ•°
 	g_nhActFlg = 1;
 	g_hActDFlg = 0;
 
@@ -269,23 +269,23 @@ void HMotion(float angleDeg, u8 dir, u16 spd)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºMTMotion
-*º¯ÊýËµÃ÷£ºÖ÷Æ½ÒÆÌ¨²½½øµç»ú¶¯×÷µ÷ÓÃ½Ó¿Ú
-*ÊäÈë²ÎÊý£ºangleDeg : ²½½øµç»úÐèÒª×ª¹ýµÄ¶ÈÊý µ¥Î»¡ã
-		   dir: + ÕýÏò ; -·´Ïò£»¹æ¶¨ÃæÏòµç»ú³öÖá£¬Ë³Ê±ÕëÎªÕý
-		   spd:ËÙ¶È£¬µ¥Î»r/min
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šMTMotion
+*å‡½æ•°è¯´æ˜Žï¼šä¸»å¹³ç§»å°æ­¥è¿›ç”µæœºåŠ¨ä½œè°ƒç”¨æŽ¥å£
+*è¾“å…¥å‚æ•°ï¼šangleDeg : æ­¥è¿›ç”µæœºéœ€è¦è½¬è¿‡çš„åº¦æ•° å•ä½Â°
+		   dir: + æ­£å‘ ; -åå‘ï¼›è§„å®šé¢å‘ç”µæœºå‡ºè½´ï¼Œé¡ºæ—¶é’ˆä¸ºæ­£
+		   spd:é€Ÿåº¦ï¼Œå•ä½r/min
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void MTMotion(float angleDeg, u8 dir, u16 spd)
 {
-	float TIFreq = 0;  //¶¨Ê±Æ÷²úÉúÖÐ¶ÏµÄÆµÂÊ
-	float spdFreq = 0; //´ïµ½ÏàÓ¦ËÙ¶ÈÐèÒªµÄÂö³åÆµÂÊ	
+	float TIFreq = 0;  //å®šæ—¶å™¨äº§ç”Ÿä¸­æ–­çš„é¢‘çŽ‡
+	float spdFreq = 0; //è¾¾åˆ°ç›¸åº”é€Ÿåº¦éœ€è¦çš„è„‰å†²é¢‘çŽ‡	
 	
-	MotorEN('T','E');//Ê¹ÄÜÍÆ¼Ð¾ßµç»ú
-	MotorDir('T',dir);//Éè¶¨×ªÏò
+	MotorEN('T','E');//ä½¿èƒ½æŽ¨å¤¹å…·ç”µæœº
+	MotorDir('T',dir);//è®¾å®šè½¬å‘
 	
-	//ËÙ¶ÈÏÞÖÆ
+	//é€Ÿåº¦é™åˆ¶
 	if (spd > MT_MAX_SPD)
 	{
 		spd = MT_MAX_SPD;
@@ -295,12 +295,12 @@ void MTMotion(float angleDeg, u8 dir, u16 spd)
 		spd = MT_MIN_SPD;
 	}
 	
-	//¸üÐÂÈ«¾Ö±äÁ¿
-	TIFreq = 72000000.0 / DEFAULT_PERIOD / DEFAULT_PRESCALE;//¶¨Ê±Æ÷ÖÐ¶ÏÆµÂÊ
-	spdFreq = spd * 1.0 / 60 * MT_MOTOR_DIV;//´ïµ½Ö¸¶¨ËÙ¶ÈÐèÒªµÄÂö³åÆµÂÊ	
+	//æ›´æ–°å…¨å±€å˜é‡
+	TIFreq = 72000000.0 / DEFAULT_PERIOD / DEFAULT_PRESCALE;//å®šæ—¶å™¨ä¸­æ–­é¢‘çŽ‡
+	spdFreq = spd * 1.0 / 60 * MT_MOTOR_DIV;//è¾¾åˆ°æŒ‡å®šé€Ÿåº¦éœ€è¦çš„è„‰å†²é¢‘çŽ‡	
 	
-	g_tmtPresc = (u16)( TIFreq / spdFreq  +0.5);//¸üÐÂ×î´óËÙ¶È¶ÔÓ¦µÄÔ¤·ÖÆµÖµ		
-	g_mtStps = (u32)((angleDeg * 1.0 / 360 * MT_MOTOR_DIV)+0.5);//¸üÐÂ´ýÔË¶¯µÄ²½Êý
+	g_tmtPresc = (u16)( TIFreq / spdFreq  +0.5);//æ›´æ–°æœ€å¤§é€Ÿåº¦å¯¹åº”çš„é¢„åˆ†é¢‘å€¼		
+	g_mtStps = (u32)((angleDeg * 1.0 / 360 * MT_MOTOR_DIV)+0.5);//æ›´æ–°å¾…è¿åŠ¨çš„æ­¥æ•°
 	g_nmtActFlg = 1;
 	g_mtActDFlg = 0;
 
@@ -311,11 +311,11 @@ void MTMotion(float angleDeg, u8 dir, u16 spd)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºMTMClkGen
-*º¯ÊýËµÃ÷£º»ùÓÚÊ±ÖÓÖÐ¶Ï²úÉúÂö³åÊä³ö£¬ÓÃÓÚÖ÷Æ½ÒÆÌ¨
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šMTMClkGen
+*å‡½æ•°è¯´æ˜Žï¼šåŸºäºŽæ—¶é’Ÿä¸­æ–­äº§ç”Ÿè„‰å†²è¾“å‡ºï¼Œç”¨äºŽä¸»å¹³ç§»å°
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void MTMClkGen(void)
 {
@@ -347,11 +347,11 @@ void MTMClkGen(void)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºHMClkGen
-*º¯ÊýËµÃ÷£º»ùÓÚÊ±ÖÓÖÐ¶Ï²úÉúÂö³åÊä³ö£¬ÓÃÓÚ´÷Ã±µç»ú
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šHMClkGen
+*å‡½æ•°è¯´æ˜Žï¼šåŸºäºŽæ—¶é’Ÿä¸­æ–­äº§ç”Ÿè„‰å†²è¾“å‡ºï¼Œç”¨äºŽæˆ´å¸½ç”µæœº
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 void HMClkGen(void)
 {
@@ -384,11 +384,11 @@ void HMClkGen(void)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºHMotorDrive
-*º¯ÊýËµÃ÷£º»ùÓÚhmClkGenº¯ÊýÉú³ÉµÄÂö³åÇý¶¯µç»ú
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÓÃÓÚµ÷½ÚÂö³åÆµÂÊµÄ·ÖÆµ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šHMotorDrive
+*å‡½æ•°è¯´æ˜Žï¼šåŸºäºŽhmClkGenå‡½æ•°ç”Ÿæˆçš„è„‰å†²é©±åŠ¨ç”µæœº
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šç”¨äºŽè°ƒèŠ‚è„‰å†²é¢‘çŽ‡çš„åˆ†é¢‘
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 u16 HMotorDrive(void)
 {
@@ -407,7 +407,7 @@ u16 HMotorDrive(void)
 	else
 	{
 		;
-	}//Èç¹û·¢ÏÖÊÇÐÂ¶¯×÷£¬Ôò¸üÐÂÔËÐÐµÄ×´Ì¬
+	}//å¦‚æžœå‘çŽ°æ˜¯æ–°åŠ¨ä½œï¼Œåˆ™æ›´æ–°è¿è¡Œçš„çŠ¶æ€
 	
 	//printf("s : %d\n",s_state);
 	switch (s_state)
@@ -480,11 +480,11 @@ u16 HMotorDrive(void)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºMTMotorDrive
-*º¯ÊýËµÃ÷£º»ùÓÚmtmClkGenº¯ÊýÉú³ÉµÄÂö³åÇý¶¯µç»ú
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÓÃÓÚµ÷½ÚÂö³åÆµÂÊµÄ·ÖÆµ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šMTMotorDrive
+*å‡½æ•°è¯´æ˜Žï¼šåŸºäºŽmtmClkGenå‡½æ•°ç”Ÿæˆçš„è„‰å†²é©±åŠ¨ç”µæœº
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šç”¨äºŽè°ƒèŠ‚è„‰å†²é¢‘çŽ‡çš„åˆ†é¢‘
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
 u16 MTMotorDrive(void)
 {
@@ -503,7 +503,7 @@ u16 MTMotorDrive(void)
 	else
 	{
 		;
-	}//Èç¹û·¢ÏÖÊÇÐÂ¶¯×÷£¬Ôò¸üÐÂÔËÐÐµÄ×´Ì¬
+	}//å¦‚æžœå‘çŽ°æ˜¯æ–°åŠ¨ä½œï¼Œåˆ™æ›´æ–°è¿è¡Œçš„çŠ¶æ€
 	
 	//printf("s : %d\n",s_state);
 	switch (s_state)
@@ -576,11 +576,11 @@ u16 MTMotorDrive(void)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºIsMotActDone
-*º¯ÊýËµÃ÷£º²½½øµç»ú¶¯×÷ÊÇ·ñÍê³É±êÖ¾Î»
-*ÊäÈë²ÎÊý£ºmotor H´÷Ã±µç»ú£¬TÖ÷Æ½ÒÆÌ¨µç»ú
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÍê³É×´Ì¬ 1 Íê³É£¬0 Î´Íê³É 
+*å‡½æ•°åç§°ï¼šIsMotActDone
+*å‡½æ•°è¯´æ˜Žï¼šæ­¥è¿›ç”µæœºåŠ¨ä½œæ˜¯å¦å®Œæˆæ ‡å¿—ä½
+*è¾“å…¥å‚æ•°ï¼šmotor Hæˆ´å¸½ç”µæœºï¼ŒTä¸»å¹³ç§»å°ç”µæœº
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šå®ŒæˆçŠ¶æ€ 1 å®Œæˆï¼Œ0 æœªå®Œæˆ 
 *******************************************************************************/
 u8 IsMotActDone(u8 motor)
 {
@@ -593,22 +593,22 @@ u8 IsMotActDone(u8 motor)
 }
 
 /*******************************************************************************
-*º¯ÊýÃû³Æ£ºTIM2_IRQHandler
-*º¯ÊýËµÃ÷£ºTIM2ÖÐ¶Ï£¬ÓÃÓÚ²úÉúÊ±ÖÓÐÅºÅÇý¶¯²½½øµç»ú
-*ÊäÈë²ÎÊý£ºÎÞ
-*Êä³ö²ÎÊý£ºÎÞ
-*·µ»Ø²ÎÊý£ºÎÞ 
+*å‡½æ•°åç§°ï¼šTIM2_IRQHandler
+*å‡½æ•°è¯´æ˜Žï¼šTIM2ä¸­æ–­ï¼Œç”¨äºŽäº§ç”Ÿæ—¶é’Ÿä¿¡å·é©±åŠ¨æ­¥è¿›ç”µæœº
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šæ— 
+*è¿”å›žå‚æ•°ï¼šæ—  
 *******************************************************************************/
-void TIM2_IRQHandler(void)   //TIM2ÖÐ¶Ï
+void TIM2_IRQHandler(void)   //TIM2ä¸­æ–­
 {
-	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //¼ì²éÖ¸¶¨µÄTIMÖÐ¶Ï·¢ÉúÓë·ñ:TIM ÖÐ¶ÏÔ´ 
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //æ£€æŸ¥æŒ‡å®šçš„TIMä¸­æ–­å‘ç”Ÿä¸Žå¦:TIM ä¸­æ–­æº 
 	{
-		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //Çå³ýTIMxµÄÖÐ¶Ï´ý´¦ÀíÎ»:TIM ÖÐ¶ÏÔ´ 
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //æ¸…é™¤TIMxçš„ä¸­æ–­å¾…å¤„ç†ä½:TIM ä¸­æ–­æº 
 	}
 	else
 	{
 		return;
-	}//È·±£ÊÇÖ¸¶¨ÖÐ¶ÏÔ´´¥·¢ÖÐ¶Ï
+	}//ç¡®ä¿æ˜¯æŒ‡å®šä¸­æ–­æºè§¦å‘ä¸­æ–­
 	
 
 	HMClkGen();

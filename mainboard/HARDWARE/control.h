@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,����ά���Ƽ����޹�˾
+*Copyright(c)2017,杭州维勘科技有限公司
 *All rights reserved
 *
-*�ļ����ƣ�control.h
-*�ļ���ʶ��
-*ժ    Ҫ���Զ����ϵͳ������ļ���ƻ���	 
-*��ǰ�汾��0.1
-*��    �ߣ�yangxi
-*������ڣ�2017/2/10
+*文件名称：control.h
+*文件标识：
+*摘    要：自动检测系统中所需的检控制汇总	 
+*当前版本：0.1
+*作    者：yangxi
+*完成日期：2017/2/10
 *****************************************************************************/
 
 #ifndef __CONTROL_H
@@ -16,14 +16,14 @@
 #include "delay.h"
 #include "spi.h"
  
-/********************�򵥿���*********************************************/
+/********************简单控制*********************************************/
 //#define hat_check()
 
-#define clamp()						GPIO_SetBits(GPIOA,GPIO_Pin_4);				//��������ϼн�
-#define loosen()					GPIO_ResetBits(GPIOA,GPIO_Pin_4);			//����������ɳ�
+#define clamp()						GPIO_SetBits(GPIOA,GPIO_Pin_4);				//电磁铁吸合夹紧
+#define loosen()					GPIO_ResetBits(GPIOA,GPIO_Pin_4);			//电磁铁掉电松弛
 
-#define compress()				GPIO_SetBits(GPIOD,GPIO_Pin_0);				//���������ǰ����
-#define uncompress()			GPIO_ResetBits(GPIOD,GPIO_Pin_0);			//�����ж��ǰ����
+#define compress()				GPIO_SetBits(GPIOD,GPIO_Pin_0);				//电磁铁上载前吸合
+#define uncompress()			GPIO_ResetBits(GPIOD,GPIO_Pin_0);			//电磁铁卸载前掉电
 
 /*
 #define red_on()					GPIO_SetBits(GPIOD,GPIO_Pin_5);
@@ -43,21 +43,21 @@ void Control_gpio_init(void);
 //void sys_warn(void);
 //void sys_error(void);
 static void SAFE_MONITOR_Init(void);
-/********************�򵥿���*********************************************/
+/********************简单控制*********************************************/
 
 
-/********************ͨ�ſ���*******************************************/
+/********************通信控制*******************************************/
 
-//����� 			1����ʼ��⡣ 			2��һ�����м�����
-//����װ��		1����ʼ/ֹͣ���á�
-//��ñװ��		1����ʼ/ֹͣ��ñ�� 	2��ƽ��̨����ƶ�/�ƶ�	
-//�Ƽ�װ��		1����ʼ/ֹͣ�ƼС�	2����ʼ/ֹͣ��ק
+//检测仪 			1、开始检测。 			2、一个弹夹检测结束
+//擦拭装置		1、开始/停止擦拭。
+//戴帽装置		1、开始/停止戴帽。 	2、平移台电机移动/制动	
+//推夹装置		1、开始/停止推夹。	2、开始/停止夹拽
 
-//ͨ�Ų�ѯ
-//����� 			1������Ƿ������ 
-//����װ��		1�������Ƿ������
-//��ñװ��		1����ñ�Ƿ������ 	2��ƽ��̨����ƶ��Ƿ������	
-//�Ƽ�װ��		1���Ƽ��Ƿ������		2����ק�Ƿ������
+//通信查询
+//检测仪 			1、检测是否结束。 
+//擦拭装置		1、擦拭是否结束。
+//戴帽装置		1、戴帽是否结束。 	2、平移台电机移动是否结束。	
+//推夹装置		1、推夹是否结束。		2、夹拽是否结束。
 
 /*
 #define CMD_Detect(CMD)							(CMD | 0x40)     //0100,0000
@@ -99,11 +99,11 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_Push 								0x40	//(CMD | 0x40)
 #define CMD_Draw 								0x20	//(CMD | 0x20)
 #define CMD_Open								0x10	
-//push:һֱ������Ǽн���һϵ�ж�����open:����Ǽ��ǰ�м����ɿ���Draw:�Ӽ�����һֱ�������Ƶĵ���ָ���̬��
+//push:一直到检测仪夹紧的一系列动作；open:检测仪检测前中间电机松开；Draw:从检测结束一直到所控制的电机恢复初态。
 #define CMD_PushStop 						0x87	//(CMD & 0x9F)
 
 
-#define CMD_COMFIRM									0x02							//�����ȷ�ϻش���Ϣ
+#define CMD_COMFIRM									0x02							//命令的确认回传信息
 
 u8 Rail_Forward(void);
  
@@ -135,7 +135,7 @@ u8 Stop_All(void);
 
 
 
-/********************ͨ�ſ���*******************************************/
+/********************通信控制*******************************************/
 
 #endif
 

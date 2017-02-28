@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖİÎ¬¿±¿Æ¼¼ÓĞÏŞ¹«Ë¾
+*Copyright(c)2017,æ­å·ç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼şÃû³Æ£ºMain.c
-*ÎÄ¼ş±êÊ¶£º
-*Õª    Òª£º×Ô¶¯¼ì²âÏµÍ³ºËĞÄ°å
-*µ±Ç°°æ±¾£º1.0
-*×÷    Õß£ºyangxi
-*Íê³ÉÈÕÆÚ£º2017/2/9
+*æ–‡ä»¶åç§°ï¼šMain.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜    è¦ï¼šè‡ªåŠ¨æ£€æµ‹ç³»ç»Ÿæ ¸å¿ƒæ¿
+*å½“å‰ç‰ˆæœ¬ï¼š1.0
+*ä½œ    è€…ï¼šyangxi
+*å®Œæˆæ—¥æœŸï¼š2017/2/9
 *****************************************************************************/
 
 #include "delay.h"
@@ -22,7 +22,7 @@ void get_period(u8 temp);
 void station_work(u8 period);
 void mutual_test(void);
 u8 i,len,t;
-//u8 MASTER_CMD=((u8)£(0B11110000));
+//u8 MASTER_CMD=((u8)?0B11110000));
 //u8 master_temp;
 u8 temp;
 u8 detect_result;
@@ -33,31 +33,31 @@ extern u8 status_station;
 int main(void)
 {
 	mutual_test();
-	/********³õÊ¼»¯½×¶Î***********/
+	/********åˆå§‹åŒ–é˜¶æ®µ***********/
 	Init_All();
 	//printf("ready\r\n");
 	period = ready;
-	if (Check_Ready(3000) == 0) {				//¼ì²âËùÓĞ´Ó»úµÄÁ¬½Ó×´Ì¬£¬Èç¹ûÉè±¸Á¬½Ó´¦ÎÊÌâ£¬ÔòÖÆÍ£²¢Êä³öĞÅÏ¢
+	if (Check_Ready(3000) == 0) {				//æ£€æµ‹æ‰€æœ‰ä»æœºçš„è¿æ¥çŠ¶æ€ï¼Œå¦‚æœè®¾å¤‡è¿æ¥å¤„é—®é¢˜ï¼Œåˆ™åˆ¶åœå¹¶è¾“å‡ºä¿¡æ¯
 		Stop_All();
 		printf("check_ready error");
 	}
-	while (1)											//µÈ´ıÉÏÎ»»úµÄ¿ªÊ¼ĞÅºÅ¡£
+	while (1)											//ç­‰å¾…ä¸Šä½æœºçš„å¼€å§‹ä¿¡å·ã€‚
 	{
 		if (Check_DetectMCU_Start())
 			break;
 	}
-	/********³õÊ¼»¯½×¶Î***********/
+	/********åˆå§‹åŒ–é˜¶æ®µ***********/
 
 
 	while (1) {
-		compress();		//¼Ğ¾ßÉÏÔØÇ°µç´ÅÌúÎüºÏ
-		while (Check_Clip_Ready() == 0);			//µÈ´ı¼Ğ¾ßÉÏÔØ
+		compress();		//å¤¹å…·ä¸Šè½½å‰ç”µç£é“å¸åˆ
+		while (Check_Clip_Ready() == 0);			//ç­‰å¾…å¤¹å…·ä¸Šè½½
 
 		period = upload;
 
 		Rail_Forward();
 
-		while (status_station == 0);		//	µ¯¼Ğµ½´ïµÚÒ»¸ö¹¤Î»µÄÇ°·½
+		while (status_station == 0);		//	å¼¹å¤¹åˆ°è¾¾ç¬¬ä¸€ä¸ªå·¥ä½çš„å‰æ–¹
 		status_station = 0;
 
 		for (temp = 0; temp < NUM_TOTAL - 1 + DISTANCE1 + DISTANCE2; temp++) {
@@ -87,9 +87,9 @@ int main(void)
 void Init_All() {
 	Sensor_gpio_init();
 	Control_gpio_init();
-	delay_init();	    	 //ÑÓÊ±º¯Êı³õÊ¼»¯	  
-	uart_init(115200);	 	//´®¿Ú³õÊ¼»¯Îª115200
-	SPI1_Init();		   //³õÊ¼»¯SPI,ÕâÀïÄ¬ÈÏÖ÷»ú
+	delay_init();	    	 //å»¶æ—¶å‡½æ•°åˆå§‹åŒ–	  
+	uart_init(115200);	 	//ä¸²å£åˆå§‹åŒ–ä¸º115200
+	SPI1_Init();		   //åˆå§‹åŒ–SPI,è¿™é‡Œé»˜è®¤ä¸»æœº
 	SPI2_Init();
 }
 
@@ -172,18 +172,18 @@ void station_work(u8 period) {
 		loosen();
 
 		if (g_status[g_num_hat] == 1) {
-			while (Check_PushMCU_Ready() == 0);	//µÈ´ı»ØÍËÍê³É
+			while (Check_PushMCU_Ready() == 0);	//ç­‰å¾…å›é€€å®Œæˆ
 			Fixture_Draw();
-			Hat_Check();								//»ØÍËÊ±¼ì²âÊÇ·ñ´÷Ã±³É¹¦
-			while (Check_PushMCU_Ready() == 0);	//µÈ´ı»ØÍËÍê³É
+			Hat_Check();								//å›é€€æ—¶æ£€æµ‹æ˜¯å¦æˆ´å¸½æˆåŠŸ
+			while (Check_PushMCU_Ready() == 0);	//ç­‰å¾…å›é€€å®Œæˆ
 
-			while (Check_HatMCU_Ready()== 0);				//µÈ´ı´÷Ã±µÄ½á¹û
+			while (Check_HatMCU_Ready()== 0);				//ç­‰å¾…æˆ´å¸½çš„ç»“æœ
 
 			if (Check_HatMCU_Result()== 1)	break;
 		}
 		else {
 			Fixture_Draw();
-			while (Check_PushMCU_Ready() == 0);	//µÈ´ı»ØÍËÍê³É
+			while (Check_PushMCU_Ready() == 0);	//ç­‰å¾…å›é€€å®Œæˆ
 			break; 
 		
 		}
@@ -207,7 +207,7 @@ void mutual_test(void){
 		}*/
 		if(USART_RX_STA&0x8000){
 			len=USART_RX_STA&0x3fff;
-			//printf("\r\nÄú·¢ËÍµÄÏûÏ¢Îª:\r\n");
+			//printf("\r\næ‚¨å‘é€çš„æ¶ˆæ¯ä¸º:\r\n");
 			for(t=0;t<len;t++)
 			{
 				USART1->DR=USART_RX_BUF[t];

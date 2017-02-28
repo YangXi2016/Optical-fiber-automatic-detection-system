@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖİÎ¬¿±¿Æ¼¼ÓĞÏŞ¹«Ë¾
+*Copyright(c)2017,æ­å·ç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼şÃû³Æ£ºsensor.c
-*ÎÄ¼ş±êÊ¶£º
-*Õª    Òª£º×Ô¶¯¼ì²âÏµÍ³ÖĞËùĞèµÄ¼ì²â»ã×Ü				 
-*µ±Ç°°æ±¾£º0.1
-*×÷    Õß£ºyangxi
-*Íê³ÉÈÕÆÚ£º2017/2/10
+*æ–‡ä»¶åç§°ï¼šsensor.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜    è¦ï¼šè‡ªåŠ¨æ£€æµ‹ç³»ç»Ÿä¸­æ‰€éœ€çš„æ£€æµ‹æ±‡æ€»				 
+*å½“å‰ç‰ˆæœ¬ï¼š0.1
+*ä½œ    è€…ï¼šyangxi
+*å®Œæˆæ—¥æœŸï¼š2017/2/10
 *****************************************************************************/
 #include "sensor.h"
 #include "delay.h"
@@ -18,12 +18,12 @@ void Sensor_gpio_init(void)
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
 
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOD,ENABLE);//Ê¹ÄÜPORTA,PORTDÊ±ÖÓ
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOD,ENABLE);//ä½¿èƒ½PORTA,PORTDæ—¶é’Ÿ
 
-	//GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);//¹Ø±Õjtag£¬Ê¹ÄÜSWD£¬¿ÉÒÔÓÃSWDÄ£Ê½µ÷ÊÔ
+	//GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);//å…³é—­jtagï¼Œä½¿èƒ½SWDï¼Œå¯ä»¥ç”¨SWDæ¨¡å¼è°ƒè¯•
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_1 |GPIO_Pin_2 | GPIO_Pin_3 |GPIO_Pin_4 |GPIO_Pin_8 |GPIO_Pin_9;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //ÉèÖÃ³ÉÉÏÀ­ÊäÈë
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //è®¾ç½®æˆä¸Šæ‹‰è¾“å…¥
  	GPIO_Init(GPIOD, &GPIO_InitStructure);
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_1 |GPIO_Pin_3;
@@ -33,76 +33,76 @@ void Sensor_gpio_init(void)
 
 }
 
-/*********************************µ¯¼ĞÉÏÔØ¼ì²â********************************/
+/*********************************å¼¹å¤¹ä¸Šè½½æ£€æµ‹********************************/
 
 /*******************************************************************************
-*º¯ÊıÃû³Æ£ºCheck_Clip_Ready
-*º¯ÊıËµÃ÷£ºÓÃÓÚ¼ì²âµ¯¼ĞÊÇ·ñÒÑ¾­ÉÏÔØ
-*ÊäÈë²ÎÊı£ºÎŞ
-*Êä³ö²ÎÊı£ºstatus:0´ú±íÎ´ÉÏÔØ£¬1´ú±íÒÑÉÏÔØ
-*·µ»Ø²ÎÊı£ºÎŞ 
+*å‡½æ•°åç§°ï¼šCheck_Clip_Ready
+*å‡½æ•°è¯´æ˜ï¼šç”¨äºæ£€æµ‹å¼¹å¤¹æ˜¯å¦å·²ç»ä¸Šè½½
+*è¾“å…¥å‚æ•°ï¼šæ— 
+*è¾“å‡ºå‚æ•°ï¼šstatus:0ä»£è¡¨æœªä¸Šè½½ï¼Œ1ä»£è¡¨å·²ä¸Šè½½
+*è¿”å›å‚æ•°ï¼šæ—  
 *******************************************************************************/
 u8 Check_Clip_Ready(void)
 { 
 	if((HOLDER_PLACE_1==1)||(HOLDER_PLACE_2==1))
 	{
-		delay_ms(10);//È¥¶¶¶¯ 
+		delay_ms(10);//å»æŠ–åŠ¨ 
 		if(HOLDER_PLACE_1==1 && HOLDER_PLACE_2==1)
 			return 1;
 	}     
-	return 0;// ÎŞ°´¼ü°´ÏÂ
+	return 0;// æ— æŒ‰é”®æŒ‰ä¸‹
 }
 
 u8 Check_Clip_Unload(void)
 {
 	if((HOLDER_PLACE_1==0) && (HOLDER_PLACE_2==0))
 	{
-		delay_ms(100);//È¥¶¶¶¯ 
+		delay_ms(100);//å»æŠ–åŠ¨ 
 		if((HOLDER_PLACE_1==0) && (HOLDER_PLACE_2==0))
 			return 1;
 	}     
-	return 0;// ÎŞ°´¼ü°´ÏÂ
+	return 0;// æ— æŒ‰é”®æŒ‰ä¸‹
 
 }
-/*********************************µ¯¼ĞÉÏÔØ¼ì²â********************************/
+/*********************************å¼¹å¤¹ä¸Šè½½æ£€æµ‹********************************/
 
 
-/*********************************ºìÍâ·´Éä¶¨Î»********************************/
+/*********************************çº¢å¤–åå°„å®šä½********************************/
 
 static void LOCAT_Init(void)
 {
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
-	EXTI_InitTypeDef EXTI_InitStructure; //Íâ²¿ÖĞ¶ÏÅäÖÃ½á²ÎÊı
-	NVIC_InitTypeDef NVIC_InitStructure; //ÖĞ¶ÏÅäÖÃ²ÎÊı
+	EXTI_InitTypeDef EXTI_InitStructure; //å¤–éƒ¨ä¸­æ–­é…ç½®ç»“å‚æ•°
+	NVIC_InitTypeDef NVIC_InitStructure; //ä¸­æ–­é…ç½®å‚æ•°
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11 ;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-	GPIO_Init(GPIOA,&GPIO_InitStructure);
+	GPIO_Init(GPIOD,&GPIO_InitStructure);
 	
-  GPIO_EXTILineConfig(GPIO_PortSourceGPIOA ,GPIO_PinSource10 | GPIO_PinSource11); //Ö¸¶¨Íâ²¿ÖĞ¶ÏÊäÈëÊÇPC6
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOD ,GPIO_PinSource10 | GPIO_PinSource11); //æŒ‡å®šå¤–éƒ¨ä¸­æ–­è¾“å…¥æ˜¯PC6
 	
-	//Íâ²¿´¥·¢ÉèÖÃ£¬±ßÑØ
+	//å¤–éƒ¨è§¦å‘è®¾ç½®ï¼Œè¾¹æ²¿
 	EXTI_InitStructure.EXTI_Line = EXTI_Line10 | EXTI_Line11;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
-	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling; //ÑØ´¥·¢ 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling; //æ²¿è§¦å‘ 
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);		
 	
-	//ÖĞ¶Ï²ÎÊıÉè¶¨
+	//ä¸­æ–­å‚æ•°è®¾å®š
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;	
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	  
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//ÓÅÏÈ¼¶È«¾Ö×îµÍ
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//ä¼˜å…ˆçº§å…¨å±€æœ€ä½
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure); 
 	
 }
 
-//GPIOD10/GPIOD11ÖĞ¶Ï´¦Àíº¯Êı
+//GPIOD10/GPIOD11ä¸­æ–­å¤„ç†å‡½æ•°
 //u8 status_station1 = 0,status_station2 = 0;
 u8 status_station = 0;
 void EXTI15_10_IRQHandler(void)
@@ -114,7 +114,7 @@ void EXTI15_10_IRQHandler(void)
 		}else{
 			status_station = 0;
 		}
-	EXTI_ClearITPendingBit(EXTI_Line10);  //Çå³ıEXTI4ÏßÂ·¹ÒÆğ
+	EXTI_ClearITPendingBit(EXTI_Line10);  //æ¸…é™¤EXTI4çº¿è·¯æŒ‚èµ·
 	}
 	/*
 	if(EXTI_GetITStatus(EXTI_Line11) == SET){
@@ -124,16 +124,16 @@ void EXTI15_10_IRQHandler(void)
 		}else{
 			status_station2 = 0;
 		}
-	EXTI_ClearITPendingBit(EXTI_Line11);  //Çå³ıEXTI4ÏßÂ·¹ÒÆğ		
+	EXTI_ClearITPendingBit(EXTI_Line11);  //æ¸…é™¤EXTI4çº¿è·¯æŒ‚èµ·		
 	}
 	*/
 }
 
 
-/*********************************ºìÍâ·´Éä¶¨Î»********************************/
+/*********************************çº¢å¤–åå°„å®šä½********************************/
 
 
-/*********************************µ¼¹ìÏŞÎ»¼ì²â********************************/
+/*********************************å¯¼è½¨é™ä½æ£€æµ‹********************************/
 
 u8 Check_Limit_L(void)
 {
@@ -155,15 +155,15 @@ u8 Check_Limit_R(void)
 	return 0;
 }
 
-/*********************************µ¼¹ìÏŞÎ»¼ì²â********************************/
+/*********************************å¯¼è½¨é™ä½æ£€æµ‹********************************/
 
 
 
 
 
-/*********************************Ğ­´¦ÀíÆ÷×´Ì¬²éÑ¯*******************************/
+/*********************************åå¤„ç†å™¨çŠ¶æ€æŸ¥è¯¢*******************************/
 //#define CHECK		0x01
-//#define Is_Ready(rx_data)	((rx_data | 0xBF) == 0xFF)	//1011,1111 Í·ÎÄ¼şÖĞ¶¨Òå
+//#define Is_Ready(rx_data)	((rx_data | 0xBF) == 0xFF)	//1011,1111 å¤´æ–‡ä»¶ä¸­å®šä¹‰
 
 u8 Check_CleanMCU_Ready(void)
 {
@@ -259,7 +259,7 @@ u8 Check_Ready(u16 try_times)
 	}
 
 }
-/********************************Ğ­´¦ÀíÆ÷×´Ì¬²éÑ¯********************************/
+/********************************åå¤„ç†å™¨çŠ¶æ€æŸ¥è¯¢********************************/
 
 
 

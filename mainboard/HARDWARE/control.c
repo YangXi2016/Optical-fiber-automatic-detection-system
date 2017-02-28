@@ -1,14 +1,14 @@
 
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,º¼ÖİÎ¬¿±¿Æ¼¼ÓĞÏŞ¹«Ë¾
+*Copyright(c)2017,æ­å·ç»´å‹˜ç§‘æŠ€æœ‰é™å…¬å¸
 *All rights reserved
 *
-*ÎÄ¼şÃû³Æ£ºcontrol.c
-*ÎÄ¼ş±êÊ¶£º
-*Õª    Òª£º×Ô¶¯¼ì²âÏµÍ³ÖĞËùĞèµÄ¼ì¿ØÖÆ»ã×Ü	 
-*µ±Ç°°æ±¾£º0.1
-*×÷    Õß£ºyangxi
-*Íê³ÉÈÕÆÚ£º2017/2/10
+*æ–‡ä»¶åç§°ï¼šcontrol.c
+*æ–‡ä»¶æ ‡è¯†ï¼š
+*æ‘˜    è¦ï¼šè‡ªåŠ¨æ£€æµ‹ç³»ç»Ÿä¸­æ‰€éœ€çš„æ£€æ§åˆ¶æ±‡æ€»	 
+*å½“å‰ç‰ˆæœ¬ï¼š0.1
+*ä½œ    è€…ï¼šyangxi
+*å®Œæˆæ—¥æœŸï¼š2017/2/10
 *****************************************************************************/
 #include "delay.h"
 #include "spi.h"
@@ -21,22 +21,22 @@ void Control_gpio_init(void)
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
 
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOD,ENABLE);//Ê¹ÄÜPORTA,PORTDÊ±ÖÓ
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOD,ENABLE);//ä½¿èƒ½PORTA,PORTDæ—¶é’Ÿ
 
-	//µçÎüÌúÉÏÔØ¼°ÏµÍ³×´Ì¬Ö¸Ê¾ÓÃ
+	//ç”µå¸é“ä¸Šè½½åŠç³»ç»ŸçŠ¶æ€æŒ‡ç¤ºç”¨
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0 |GPIO_Pin_5 | GPIO_Pin_6 |GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 
  	GPIO_Init(GPIOD, &GPIO_InitStructure);
 	
-	//´÷Ã±½á¹û¼ì²â¼°µçÎüÌúÎüºÏÓÃ
+	//æˆ´å¸½ç»“æœæ£€æµ‹åŠç”µå¸é“å¸åˆç”¨
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_2 | GPIO_Pin_4;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	SAFE_MONITOR_Init();
 }
 
-/********************¼òµ¥Æ¬ÉÏÓ²¼ş¿ØÖÆ******************************************/
-/*ÒÆµ½Ğ­´¦ÀíÆ÷
+/********************ç®€å•ç‰‡ä¸Šç¡¬ä»¶æ§åˆ¶******************************************/
+/*ç§»åˆ°åå¤„ç†å™¨
 void HatResult_Check(void){
 	GPIO_SetBits(GPIOA,GPIO_Pin_2);
 	delay_ms(1);
@@ -67,8 +67,8 @@ static void SAFE_MONITOR_Init(void)
 {
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
-	EXTI_InitTypeDef EXTI_InitStructure; //Íâ²¿ÖĞ¶ÏÅäÖÃ½á²ÎÊı
-	NVIC_InitTypeDef NVIC_InitStructure; //ÖĞ¶Ï
+	EXTI_InitTypeDef EXTI_InitStructure; //å¤–éƒ¨ä¸­æ–­é…ç½®ç»“å‚æ•°
+	NVIC_InitTypeDef NVIC_InitStructure; //ä¸­æ–­
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE);
 
@@ -79,18 +79,18 @@ static void SAFE_MONITOR_Init(void)
 	
   GPIO_EXTILineConfig(GPIO_PortSourceGPIOD ,GPIO_PinSource9); 
 	
-	//Íâ²¿´¥·¢ÉèÖÃ£¬±ßÑØ
+	//å¤–éƒ¨è§¦å‘è®¾ç½®ï¼Œè¾¹æ²¿
 	EXTI_InitStructure.EXTI_Line = EXTI_Line9;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
-	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //ÑØ´¥·¢ 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //æ²¿è§¦å‘ 
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);		
 	
-	//ÖĞ¶Ï²ÎÊıÉè¶¨
+	//ä¸­æ–­å‚æ•°è®¾å®š
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;	
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	  
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//ÓÅÏÈ¼¶È«¾Ö×îµÍ
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//ä¼˜å…ˆçº§å…¨å±€æœ€ä½
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure); 
 	
@@ -112,18 +112,18 @@ void EXTI9_5_IRQHandler(void)
 		}else{
 			status_station2 = 0;
 		}
-	EXTI_ClearITPendingBit(EXTI_Line11);  //Çå³ıEXTI4ÏßÂ·¹ÒÆğ		
+	EXTI_ClearITPendingBit(EXTI_Line11);  //æ¸…é™¤EXTI4çº¿è·¯æŒ‚èµ·		
 	}
 	*/
 }
 
-/********************¼òµ¥Æ¬ÉÏÓ²¼ş¿ØÖÆ******************************************/
+/********************ç®€å•ç‰‡ä¸Šç¡¬ä»¶æ§åˆ¶******************************************/
 
 
-/********************Í¨ĞÅ´Ó»ú¿ØÖÆ******************************************/
+/********************é€šä¿¡ä»æœºæ§åˆ¶******************************************/
 u8 MASTER_CMD = 0x00;
 
-//¼ì²âÒÇµÄ¿ØÖÆ
+//æ£€æµ‹ä»ªçš„æ§åˆ¶
 u8 Detect(void)
 {
 	u8 status;
@@ -133,7 +133,7 @@ u8 Detect(void)
 }
 
 
-//²ÁÊÃĞ­»úµÄ¿ØÖÆ
+//æ“¦æ‹­åæœºçš„æ§åˆ¶
 u8 Clean(void)
 {
 	u8 status;
@@ -144,7 +144,7 @@ u8 Clean(void)
 
 
 
-//´÷Ã±¼°Æ½ÒÆÌ¨ÒÆ¶¯Ğ­»úµÄ¿ØÖÆ
+//æˆ´å¸½åŠå¹³ç§»å°ç§»åŠ¨åæœºçš„æ§åˆ¶
 u8 Hat(void)
 {
 	u8 status;
@@ -196,10 +196,10 @@ u8 Rail_Stop(void)
 	else return 0;
 }
 
-//´÷Ã±¼°Æ½ÒÆÌ¨ÒÆ¶¯Ğ­»úµÄ¿ØÖÆ
+//æˆ´å¸½åŠå¹³ç§»å°ç§»åŠ¨åæœºçš„æ§åˆ¶
 
 
-//¸¨Öú¼Ğ¾ßÍÆ¼ĞµÄĞ­»úµÄ¿ØÖÆ
+//è¾…åŠ©å¤¹å…·æ¨å¤¹çš„åæœºçš„æ§åˆ¶
 u8 Fixture_Push(void)
 {
 	u8 status;
@@ -249,7 +249,7 @@ u8 Stop_All(void)
 
 
 
-/********************Í¨ĞÅ´Ó»ú¿ØÖÆ******************************************/
+/********************é€šä¿¡ä»æœºæ§åˆ¶******************************************/
 
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

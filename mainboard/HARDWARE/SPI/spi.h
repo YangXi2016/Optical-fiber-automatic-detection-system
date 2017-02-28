@@ -1,13 +1,13 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,����ά���Ƽ����޹�˾
+*Copyright(c)2017,杭州维勘科技有限公司
 *All rights reserved
 *
-*�ļ����ƣ�spi.c
-*�ļ���ʶ��
-*ժ    Ҫ��ժ¼��Э������ʹ�õ�IO��			 
-*��ǰ�汾��1.0
-*��    �ߣ�yangxi
-*������ڣ�2017/2/15
+*文件名称：spi.c
+*文件标识：
+*摘    要：摘录本协处理器使用的IO口			 
+*当前版本：1.0
+*作    者：yangxi
+*完成日期：2017/2/15
 *****************************************************************************/
 
 #ifndef __SPI_H
@@ -17,10 +17,10 @@
 #define DUMY	0x00
 #define HEAD	0x01
 
-void SPI1_Init(void);			 //��ʼ��SPI��
-static u8 SPI1_ReadWriteByte(u8 TxData);//SPI���߶�дһ���ֽ�
+void SPI1_Init(void);			 //初始化SPI口
+static u8 SPI1_ReadWriteByte(u8 TxData);//SPI总线读写一个字节
 
-u8 DETECT_ReadWriteByte(u8 TxData);//��ӻ�����ָ��õ���Ӧ�ķ���
+u8 DETECT_ReadWriteByte(u8 TxData);//向从机发送指令并得到相应的反馈
 
 
 #define CSN_PUSH_L()		GPIO_ResetBits(GPIOB,GPIO_Pin_10)
@@ -30,12 +30,12 @@ u8 DETECT_ReadWriteByte(u8 TxData);//��ӻ�����ָ��õ���Ӧ�ķ���
 #define CSN_HAT_L()		GPIO_ResetBits(GPIOB,GPIO_Pin_12)
 #define CSN_HAT_H()		GPIO_SetBits(GPIOB,GPIO_Pin_12)
 
-void SPI2_Init(void);		//��Э��������SPIͨ�ſ�(�̶�Ϊ����ģʽ)
-u8 SPI2_ReadWriteByte(u8 TxData);//SPI���߶�дһ���ֽ�
+void SPI2_Init(void);		//与协处理器的SPI通信口(固定为主机模式)
+u8 SPI2_ReadWriteByte(u8 TxData);//SPI总线读写一个字节
 
-u8 PUSH_ReadWriteByte(u8 TxData);//��ӻ�����ָ��õ���Ӧ�ķ���
-u8 CLEAN_ReadWriteByte(u8 TxData);//��ӻ�����ָ��õ���Ӧ�ķ���
-u8 HAT_ReadWriteByte(u8 TxData);//��ӻ�����ָ��õ���Ӧ�ķ���
+u8 PUSH_ReadWriteByte(u8 TxData);//向从机发送指令并得到相应的反馈
+u8 CLEAN_ReadWriteByte(u8 TxData);//向从机发送指令并得到相应的反馈
+u8 HAT_ReadWriteByte(u8 TxData);//向从机发送指令并得到相应的反馈
 
 #endif
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

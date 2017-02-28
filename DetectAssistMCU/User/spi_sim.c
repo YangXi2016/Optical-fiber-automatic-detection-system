@@ -16,7 +16,7 @@
 
 uint8_t Idiv8;
 
-/* A3992 8Ï¸·Ö±í */
+/* A3992 8ç»†åˆ†è¡¨ */
 static uint32_t Div8_Table[] = 
 	{0x1E07E,0x1E67C,0x1EC74,0x1F1E8,0x1F658,0x1FA46,0x1FD30,0x1FF18,
 	 0x1DF80,0x1DF18,0x1DD30,0x1DA46,0x1D658,0x1D1E8,0x1CC74,0x1C67C,
@@ -80,9 +80,9 @@ void GPIO_A3992_Config()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-	/* ¿ªÆôÖØÓ³ÉäÊ±ÖÓ*/
+	/* å¼€å¯é‡æ˜ å°„æ—¶é’Ÿ*/
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
-	/* JTAG-DPÊ§ÄÜ£¬SW-DPÊ¹ÄÜ£¬¼´´ËÊ±PA15£¬PB3£¬PB4¶¼ÄÜ×÷ÎªÆÕÍ¨IOÊ¹ÓÃ */
+	/* JTAG-DPå¤±èƒ½ï¼ŒSW-DPä½¿èƒ½ï¼Œå³æ­¤æ—¶PA15ï¼ŒPB3ï¼ŒPB4éƒ½èƒ½ä½œä¸ºæ™®é€šIOä½¿ç”¨ */
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);
 	
 	/* Deselect both A3992 */
@@ -98,9 +98,9 @@ void GPIO_A3992_Config()
 	GPIO_Init(GPIOB,&GPIO_InitStructure);
 	
 	Idiv8 = 0;
-	Send_MotorWordX(A3992_Word1);	//´«ËÍÅäÖÃ×Ö
+	Send_MotorWordX(A3992_Word1);	//ä¼ é€é…ç½®å­—
 	Delayms(1);
-	Send_MotorWordX(Div8_Table[Idiv8]);	//½øÈëµÚÒ»¸öÀø´Å
+	Send_MotorWordX(Div8_Table[Idiv8]);	//è¿›å…¥ç¬¬ä¸€ä¸ªåŠ±ç£
 
 	/* Send first 19bit */
 	Send_MotorWordY(A3992_Word1);
@@ -137,7 +137,7 @@ void Move_LineMotorX(uint8_t dir,uint16_t pace)
 			Idiv8--;
 /* Change the delay time to change the frequency */
 			Delayus(400);
-//			GPIOB->ODR ^= (1<<15);	//PB15È¡·´£¬Êä³öÂö³åÆµÂÊ
+//			GPIOB->ODR ^= (1<<15);	//PB15å–åï¼Œè¾“å‡ºè„‰å†²é¢‘çŽ‡
 		}
 	}
 	else if(dir == '-')
@@ -148,7 +148,7 @@ void Move_LineMotorX(uint8_t dir,uint16_t pace)
 			if(Idiv8 == 32)Idiv8 = 0;
 			Send_MotorWordX(Div8_Table[Idiv8]);
 			Delayus(400);
-//			GPIOB->ODR ^= (1<<15);	//PB15È¡·´£¬Êä³öÂö³åÆµÂÊ
+//			GPIOB->ODR ^= (1<<15);	//PB15å–åï¼Œè¾“å‡ºè„‰å†²é¢‘çŽ‡
 		}
 	}
 	Delayms(5);
@@ -178,7 +178,7 @@ void Move_LineMotorY(uint8_t dir,uint16_t pace)
 			Send_MotorWordY(Div8_Table[Idiv8 - 1]);
 			Idiv8--;
 			Delayus(400);
-//			GPIOB->ODR ^= (1<<15);	//PB15È¡·´£¬Êä³öÂö³åÆµÂÊ
+//			GPIOB->ODR ^= (1<<15);	//PB15å–åï¼Œè¾“å‡ºè„‰å†²é¢‘çŽ‡
 		}
 	}
 	else if(dir == '-')
@@ -189,14 +189,14 @@ void Move_LineMotorY(uint8_t dir,uint16_t pace)
 			if(Idiv8 == 32)Idiv8 = 0;
 			Send_MotorWordY(Div8_Table[Idiv8]);
 			Delayus(400);
-//			GPIOB->ODR ^= (1<<15);	//PB7È¡·´£¬Êä³öÂö³åÆµÂÊ
+//			GPIOB->ODR ^= (1<<15);	//PB7å–åï¼Œè¾“å‡ºè„‰å†²é¢‘çŽ‡
 		}
 	}
 	Delayms(5);
 	Sleep_MotorY();
 }
 
-/* A3992´«ËÍµÄwordÊÇ19Î»£¬²»ÊÇ±ê×¼SPIÆ÷¼þ£¬Ö»ÄÜÊ¹ÓÃGPIO¿ÚÀ´Ä£Äâ 
+/* A3992ä¼ é€çš„wordæ˜¯19ä½ï¼Œä¸æ˜¯æ ‡å‡†SPIå™¨ä»¶ï¼Œåªèƒ½ä½¿ç”¨GPIOå£æ¥æ¨¡æ‹Ÿ 
  */
 static void Send_MotorWordX(uint32_t motorword)
 {

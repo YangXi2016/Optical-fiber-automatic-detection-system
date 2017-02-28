@@ -15,7 +15,7 @@
 #include "bsp_usart.h"
 
 /**
-	* IO involved£º 
+	* IO involvedï¼š 
 	* LED_Red   -- PB0
 	* LED_White -- PB1
 	*	Optical sensor	-- PB11
@@ -88,7 +88,7 @@ void Clamping_Check(void)
 char Check_Fixture_pluse(void)
 {
 	u8 time=0;
-	u8 tcount=0;//¼ÇÂ¼ËÉ¿ªµÄ´ÎÊý
+	u8 tcount=0;//è®°å½•æ¾å¼€çš„æ¬¡æ•°
 	GPIO_InitTypeDef GPIO_InitStructure;	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
@@ -114,7 +114,7 @@ while(1)
 		}
 		 		
 	 // for(i = 1000;i > 0;i--)
-		if(time>=100)//°´ÏÂ³¬¹ý3ÃëÖÓ
+		if(time>=100)//æŒ‰ä¸‹è¶…è¿‡3ç§’é’Ÿ
 		{
        printf("OE\n");
 			return 1; 

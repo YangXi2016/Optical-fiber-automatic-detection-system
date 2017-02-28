@@ -197,7 +197,7 @@ void USART1_IRQHandler(void)
 		
 		if(Ins_Flag == Ins_Inputting)
 		{
-			/* Á¬Ðø¼ÇÂ¼Ö¸Áî×Ö·û£¬²¢ÇÒ·ÀÖ¹Êý×éÔ½½ç¸³Öµ */
+			/* è¿žç»­è®°å½•æŒ‡ä»¤å­—ç¬¦ï¼Œå¹¶ä¸”é˜²æ­¢æ•°ç»„è¶Šç•Œèµ‹å€¼ */
 			if(Ins_Count < (sizeof(Ins_Table)/sizeof(uint8_t)-2))
 			{
 				Ins_Table[Ins_Count++] = tag; 	
@@ -220,7 +220,7 @@ void TIM2_IRQHandler(void)
 		else if(Stage_Dir == Stage_Backward)Stage_Coord--;
 
 		Stage_Pace_Count--;
-		/* Èç¹û²½Êý×ßÍê£¬ÔÚÖÐ¶ÏÄÚÍ£Ö¹Âö³åÊä³ö */
+		/* å¦‚æžœæ­¥æ•°èµ°å®Œï¼Œåœ¨ä¸­æ–­å†…åœæ­¢è„‰å†²è¾“å‡º */
 		if(!Stage_Pace_Count)
 		{
 			Pulse_Disable();

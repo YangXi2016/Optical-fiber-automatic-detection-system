@@ -1,67 +1,67 @@
 /******************** (C) COPYRIGHT 2017  **********************************
-*Copyright(c)2017,����ά���Ƽ����޹�˾
+*Copyright(c)2017,杭州维勘科技有限公司
 *All rights reserved
 *
-*�ļ����ƣ�IO.txt
-*�ļ���ʶ��
-*ժ    Ҫ��ժ¼��Э������ʹ�õ�IO��			 
-*��ǰ�汾��1.0
-*��    �ߣ�yangxi
-*������ڣ�2017/2/10
+*文件名称：IO.txt
+*文件标识：
+*摘    要：摘录本协处理器使用的IO口			 
+*当前版本：1.0
+*作    者：yangxi
+*完成日期：2017/2/10
 *****************************************************************************/
 
 ************************    2017/2/10   ***************************************
 
-������ͨ��SPI��(���Ϳ���ָ�����Ƿ���ȷ�ϣ���ѯ�Ƿ���ɣ������������״̬)
-SPI_CLK - PA5				(���Ӽ����)
+与检测仪通信SPI：(发送控制指令，检测仪返回确认；查询是否完成，依据情况返回状态)
+SPI_CLK - PA5				(连接检测仪)
 SPI_MISO - PA6
 SPI_MOSI - PA7
 
 
-������Э����ͨ��SPI��
+与其他协处理通信SPI：
 CSN_PUSH  -  PB10
 CSN_CLEAN  -  PB11
 CSN_HAT  -  PB12
-ASSMCU_SPI_CLK - PB13				(����Э����)
+ASSMCU_SPI_CLK - PB13				(其他协处理)
 ASSMCU_SPI_MISO - PB14
 ASSMCU_SPI_MOSI - PB15
 
 
 
-���Դ��ڣ�
-USART1_TX  -  GPIOA.9		(���ӵ��Ի�)
+调试串口：
+USART1_TX  -  GPIOA.9		(连接调试机)
 USART1_RX  -  GPIOA.10
 
-��ť��⣺
-holder_place_1  -  PD1		΢������1	�����ӵ�Ӳ����
-holder_place_2  -  PD2		΢������2
+按钮检测：
+holder_place_1  -  PD1		微动开关1	（连接到硬件）
+holder_place_2  -  PD2		微动开关2
 
 
-������λ��
-l_limit  -  PD3				�����λ���� �����ӵ�Ӳ����
-r_limit  -  PD4				�Ҷ���λ����
+导轨限位：
+l_limit  -  PD3				左端限位开关 （连接到硬件）
+r_limit  -  PD4				右端限位开关
 
-���ⷴ�䣺
-locat  -  PD10			��λ��ڴ����жϡ������ӵ�Ӳ����
-//locat_2  -  PD11			��λ���ڴ����жϡ�
+红外反射：
+locat  -  PD10			工位入口处【中断】（连接到硬件）
+//locat_2  -  PD11			工位出口处【中断】
 
-��ñ���״̬��
-hat_succ_chk  -  PA3		��ñ����Ƿ���ɡ���ѯ��	�����ӵ�����CCD��������
-hat_succ_sta  -  PA1		����CCD��⵽�Ĵ�ñ�ɹ���񡾲�ѯ��	
+戴帽检测状态：
+hat_succ_chk  -  PA3		戴帽检测是否完成【查询】	（连接到线性CCD处理器）
+hat_succ_sta  -  PA1		线性CCD检测到的戴帽成功与否【查询】	
 
-�����쳣��⴦����
-sys_start  -  PD8			��ʼ/��ͣ	���жϡ�	�����ӵ�Ӳ����
-safe_gate  -  PD9			��ȫ��դ
+其他异常检测处理：
+sys_start  -  PD8			开始/暂停	【中断】	（连接到硬件）
+safe_gate  -  PD9			安全光栅
 
 -----------------------------
-�򵥿��ƣ�
-hat_succ_cmd  -  PA2		��ʼ����ñ�ɹ����	�����ӵ�����CCD��������
+简单控制：
+hat_succ_cmd  -  PA2		开始检测戴帽成功与否	（连接到线性CCD处理器）
 
-devclam_magnet  -  PA4		������н�����
-holder_magnet  -  PD0		�������������
+devclam_magnet  -  PA4		电磁铁夹紧吸合
+holder_magnet  -  PD0		电磁铁上载吸合
 
-red_light  -  PD5			��ɫ��ʾ��
-green_light  -  PD6			��ɫ״̬��
-buzzer  -  PD7				��Դ������
+red_light  -  PD5			红色警示灯
+green_light  -  PD6			绿色状态灯
+buzzer  -  PD7				有源蜂鸣器
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/
