@@ -24,16 +24,18 @@ int main(void)
 	SYS_STATE = READY_STATE;
 	while(1)
 	{
+		/*
 		while(1){
 			if (IsHatExist() == 0){
 				All_Stop();
 				SYS_STATE = HATNULL_STATE;
-				printf("HATNULL");
-				for(temp =0;temp<20;temp++)	delay_ms(1000);
+				printf("HAT NULL");
+				for(temp =0;temp<10;temp++)	delay_ms(1000);
 			}
 			else 
 				break;
 		}
+		*/
 		if(IsMotActDone('H') && IsMotActDone('T')) SYS_STATE = READY_STATE;
 		if(MASTER_CMD != DUMY){
 			USART1->DR=MASTER_CMD;

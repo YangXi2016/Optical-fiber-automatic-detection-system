@@ -395,6 +395,11 @@
               <FileType>2</FileType>
               <FilePath>..\Libraries\CMSIS\startup\startup_stm32f10x_hd.s</FilePath>
             </File>
+            <File>
+              <FileName>stm32f10x_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\stm32f10x_it.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

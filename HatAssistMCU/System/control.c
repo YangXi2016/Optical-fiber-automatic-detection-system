@@ -11,20 +11,23 @@
 *完成日期：2017/2/19
 *****************************************************************************/
 #include "delay.h"
-//#include "spi.h"
+#include "spi.h"
 #include "control.h"
 
-
+extern u8 SYS_STATE;
 void Hat(void)
 {
-	HMotion(HAT_ANGLE, '+', HAT_SPEED);
-	while(IsMotActDone('H')==0);
-	HMotion(HAT_ANGLE, '-', HAT_SPEED);
+	HMotion(10*HAT_ANGLE, '+', HAT_SPEED);
+	while(SYS_STATE == WORK_STATE){
+		if(IsMotActDone('H')==0)	break;
+	}
+	HMotion(10*HAT_ANGLE, '-', HAT_SPEED);
 }
 
 void Hat_Stop(void)
 {
 	 MotorEN('H','D');
+	SYS_STATE = ACCIDENT_STATE;
 }
 void Rail_RunStation(void)
 {
@@ -44,12 +47,14 @@ void Rail_Forward(void)
 void Rail_Stop(void)
 {
 	MotorEN('T','D');
+	SYS_STATE = ACCIDENT_STATE;
 }
 
 void All_Stop(void)
 {
 	MotorEN('H','D');
 	MotorEN('T','D');
+	SYS_STATE = ACCIDENT_STATE;
 }
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

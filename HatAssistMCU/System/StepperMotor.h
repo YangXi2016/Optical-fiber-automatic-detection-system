@@ -23,16 +23,16 @@
 //戴帽电机若干参数
 #define H_DEFAULT_PRE 10 //电机输出脉冲计数周期
 #define H_MOTOR_DIV 400 //400脉冲一周
-#define H_ACC_NUM 20 
+#define H_ACC_NUM 50 
 #define HA_COEFF 2.0
 #define HS_COEFF 5
 #define H_MIN_SPD 100
 #define H_MAX_SPD 1500
 
-//两边夹线电机若干参数
+//平移台电机若干参数
 #define MT_DEFAULT_PRE 10 //电机输出脉冲计数周期
 #define MT_MOTOR_DIV 400 //400脉冲一周
-#define MT_ACC_NUM 50 
+#define MT_ACC_NUM 100 
 #define MTA_COEFF 2.0
 #define MTS_COEFF 5
 #define MT_MIN_SPD 60

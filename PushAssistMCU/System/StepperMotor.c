@@ -52,6 +52,8 @@ void StepMotorGPIOInit(void)
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA
 						  | RCC_APB2Periph_GPIOB, ENABLE); // 使能PC端口时钟
 	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
 	// 推夹具电机 CLK - PA1  DIR - PA2   EN  - PA3
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3; 	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;							 
@@ -128,7 +130,7 @@ void StepMotorInit(void)
 	StepMotorGPIOInit();//GPIO初始化
 	StepMotorTIMInit();//定时器和中断初始化
 	
-	GPIO_SetBits(GPIOA,GPIO_Pin_1);
+	GPIO_SetBits(GPIOA,GPIO_Pin_3);
 	GPIO_SetBits(GPIOA,GPIO_Pin_8);
 	GPIO_SetBits(GPIOB,GPIO_Pin_0);
 
@@ -160,7 +162,7 @@ void StepMotorInit(void)
 	//更新两边夹线电机加减速预分频表
 	prescMin =  TIFreq / (SC_MAX_SPD * 1.0 / 60 * SC_MOTOR_DIV);//计算设定的最大最小预分频
 	prescMax = TIFreq /  (SC_MIN_SPD * 1.0 / 60 * SC_MOTOR_DIV);
-	for (i=0; i<MC_ACC_NUM; i++)
+	for (i=0; i<SC_ACC_NUM; i++)
 	{
 		t_sx = 1.0 + pow(e, (double)(-SCS_COEFF * (SCA_COEFF * i / SC_ACC_NUM - 1)));
 		gs_scAccPrescTab[i] = (u16)(1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin) + 0.5);
@@ -185,11 +187,11 @@ void MotorEN(u8 motor,u8 oper)
 		{
 			if (oper == 'D')
 			{
-				GPIO_SetBits(GPIOA,GPIO_Pin_3);
+				GPIO_SetBits(GPIOA,GPIO_Pin_1);
 			}
 			else if (oper == 'E')
 			{
-				GPIO_ResetBits(GPIOA,GPIO_Pin_3);	
+				GPIO_ResetBits(GPIOA,GPIO_Pin_1);	
 			}
 			break;
 		}//推夹具电机
@@ -425,11 +427,11 @@ void PMClkGen(void)
 	{
 		if (s_clkCnt > (s_presc>>1))
 		{
-			GPIO_SetBits(GPIOA,GPIO_Pin_1);
+			GPIO_SetBits(GPIOA,GPIO_Pin_3);
 		}
 		else
 		{
-			GPIO_ResetBits(GPIOA,GPIO_Pin_1);
+			GPIO_ResetBits(GPIOA,GPIO_Pin_3);
 			return;
 		}			
 	}
@@ -461,11 +463,11 @@ void MCMClkGen(void)
 	{
 		if (s_clkCnt > (s_presc>>1))
 		{
-			GPIO_SetBits(GPIOB,GPIO_Pin_0);
+			GPIO_SetBits(GPIOA,GPIO_Pin_8);
 		}
 		else
 		{
-			GPIO_ResetBits(GPIOB,GPIO_Pin_0);
+			GPIO_ResetBits(GPIOA,GPIO_Pin_8);
 			return;
 		}			
 	}
@@ -497,11 +499,11 @@ void SCMClkGen(void)
 	{
 		if (s_clkCnt >(s_presc>>1))
 		{
-			GPIO_SetBits(GPIOA,GPIO_Pin_8);
+			GPIO_SetBits(GPIOB,GPIO_Pin_0);
 		}
 		else
 		{
-			GPIO_ResetBits(GPIOA,GPIO_Pin_8);
+			GPIO_ResetBits(GPIOB,GPIO_Pin_0);
 			return;
 		}			
 	}
