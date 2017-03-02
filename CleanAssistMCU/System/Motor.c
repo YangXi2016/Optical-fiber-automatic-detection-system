@@ -46,6 +46,8 @@ void MotorGPIOInit(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_ResetBits(GPIOB,GPIO_Pin_0);
+
 
 }
 void MotorTIMInit(void)
@@ -54,22 +56,22 @@ void MotorTIMInit(void)
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	TIM_OCInitTypeDef TIM_OCInitStructure;
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4 | RCC_APB1Periph_TIM3, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM3, ENABLE);
   
-	//TIM4_CH4 设置 ，对应主电机
+	//TIM2_CH4 设置 ，对应主电机
 	TIM_TimeBaseStructure.TIM_Period = MM_DEFAULT_PERIOD;       
 	TIM_TimeBaseStructure.TIM_Prescaler =MM_DEFAULT_PRE; 
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0; 
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
-	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure); 
-	TIM_ITConfig(  TIM4, TIM_IT_Update,  ENABLE);//开启TIM4的中断源
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure); 
+	TIM_ITConfig(  TIM2, TIM_IT_Update,  ENABLE);//开启TIM2的中断源
 	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; 
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_Pulse = MM_DEFAULT_SPD;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OC4Init(TIM4, &TIM_OCInitStructure);
-	TIM_OC4PreloadConfig(TIM4, TIM_OCPreload_Enable);
+	TIM_OC4Init(TIM2, &TIM_OCInitStructure);
+	TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Enable);
 	
 	
 	
@@ -86,10 +88,12 @@ void MotorTIMInit(void)
 	TIM_OCInitStructure.TIM_Pulse = CM_DEFAULT_SPD;
 	TIM_OC3Init(TIM3, &TIM_OCInitStructure);
 	TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Enable);	
-
+	
+	TIM3->CCER &= ~TIM_CCER_CC3E;//关闭Time3 通道3，关闭电机
+	
 	//配置定时器中断
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;  //TIM4全局中断
+	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM2全局中断
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //先占优先级1，优先级次高
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;  
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
@@ -135,9 +139,9 @@ void MMotMotion(float angleDeg, u8 spd,u8 dir)
 		MM_CCW;
 	}
 	g_mmTargPulse = (u32)((1.0 * angleDeg / 360 * MM_REDUCT_RAT * MM_PULSE_R)+0.5);
-	TIM_Cmd(TIM4,ENABLE);
-	TIM4->CCR4=spd;
-	TIM4->CCER |= TIM_CCER_CC4E;//使能Time2 通道4，开启电机
+	TIM_Cmd(TIM2,ENABLE);
+	TIM2->CCR4=spd;
+	TIM2->CCER |= TIM_CCER_CC4E;//使能Time2 通道4，开启电机
 	g_mmActDFlg = 0;
 }
 void CMotStart(u8 spd)
@@ -153,12 +157,12 @@ void CMotStop(void)
 
 void MMotSetSpd(u8 spd)
 {
-	TIM4->CCR4=spd;	
+	TIM2->CCR4=spd;	
 }
 
 void MMotStop(void)
 {
-	TIM4->CCER &= ~TIM_CCER_CC4E;//关闭Time2 通道4，关闭电机	
+	TIM2->CCER &= ~TIM_CCER_CC4E;//关闭Time2 通道4，关闭电机	
 }
 u8 IsDCMotActDone(void)
 {
@@ -184,18 +188,22 @@ void EXTI0_IRQHandler(void)
 	{
 		g_mmTargPulse++;		
 	}
+	
+	//USART1->DR=g_mmTargPulse;
+	//while((USART1->SR&0X40)==0);//等待发送结束
+	printf("%d\n",g_mmTargPulse);
 }
 
-void TIM4_IRQHandler(void)   //TIM4中断
+void TIM2_IRQHandler(void)   //TIM2中断
 {
 	float spd = 0;
 	static int  s_sum = 0;
 	static int targPulseLast = 0;
 	static u16 timCnt  = 0;
 	
-	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) 
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) 
 	{	
-		TIM_ClearITPendingBit(TIM4, TIM_IT_Update); 
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update); 
 	}
 	else
 	{
@@ -254,7 +262,7 @@ void TIM4_IRQHandler(void)   //TIM4中断
 		s_sum = 0;
 	}
 
-	//printf("TIM4_IRQHandler:%0.1f %d %d\n",spd,s_sum,g_mmTargPulse);
+	//printf("TIM2_IRQHandler:%0.1f %d %d\n",spd,s_sum,g_mmTargPulse);
 
 	 
 }

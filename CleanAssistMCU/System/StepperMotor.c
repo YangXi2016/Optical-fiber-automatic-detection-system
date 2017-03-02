@@ -54,20 +54,20 @@ void StepMotorTIMInit(void)
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 , ENABLE);
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4 , ENABLE);
 	
- 	//推夹具电机时钟配置 TIM2
+ 	//推夹具电机时钟配置 TIM4
 	TIM_TimeBaseStructure.TIM_Period = DEFAULT_PERIOD - 1;	 //PWM周期
 	TIM_TimeBaseStructure.TIM_Prescaler = DEFAULT_PRESCALE - 1;  //设置预分频
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
 
-	TIM_ITConfig( TIM2, TIM_IT_Update  |  TIM_IT_Trigger,  ENABLE);//开启TIM2的中断源和触发中断
+	TIM_ITConfig( TIM4, TIM_IT_Update  |  TIM_IT_Trigger,  ENABLE);//开启TIM4的中断源和触发中断
 
 	//配置定时器中断
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM2全局中断
+	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;  //TIM4全局中断
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //先占优先级1，优先级次高
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
@@ -206,7 +206,7 @@ void StepMotion(float angleDeg, u8 dir, u16 spd)
 	g_npActFlg = 1;
 	g_pActDFlg = 0;
 
-	TIM_Cmd(TIM2,ENABLE);
+	TIM_Cmd(TIM4,ENABLE);
 
 }
 
@@ -353,17 +353,17 @@ u8 IsStepMotActDone(void)
 }
 
 /*******************************************************************************
-*函数名称：TIM2_IRQHandler
-*函数说明：TIM2中断，用于产生时钟信号驱动步进电机
+*函数名称：TIM4_IRQHandler
+*函数说明：TIM4中断，用于产生时钟信号驱动步进电机
 *输入参数：无
 *输出参数：无
 *返回参数：无 
 *******************************************************************************/
-void TIM2_IRQHandler(void)   //TIM2中断
+void TIM4_IRQHandler(void)   //TIM4中断
 {
-	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
+	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
-		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
+		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
 	}
 	else
 	{

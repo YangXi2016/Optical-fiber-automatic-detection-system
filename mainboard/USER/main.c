@@ -21,18 +21,20 @@ void Init_All(void);
 void get_period(u8 temp);
 void station_work(u8 period);
 void mutual_test(void);
+void peripheral_test(void);
 u8 i,len,t;
 //u8 MASTER_CMD=((u8)?0B11110000));
 //u8 master_temp;
 u8 temp;
 u8 detect_result;
 
-extern u8 status_station;
+extern u8 status_station2;
 
 
 int main(void)
 {
-	mutual_test();
+	peripheral_test();
+	//mutual_test();
 	/********初始化阶段***********/
 	Init_All();
 	//printf("ready\r\n");
@@ -57,8 +59,8 @@ int main(void)
 
 		Rail_Forward();
 
-		while (status_station == 0);		//	弹夹到达第一个工位的前方
-		status_station = 0;
+		while (status_station2 == 0);		//	弹夹到达第一个工位的前方
+		status_station2 = 0;
 
 		for (temp = 0; temp < NUM_TOTAL - 1 + DISTANCE1 + DISTANCE2; temp++) {
 			get_period(temp);
@@ -194,7 +196,7 @@ void station_work(u8 period) {
 
 void mutual_test(void){
 	Init_All();
-	printf("ready\r\n");           
+	printf("Mainboard ready\r\n");           
 	while(1){/*
 		while(1){
 			//CLEAN_ReadWriteByte(CMD_CleanStop);
@@ -249,5 +251,68 @@ void mutual_test(void){
 
 	}
 }
+
+
+void peripheral_test(void){
+	Init_All();
+	printf("Mainboard ready\r\n");           
+	while(1){
+		
+		
+		
+		if(USART_RX_STA&0x8000){
+			len=USART_RX_STA&0x3fff;
+			//printf("\r\n您发送的消息为:\r\n");
+			for(t=0;t<len;t++)
+			{
+				USART1->DR=USART_RX_BUF[t];
+				while((USART1->SR&0X40)==0);
+			}
+			
+			if(Check_Limit_L()==1){
+				printf("Limit_L arrived\n");
+			}
+			if(Check_Limit_R()==1){
+				printf("Limit_R arrived\n");
+			}
+			if(Check_Clip_Ready()){
+				printf("Clip Ready\n");
+			}
+			//if(status_station2 == 1){
+			if(Check_Locat() == 1){
+				printf("laser locat\n");
+			}
+			switch(USART_RX_BUF[0]){
+				case '1':
+					clamp();
+					printf("clamp\n");
+					break;
+				
+				case '2':
+					loosen();
+					printf("loosen\n");
+					break;
+				
+				case '3':
+					compress();
+					printf("compress\n");
+					break;
+				
+				case '4':
+					uncompress();
+					printf("uncompress\n");
+					break;
+				
+				default:
+					break;
+			}
+			
+			USART_RX_STA=0;
+				
+		}
+
+	}
+}
+
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

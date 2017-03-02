@@ -19,7 +19,7 @@
 #define MM_DEFAULT_SPD 50 //默认速度50，最大速度100
 #define MM_REDUCT_RAT 75 //主动轮电机减速比
 #define MM_PULSE_R 1 //主动轮编码器每转输出脉冲数
-#define MM_DEAD_RANGE 3 //允许±3个脉冲的误差
+#define MM_DEAD_RANGE 0 //允许±3个脉冲的误差
 #define MM_MIN_SPD 0
 #define MM_MAX_SPD 100
 #define MM_MAX_INTEGRA 20000

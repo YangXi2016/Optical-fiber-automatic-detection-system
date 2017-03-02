@@ -24,6 +24,7 @@ void Sensor_gpio_init(void)
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_1 |GPIO_Pin_2 | GPIO_Pin_3 |GPIO_Pin_4 |GPIO_Pin_8 |GPIO_Pin_9;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //设置成上拉输入
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOD, &GPIO_InitStructure);
 	
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_1 |GPIO_Pin_3;
@@ -76,21 +77,23 @@ static void LOCAT_Init(void)
 	EXTI_InitTypeDef EXTI_InitStructure; //外部中断配置结参数
 	NVIC_InitTypeDef NVIC_InitStructure; //中断配置参数
 	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD| RCC_APB2Periph_AFIO, ENABLE);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11 ;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
 	GPIO_Init(GPIOD,&GPIO_InitStructure);
 	
-  GPIO_EXTILineConfig(GPIO_PortSourceGPIOD ,GPIO_PinSource10 | GPIO_PinSource11); //指定外部中断输入是PC6
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOD ,GPIO_PinSource10 | GPIO_PinSource11); //指定外部中断输入是PD10/11
 	
 	//外部触发设置，边沿
-	EXTI_InitStructure.EXTI_Line = EXTI_Line10 | EXTI_Line11;
+	EXTI_InitStructure.EXTI_Line = EXTI_Line10 ;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling; //沿触发 
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);		
+	EXTI_InitStructure.EXTI_Line = EXTI_Line11 ;
+	EXTI_Init(&EXTI_InitStructure);	
 	
 	//中断参数设定
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
@@ -103,32 +106,47 @@ static void LOCAT_Init(void)
 }
 
 //GPIOD10/GPIOD11中断处理函数
-//u8 status_station1 = 0,status_station2 = 0;
-u8 status_station = 0;
+u8 status_station1 = 0,status_station2 = 0;
+//u8 status_station = 0;
+u8 state;
 void EXTI15_10_IRQHandler(void)
 {
+	
 	if(EXTI_GetITStatus(EXTI_Line10) == SET){
-		u8 state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
+		
+		state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
 		if( state == 1){
-			status_station = 1;
+			printf("laser1 loacat IRQ\n");
+			status_station1 = 1;
 		}else{
-			status_station = 0;
+			status_station1 = 0;
 		}
 	EXTI_ClearITPendingBit(EXTI_Line10);  //清除EXTI4线路挂起
 	}
-	/*
+	
 	if(EXTI_GetITStatus(EXTI_Line11) == SET){
-		u8 state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
+		
+		state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
 		if( state == 1){
+			printf("laser2 loacat IRQ\n");
 			status_station2 = 1;
 		}else{
 			status_station2 = 0;
 		}
 	EXTI_ClearITPendingBit(EXTI_Line11);  //清除EXTI4线路挂起		
 	}
-	*/
+	
 }
 
+
+u8 Check_Locat(void){
+	if(LOCAT==1)
+	{
+		delay_ms(10); 
+		if(LOCAT==1)return 1;
+	}     
+	return 0;
+}
 
 /*********************************红外反射定位********************************/
 

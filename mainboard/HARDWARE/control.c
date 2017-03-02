@@ -26,6 +26,7 @@ void Control_gpio_init(void)
 	//电吸铁上载及系统状态指示用
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0 |GPIO_Pin_5 | GPIO_Pin_6 |GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOD, &GPIO_InitStructure);
 	
 	//戴帽结果检测及电吸铁吸合用
@@ -101,20 +102,10 @@ void EXTI9_5_IRQHandler(void)
 
 	if(EXTI_GetITStatus(EXTI_Line9) == SET){
 		Stop_All();
+		printf("Safe Gate Work\n");
 	EXTI_ClearITPendingBit(EXTI_Line9);  
 	}
 
-	/*
-	if(EXTI_GetITStatus(EXTI_Line11) == SET){
-		u8 state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
-		if( state == 1){
-			status_station2 = 1;
-		}else{
-			status_station2 = 0;
-		}
-	EXTI_ClearITPendingBit(EXTI_Line11);  //清除EXTI4线路挂起		
-	}
-	*/
 }
 
 /********************简单片上硬件控制******************************************/

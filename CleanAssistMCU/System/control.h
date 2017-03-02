@@ -17,7 +17,7 @@
 #include "StepperMotor.h"
 
 #define CM_SPEED		80
-#define MM_ANGLE		8
+#define MM_ANGLE		1000
 #define MM_SPEED		80
 #define SM_ANGLE		(360*6)
 #define SM_SPEED		1000
