@@ -1,4 +1,4 @@
-#此行为注释，不会起作用
+﻿#此行为注释，不会起作用
 #filename.txt
 #*.html
 #!except.html
@@ -6,6 +6,8 @@
 #all/
 #/all
 
+JLinkLog.*
+*.uvproj
 *.bak
 *.ini
 *.uvopt
