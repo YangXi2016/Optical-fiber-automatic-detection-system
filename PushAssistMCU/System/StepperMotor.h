@@ -23,7 +23,7 @@
 //推线电机若干参数
 #define P_DEFAULT_PRE 10 //电机输出脉冲计数周期
 #define P_MOTOR_DIV 400 //400脉冲一周
-#define PUSH_ACC_NUM 50 //推夹具步进电机加速脉冲数
+#define PUSH_ACC_NUM 100 //推夹具步进电机加速脉冲数
 #define PA_COEFF  2.0 //定义进入最大加速度的时间，参数越大，进入越快，2.0在居中的时间进入
 #define PS_COEFF 5 //推夹具步进电机S加速曲线参数，最大加速区间曲线斜率大小参数
 #define P_MIN_SPD 60 //推夹具电机加速初始转速r/min
@@ -62,9 +62,9 @@ void SCMotion(float angleDeg, u8 dir, u16 spd);
 
 u8 IsMotActDone(u8 motor);//检查运动是否完成
 
-#define CLAMP_ANGLE			100		//用于夹紧的电机所需走的距离
-#define	PROCESS_ANGLE		360		//用于推拉的电机所需走的距离
-#define SPEED						800
+#define CLAMP_ANGLE			1000		//用于夹紧的电机所需走的距离
+#define	PROCESS_ANGLE		3600		//用于推拉的电机所需走的距离
+#define SPEED						700
 void Fixture_Stop(void);
 
 //模块内部使用函数

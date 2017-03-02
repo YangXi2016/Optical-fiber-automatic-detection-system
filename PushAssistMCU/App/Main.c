@@ -24,7 +24,7 @@ u8 open_period = 2;	//0代表收到动作命令，1代表中间电机开始松�
 int main(void)
 {
 	InitAll();
-	
+	printf("Push Ready\n");
 	while(1)
 	{
 		if((push_period == 4) && (draw_period == 6) && (close_period == 2) && (open_period ==2)) READY_STATE;
@@ -43,7 +43,10 @@ int main(void)
 					push_period = 3;
 				}
 				else if(push_period == 3){
-					if(IsMotActDone('P')) push_period = 4;
+					if(IsMotActDone('P')){
+						push_period = 4;
+						printf("D\n");
+					}
 				}
 			}
 			
@@ -68,7 +71,10 @@ int main(void)
 					draw_period = 5;
 				}
 				else if(draw_period == 5){
-					if(IsMotActDone('M') && IsMotActDone('S')) draw_period = 6;
+					if(IsMotActDone('M') && IsMotActDone('S')){
+						draw_period = 6;
+						printf("D\n");
+					}
 				}
 			}
 			if(close_period!= 2){
@@ -77,7 +83,10 @@ int main(void)
 					close_period =1;
 				}
 				else if(close_period == 1){
-					if(IsMotActDone('M'))	close_period = 2;
+					if(IsMotActDone('M')){
+						close_period = 2;
+						printf("D\n");
+					}
 				}
 			}
 			
@@ -87,7 +96,10 @@ int main(void)
 					open_period =1;					
 				}
 				else if(open_period == 1){
-					if(IsMotActDone('M'))	open_period = 2;
+					if(IsMotActDone('M')){
+						open_period = 2;
+						printf("D\n");
+					}
 				}
 			}
 			
@@ -101,6 +113,7 @@ int main(void)
 			else if(Is_Draw(MASTER_CMD)){
 				draw_period = 0;
 				WORK_STATE;
+				//PushMotion(20*PROCESS_ANGLE, '+', SPEED);
 			}
 			else if(Is_Close(MASTER_CMD)){
 				close_period = 0;
@@ -112,12 +125,14 @@ int main(void)
 			}
 			else if(Is_Stop(MASTER_CMD)){
 				Fixture_Stop();
+				ACCIDENT_STATE;
 			}
 			//else if(MASTER_CMD == CHECK)	//查询命令
 			//	;
 			//else	SYS_STATE = ERROR;			//接收命令出错
 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;
+			
 		}
 	}
 }

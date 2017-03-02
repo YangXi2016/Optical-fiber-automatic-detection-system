@@ -15,7 +15,7 @@ void InitAll(void)
 {
 	
 	delay_clockint();
-	UsartInit(115200);	
+	usart_init(115200);	
 	SPI1_Init();//这里做从机
 	StepMotorInit();
 

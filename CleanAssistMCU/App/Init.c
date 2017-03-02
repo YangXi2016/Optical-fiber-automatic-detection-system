@@ -15,28 +15,31 @@ extern u8 clean_position,wipe_time;
 
 void InitAll(void)
 {
-	u8 FLASH_DATA[3];
+	u8 FLASH_DATA[3]={0,0,0};
 	
 	delay_clockint();
 	
-	UsartInit(115200);	
+	uart_init(115200);	
 	
 	MotorInit();
-
-	SPI1_Init();
 	
+	StepMotorInit();
+	
+	SPI1_Init();
+	//printf("CLEAN ready\n");
 	STMFLASH_Read(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
 	
-	if(FLASH_DATA[0] != 1){
+	if(FLASH_DATA[0] == 1){
 		//FLASH_DATA[0] = 1;
 		//FLASH_DATA[1] = 0;
 		//FLASH_DATA[2] = 0;
 		clean_position = FLASH_DATA[1];
 		wipe_time = FLASH_DATA[2];
-		Clean_Reset();
+		
 	}else{
 		clean_position = 0;
 		wipe_time =0;
+		Clean_Reset();
 	}
 	
 }

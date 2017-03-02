@@ -51,6 +51,7 @@ MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
 #define UNHAT_STATE							0x40
 #define HATNULL_STATE						0x10
 #define HATEXIST_STATE					0x40
+#define ACCIDENT_STATE					0xff
 
 void SPI1_Init(void);			 //初始化SPI口
 static void CSN_Init(void);

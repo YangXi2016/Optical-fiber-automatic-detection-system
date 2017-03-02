@@ -184,9 +184,9 @@ void StepMotion(float angleDeg, u8 dir, u16 spd)
 	float TIFreq = 0;  //定时器产生中断的频率
 	float spdFreq = 0; //达到相应速度需要的脉冲频率
 	
-	MotorEN('P','E');//使能推夹具电机
-	MotorDir('P',dir);//设定转向
 	
+	MotorDir('P',dir);//设定转向
+	MotorEN('P','E');//使能推夹具电机
 	//速度限制
 	if (spd > P_MAX_SPD)
 	{
@@ -333,6 +333,7 @@ u16 StepMotorDrive(void)
 			{
 				g_pActDFlg = 1;
 				g_pClkFlg = 0;
+
 			}
 		}
 	}

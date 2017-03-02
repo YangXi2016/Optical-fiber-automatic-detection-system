@@ -47,6 +47,9 @@ void StepMotorGPIOInit(void)
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA
 						  | RCC_APB2Periph_GPIOB, ENABLE); // 使能PC端口时钟
 	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);  //开启AFIO时钟
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE); //禁止JTAG功能
+	
 	// 主平移台电机 CLK - PB0   DIR - PB3   EN - PB4  
 	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_4;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;

@@ -14,18 +14,19 @@
 #define __CONTROL_H	
 #include "StepperMotor.h"
 #include "LinearCCD.h"
+//#include "spi.h"
 
 //戴帽用电机参数
 #define HAT_ANGLE		(360*3)
-#define HAT_SPEED		(1000)
+#define HAT_SPEED		(500)
 
 //电机移动一工位参数
 #define RAIL_STATION_ANGLE	(360*1)
-#define RAIL_STATION_SPEED	(1000)
+#define RAIL_STATION_SPEED	(500)
 
 //电机自由移动参数
 #define RAIL_FREE_ANGLE		(360*100)
-#define RAIL_FREE_SPEED		(1000)
+#define RAIL_FREE_SPEED		(500)
 
 void Hat(void);
 //void Hat_Check(void);
