@@ -33,7 +33,7 @@ extern u8 status_station2;
 
 int main(void)
 {
-	peripheral_test();
+	//peripheral_test();
 	//mutual_test();
 	/********初始化阶段***********/
 	Init_All();
@@ -223,13 +223,13 @@ void mutual_test(void){
 					while((USART1->SR&0X40)==0);
 					break;
 				
-				case 0x02:
+				case 0x03:
 					temp = CLEAN_ReadWriteByte(USART_RX_BUF[1]);
 					USART1->DR=temp;
 					while((USART1->SR&0X40)==0);
 					break;
 				
-				case 0x03:
+				case 0x02:
 					temp = HAT_ReadWriteByte(USART_RX_BUF[1]);
 					USART1->DR=temp;
 					while((USART1->SR&0X40)==0);

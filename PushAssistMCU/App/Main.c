@@ -25,6 +25,7 @@ int main(void)
 {
 	InitAll();
 	printf("Push Ready\n");
+	READY_STATE;
 	while(1)
 	{
 		if((push_period == 4) && (draw_period == 6) && (close_period == 2) && (open_period ==2)) READY_STATE;

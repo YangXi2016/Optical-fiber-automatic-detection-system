@@ -15,7 +15,7 @@
 //#include "delay.h"
  	  
 /*SYS_STATE为全局变量，可代表当前的系统状态*/ 
-u8 SYS_STATE = DUMY;
+u8 SYS_STATE = CHECK;
 u8 MASTER_CMD = DUMY;
 /*MASTER_CMD为接收到的指令，有命令和查询两种*/
 //收发过程由中断完成
@@ -66,7 +66,7 @@ void SPI1_Init()
 	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRC值计算的多项式
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
  	
-	//SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断	
+	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断	
 	//SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_TXE,ENABLE);//开启中断
 	//SPI_Cmd(SPI1, ENABLE); //使能SPI外设
 	//SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
@@ -110,16 +110,25 @@ void CSN_Init(void)
 }
 void EXTI4_IRQHandler(void)
 {
+	GPIO_InitTypeDef GPIO_InitStructure;
 	if(EXTI_GetITStatus(EXTI_Line4) == SET){
 		u8 state = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4);
 		if( state == 0){
-			SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断
+			
+			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+			GPIO_Init(GPIOA,&GPIO_InitStructure);
 			SPI_Cmd(SPI1, ENABLE); //使能SPI外设
 			USART1->DR=0x99;
 			while((USART1->SR&0X40)==0);//等待发送结束
 			
 		}else{
-			SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,DISABLE);//开启中断
+			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+			GPIO_Init(GPIOA,&GPIO_InitStructure);
+			
 			SPI_Cmd(SPI1, DISABLE); //使能SPI外设
 			USART1->DR=0x88;
 			while((USART1->SR&0X40)==0);//等待发送结束

@@ -61,7 +61,7 @@ u8 Check_Locat(void);
 
 
 /*********************************协处理器状态查询*******************************/
-#define CHECK 0x01
+#define CHECK 0x02
 //通用状态
 #define Is_Ready(rx_data)			((rx_data & 0x40) == 0x40)	//0100,0000 用于同所有从机确认是否准备好
 #define Is_Start(rx_data)			((rx_data & 0x20) == 0x20)	//0010,0000

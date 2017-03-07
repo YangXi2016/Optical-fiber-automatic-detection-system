@@ -16,7 +16,7 @@
 #include "control.h"
 
 /*SYS_STATE为全局变量，可代表当前的系统状态*/ 
-u8 SYS_STATE = DUMY;
+u8 SYS_STATE = CHECK;
 u8 MASTER_CMD = DUMY;
 /*MASTER_CMD为接收到的指令，有命令和查询两种*/
 //收发过程由中断完成
@@ -109,26 +109,38 @@ void CSN_Init(void)
 	NVIC_Init(&NVIC_InitStructure); 
 	
 }
+
 void EXTI4_IRQHandler(void)
 {
+	GPIO_InitTypeDef GPIO_InitStructure;
 	if(EXTI_GetITStatus(EXTI_Line4) == SET){
 		u8 state = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_4);
 		if( state == 0){
+			
+			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+			GPIO_Init(GPIOA,&GPIO_InitStructure);
 			SPI_Cmd(SPI1, ENABLE); //使能SPI外设
-			//USART1->DR=0x99;
-			//while((USART1->SR&0X40)==0);//等待发送结束
+			USART1->DR=0x99;
+			while((USART1->SR&0X40)==0);//等待发送结束
 			
 		}else{
+			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+			GPIO_Init(GPIOA,&GPIO_InitStructure);
+			
 			SPI_Cmd(SPI1, DISABLE); //使能SPI外设
-			//USART1->DR=0x88;
-			//while((USART1->SR&0X40)==0);//等待发送结束
+			USART1->DR=0x88;
+			while((USART1->SR&0X40)==0);//等待发送结束
 			
 		}
 	EXTI_ClearITPendingBit(EXTI_Line4);  //清除EXTI4线路挂起
 	}
 	
-
 }
+
 
 
 

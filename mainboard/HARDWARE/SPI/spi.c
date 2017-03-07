@@ -73,11 +73,11 @@ u8 SPI1_ReadWriteByte(u8 TxData)
 u8 DETECT_ReadWriteByte(u8 TxData){
 	u8 RxData;
 	SPI1_ReadWriteByte(DUMY);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI1_ReadWriteByte(HEAD);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI1_ReadWriteByte(TxData);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI1_ReadWriteByte(DUMY);
 	return RxData;
 }
@@ -147,13 +147,13 @@ u8 PUSH_ReadWriteByte(u8 TxData)
 	u8 RxData;
 	SPI2_ReadWriteByte(DUMY);
 	CSN_PUSH_L();
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(HEAD);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(TxData);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(DUMY);
-	delay_ms(1);
+	delay_us(200);
 	CSN_PUSH_H();
 	return RxData;
 }
@@ -163,11 +163,13 @@ u8 CLEAN_ReadWriteByte(u8 TxData)
 	u8 RxData;
 	SPI2_ReadWriteByte(DUMY);
 	CSN_CLEAN_L();
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(HEAD);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(TxData);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(DUMY);
+	delay_us(200);
 	CSN_CLEAN_H();
 	return RxData;
 }
@@ -177,11 +179,13 @@ u8 HAT_ReadWriteByte(u8 TxData)
 	u8 RxData;
 	SPI2_ReadWriteByte(DUMY);
 	CSN_HAT_L();
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(HEAD);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(TxData);
-	delay_ms(1);
+	delay_us(200);
 	RxData = SPI2_ReadWriteByte(DUMY);
+	delay_us(200);
 	CSN_HAT_H();
 	return RxData;
 }
