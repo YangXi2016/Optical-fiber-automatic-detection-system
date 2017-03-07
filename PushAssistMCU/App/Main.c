@@ -25,10 +25,11 @@ int main(void)
 {
 	InitAll();
 	printf("Push Ready\n");
-	READY_STATE;
+	SYS_STATE = READY_STATE;
 	while(1)
 	{
-		if((push_period == 4) && (draw_period == 6) && (close_period == 2) && (open_period ==2)) READY_STATE;
+		if((push_period == 4) && (draw_period == 6) && (close_period == 2) && (open_period ==2)) 
+			SYS_STATE = READY_STATE;
 		else{
 			if(push_period != 4){
 				if(push_period == 0){
@@ -46,7 +47,7 @@ int main(void)
 				else if(push_period == 3){
 					if(IsMotActDone('P')){
 						push_period = 4;
-						printf("D\n");
+						printf("push done\n");
 					}
 				}
 			}
@@ -74,7 +75,7 @@ int main(void)
 				else if(draw_period == 5){
 					if(IsMotActDone('M') && IsMotActDone('S')){
 						draw_period = 6;
-						printf("D\n");
+						printf("draw done\n");
 					}
 				}
 			}
@@ -86,7 +87,7 @@ int main(void)
 				else if(close_period == 1){
 					if(IsMotActDone('M')){
 						close_period = 2;
-						printf("D\n");
+						printf("close done\n");
 					}
 				}
 			}
@@ -99,7 +100,7 @@ int main(void)
 				else if(open_period == 1){
 					if(IsMotActDone('M')){
 						open_period = 2;
-						printf("D\n");
+						printf("open done\n");
 					}
 				}
 			}
@@ -109,24 +110,24 @@ int main(void)
 		if(MASTER_CMD!=DUMY){
 			if(Is_Push(MASTER_CMD)){
 				push_period = 0;
-				WORK_STATE;
+				SYS_STATE = WORK_STATE;
 			}
 			else if(Is_Draw(MASTER_CMD)){
 				draw_period = 0;
-				WORK_STATE;
+				SYS_STATE = WORK_STATE;
 				//PushMotion(20*PROCESS_ANGLE, '+', SPEED);
 			}
 			else if(Is_Close(MASTER_CMD)){
 				close_period = 0;
-				WORK_STATE;
+				SYS_STATE = WORK_STATE;
 			}
 			else if(Is_Open(MASTER_CMD)){
 				open_period = 0;
-				WORK_STATE;
+				SYS_STATE = WORK_STATE;
 			}
 			else if(Is_Stop(MASTER_CMD)){
 				Fixture_Stop();
-				ACCIDENT_STATE;
+				SYS_STATE = ACCIDENT_STATE;
 			}
 			//else if(MASTER_CMD == CHECK)	//查询命令
 			//	;

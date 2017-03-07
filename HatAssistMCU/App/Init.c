@@ -15,7 +15,7 @@ void InitAll(void)
 {
 	
 	delay_clockint();
-	
+	delay_ms(1000);
 	usart_init(115200);	
 	
 	StepMotorInit();

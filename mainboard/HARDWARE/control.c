@@ -24,7 +24,7 @@ void Control_gpio_init(void)
  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOD,ENABLE);//使能PORTA,PORTD时钟
 
 	//电吸铁上载及系统状态指示用
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0 |GPIO_Pin_5 | GPIO_Pin_6 |GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0 |GPIO_Pin_5 | GPIO_Pin_6 |GPIO_Pin_7|GPIO_Pin_12;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
  	GPIO_Init(GPIOD, &GPIO_InitStructure);
@@ -33,6 +33,7 @@ void Control_gpio_init(void)
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_2 | GPIO_Pin_4;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
+	MOTION_OFF();
 	SAFE_MONITOR_Init();
 }
 
@@ -101,6 +102,7 @@ void EXTI9_5_IRQHandler(void)
 {
 
 	if(EXTI_GetITStatus(EXTI_Line9) == SET){
+		MOTION_OFF();
 		Stop_All();
 		printf("Safe Gate Work\n");
 	EXTI_ClearITPendingBit(EXTI_Line9);  
@@ -194,7 +196,7 @@ u8 Rail_Stop(void)
 u8 Fixture_Push(void)
 {
 	u8 status;
-	status = HAT_ReadWriteByte(CMD_Push);
+	status = PUSH_ReadWriteByte(CMD_Push);
 	if(status == CMD_COMFIRM)	return 1;
 	else return 0;
 }
@@ -202,7 +204,7 @@ u8 Fixture_Push(void)
 u8 Fixture_Draw(void)
 {
 	u8 status;
-	status = HAT_ReadWriteByte(CMD_Draw);
+	status = PUSH_ReadWriteByte(CMD_Draw);
 	if(status == CMD_COMFIRM)	return 1;
 	else return 0;
 }
@@ -210,7 +212,7 @@ u8 Fixture_Draw(void)
 u8 Fixture_Open(void)
 {
 	u8 status;
-	status = HAT_ReadWriteByte(CMD_Open);
+	status = PUSH_ReadWriteByte(CMD_Open);
 	if(status == CMD_COMFIRM)	return 1;
 	else return 0;
 }

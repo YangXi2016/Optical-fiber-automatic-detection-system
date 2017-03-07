@@ -67,7 +67,7 @@ void SPI1_Init(uint16_t Mode)
 	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断	
 	//SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_TXE,ENABLE);//开启中断
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
-	SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
+	//SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
 	 
 }   
 
@@ -102,6 +102,13 @@ void SPI1_IRQHandler(void)
 			}
 		}else{
 			if(Slave_Temp == HEAD) head_flag=1;
+			else{
+				SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,DISABLE);//关闭中断
+				SPI_Cmd(SPI1, DISABLE); //失能SPI外设
+				
+				SPI_Cmd(SPI1, ENABLE); //使能SPI外设
+				SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断
+			}
 		}
 	
 	}	

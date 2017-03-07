@@ -191,7 +191,7 @@ void EXTI0_IRQHandler(void)
 	
 	//USART1->DR=g_mmTargPulse;
 	//while((USART1->SR&0X40)==0);//等待发送结束
-	printf("%d\n",g_mmTargPulse);
+	//printf("%d\n",g_mmTargPulse);
 }
 
 void TIM2_IRQHandler(void)   //TIM2中断
@@ -255,7 +255,7 @@ void TIM2_IRQHandler(void)   //TIM2中断
 	}
 	MMotSetSpd((u8)spd);	
 	
-	if ( g_mmTargPulse <= MM_DEAD_RANGE && g_mmTargPulse >= -MM_DEAD_RANGE )
+	if ( g_mmTargPulse <= MM_DEAD_RANGE)// && g_mmTargPulse >= -MM_DEAD_RANGE )
 	{
 		g_mmActDFlg = 1;
 		MMotStop();

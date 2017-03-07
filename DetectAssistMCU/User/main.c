@@ -43,13 +43,13 @@ int main(void)
 	uint16_t Pace;
 	int16_t  Stage_Tar_Coord;
 	
+	Delayms(1000);
 	
 	/*Clamp_Motor init*/
 	/*added by yangxi in 2016/12/23*/
 	ClampMotor_Init();
 	
-	/*added by yangxi in 2017/2/15*/
-	SPI1_Init(SPI_Mode_Slave);		   //初始化SPI
+
 	
 	/* light sources init */
 	LED_Init();
@@ -67,6 +67,8 @@ int main(void)
 	GPIO_DAC8830_Config();
 	Delayms(100);
 	
+	/*added by yangxi in 2017/2/15*/
+	SPI1_Init(SPI_Mode_Slave);		   //初始化SPI
 	STM_STATE = READY_STATE;
 	printf("detect ready\n");
 	while(1)
@@ -123,17 +125,17 @@ int main(void)
 					
 					//Where to updata STM_STATE /*added by yangxi in 2017/2/15*/
 				case 'P':
-					if(Ins_Table[2] == 0)	COM_STATUS.Union_Status = 0;
+					if(Ins_Table[2] == '0')	COM_STATUS.Union_Status = 0;
 					else	COM_STATUS.Union_Status = 1;
 					break;
 					
 				case 'R':
-					if(Ins_Table[2] == 1)	STM_STATE = TRUE_RESULT;
+					if(Ins_Table[2] == '1')	STM_STATE = TRUE_RESULT;
 					else	STM_STATE = FALSE_RESULT;
 					break;
 				
 				case 'T':
-					STM_STATE = READY_STATE;
+					STM_STATE = START_STATE;
 					break;
 				
 				case 'E':

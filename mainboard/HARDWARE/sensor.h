@@ -64,7 +64,7 @@ u8 Check_Locat(void);
 #define CHECK 0x02
 //通用状态
 #define Is_Ready(rx_data)			((rx_data & 0x40) == 0x40)	//0100,0000 用于同所有从机确认是否准备好
-#define Is_Start(rx_data)			((rx_data & 0x20) == 0x20)	//0010,0000
+#define Is_Start(rx_data)			((rx_data & 0x80) == 0x80)	//0010,0000
 
 //检测仪检测结果
 #define Qualified(rx_data)		((rx_data & 0x60) == 0x60)
@@ -72,7 +72,7 @@ u8 Check_Locat(void);
 
 //戴帽MCU状态
 //#define HatCheck_Done(rx_data)	((rx_data & 0x08) == 0x08)
-#define HatCheck_Result(rx_data) ((rx_data & 0x0C) == 0x0C)	//1成功，0失败
+#define HatCheck_Result(rx_data) ((rx_data & 0x60) == 0x60)	//1成功，0失败
 
 u8 Check_HatMCU_Result(void);
 

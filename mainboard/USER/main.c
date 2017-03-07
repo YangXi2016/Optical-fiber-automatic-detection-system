@@ -37,23 +37,26 @@ int main(void)
 	//mutual_test();
 	/********初始化阶段***********/
 	Init_All();
-	//printf("ready\r\n");
+	printf("Mainboard ready\r\n");
 	period = ready;
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
 		Stop_All();
 		printf("check_ready error");
+		while(1);
 	}
+	
 	while (1)											//等待上位机的开始信号。
 	{
 		if (Check_DetectMCU_Start())
 			break;
+		delay_ms(1);
 	}
 	/********初始化阶段***********/
-
+	MOTION_ON();
 
 	while (1) {
-		compress();		//夹具上载前电磁铁吸合
-		while (Check_Clip_Ready() == 0);			//等待夹具上载
+		COMPRESS();		//夹具上载前电磁铁吸合
+		while (Check_Clip_Ready() == 0)	;			//等待夹具上载
 
 		period = upload;
 
@@ -61,7 +64,7 @@ int main(void)
 
 		while (status_station2 == 0);		//	弹夹到达第一个工位的前方
 		status_station2 = 0;
-
+		Rail_Stop();
 		for (temp = 0; temp < NUM_TOTAL - 1 + DISTANCE1 + DISTANCE2; temp++) {
 			get_period(temp);
 
@@ -75,7 +78,7 @@ int main(void)
 		Rail_Back();
 
 		while (Check_Limit_L() == 0);
-		uncompress();
+		UNCOMPRESS();
 		delay_ms(2000);
 		while (Check_Clip_Unload() == 0);
 		period = upload;
@@ -87,9 +90,13 @@ int main(void)
 
 
 void Init_All() {
+	delay_init();	    	 //延时函数初始化	 
+	//delay_ms(1000);
+	//delay_ms(1000);
+	//delay_ms(1000);
 	Sensor_gpio_init();
 	Control_gpio_init();
-	delay_init();	    	 //延时函数初始化	  
+	 
 	uart_init(115200);	 	//串口初始化为115200
 	SPI1_Init();		   //初始化SPI,这里默认主机
 	SPI2_Init();
@@ -128,19 +135,19 @@ void get_period(u8 temp) {
 void station_work(u8 period) {
 	while (1) {
 		Fixture_Push();
-		while (Check_PushMCU_Ready() == 0);
-		clamp();
+		while (Check_PushMCU_Ready() == 0) delay_ms(1);
+		CLAMP();
 		Fixture_Open();
-		while (Check_PushMCU_Ready() == 0);
+		while (Check_PushMCU_Ready() == 0) delay_ms(1);
 
 		if (period == clean) {
 			Clean();
-			while (Check_CleanMCU_Ready() == 0);
+			while (Check_CleanMCU_Ready() == 0) delay_ms(1);
 		}
 		else if (period == clean_detect) {
 			Clean();
 			Detect();
-			while ((Check_CleanMCU_Ready() == 0) || Check_DetectMCU_Ready() == 0);
+			while ((Check_CleanMCU_Ready() == 0) || Check_DetectMCU_Ready() == 0) delay_ms(1);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect] = detect_result;
 		}
@@ -150,7 +157,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_CleanMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0));
+			while ((Check_CleanMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(1);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 		}
@@ -159,7 +166,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0));
+			while ((Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(1);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 
@@ -168,24 +175,24 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while (Check_HatMCU_Ready() == 0);
+			while (Check_HatMCU_Ready() == 0) delay_ms(1);
 		}
 
-		loosen();
+		LOOSEN();
 
-		if (g_status[g_num_hat] == 1) {
-			while (Check_PushMCU_Ready() == 0);	//等待回退完成
+		if ((g_num_hat >=0 ) && (g_status[g_num_hat] == 1)) {
+			while (Check_PushMCU_Ready() == 0) delay_ms(1);	//等待回退完成
 			Fixture_Draw();
 			Hat_Check();								//回退时检测是否戴帽成功
-			while (Check_PushMCU_Ready() == 0);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(1);	//等待回退完成
 
-			while (Check_HatMCU_Ready()== 0);				//等待戴帽的结果
+			while (Check_HatMCU_Ready()== 0) delay_ms(1);				//等待戴帽的结果
 
 			if (Check_HatMCU_Result()== 1)	break;
 		}
 		else {
 			Fixture_Draw();
-			while (Check_PushMCU_Ready() == 0);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(1);	//等待回退完成
 			break; 
 		
 		}
@@ -284,23 +291,23 @@ void peripheral_test(void){
 			}
 			switch(USART_RX_BUF[0]){
 				case '1':
-					clamp();
-					printf("clamp\n");
+					CLAMP();
+					printf("CLAMP\n");
 					break;
 				
 				case '2':
-					loosen();
-					printf("loosen\n");
+					LOOSEN();
+					printf("LOOSEN\n");
 					break;
 				
 				case '3':
-					compress();
-					printf("compress\n");
+					COMPRESS();
+					printf("COMPRESS\n");
 					break;
 				
 				case '4':
-					uncompress();
-					printf("uncompress\n");
+					UNCOMPRESS();
+					printf("UNCOMPRESS\n");
 					break;
 				
 				default:

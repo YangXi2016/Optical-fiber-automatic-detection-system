@@ -130,7 +130,7 @@ void StepMotorInit(void)
 	{
 		t_sx = 1.0 + pow(e, (double)(-HS_COEFF * (HA_COEFF * i / H_ACC_NUM - 1)));
 		gs_hAccPrescTab[i] = (u16)(1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin) + 0.5);
-		printf("hPrescTab[%d]:%d\n",i,gs_hAccPrescTab[i]);
+		//printf("hPrescTab[%d]:%d\n",i,gs_hAccPrescTab[i]);
 	}	
 
 	//更新主平移台电机加减速预分频表
@@ -140,7 +140,7 @@ void StepMotorInit(void)
 	{
 		t_sx = 1.0 + pow(e, (double)(-MTS_COEFF * (MTA_COEFF * i / MT_ACC_NUM - 1)));
 		gs_mtAccPrescTab[i] = (u16)(1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin) + 0.5);
-		printf("mtPrescTab[%d]:%d\n",i,gs_mtAccPrescTab[i]);
+		//printf("mtPrescTab[%d]:%d\n",i,gs_mtAccPrescTab[i]);
 	}
 	
 }
@@ -309,8 +309,8 @@ void MTMotion(float angleDeg, u8 dir, u16 spd)
 
 	TIM_Cmd(TIM2,ENABLE);
 	
- 	printf("mtSteps: %d\n",g_mtStps);
- 	printf("mtPrec: %d\n",g_tmtPresc);
+// 	printf("mtSteps: %d\n",g_mtStps);
+// 	printf("mtPrec: %d\n",g_tmtPresc);
 }
 
 /*******************************************************************************

@@ -108,7 +108,7 @@ void StepMotorInit(void)
 	{
 		t_sx = 1.0 + pow(e, (double)(-PS_COEFF * (PA_COEFF * i / STEP_ACC_NUM - 1)));
 		gs_pAccPrescTab[i] = (u16)((1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin)) + 0.5);
-		printf("pPrescTab[%d]:%d\n",i,gs_pAccPrescTab[i]);
+		//printf("pPrescTab[%d]:%d\n",i,gs_pAccPrescTab[i]);
 	}
 	
 }

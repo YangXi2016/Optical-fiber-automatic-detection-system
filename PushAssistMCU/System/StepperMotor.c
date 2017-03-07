@@ -146,7 +146,7 @@ void StepMotorInit(void)
 	{
 		t_sx = 1.0 + pow(e, (double)(-PS_COEFF * (PA_COEFF * i / PUSH_ACC_NUM - 1)));
 		gs_pAccPrescTab[i] = (u16)((1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin)) + 0.5);
-		printf("pPrescTab[%d]:%d\n",i,gs_pAccPrescTab[i]);
+		//printf("pPrescTab[%d]:%d\n",i,gs_pAccPrescTab[i]);
 	}
 	
 	//更新中间夹线电机加减速预分频表
@@ -156,7 +156,7 @@ void StepMotorInit(void)
 	{
 		t_sx = 1.0 + pow(e, (double)(-MCS_COEFF * (MCA_COEFF * i / MC_ACC_NUM - 1)));
 		gs_mcAccPrescTab[i] = (u16)(1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin) + 0.5);
-		printf("mcPrescTab[%d]:%d\n",i,gs_mcAccPrescTab[i]);
+		//printf("mcPrescTab[%d]:%d\n",i,gs_mcAccPrescTab[i]);
 	}	
 
 	//更新两边夹线电机加减速预分频表
@@ -166,7 +166,7 @@ void StepMotorInit(void)
 	{
 		t_sx = 1.0 + pow(e, (double)(-SCS_COEFF * (SCA_COEFF * i / SC_ACC_NUM - 1)));
 		gs_scAccPrescTab[i] = (u16)(1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin) + 0.5);
-		printf("scPrescTab[%d]:%d\n",i,gs_scAccPrescTab[i]);
+		//printf("scPrescTab[%d]:%d\n",i,gs_scAccPrescTab[i]);
 	}
 	
 }

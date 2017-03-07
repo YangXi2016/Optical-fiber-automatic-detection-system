@@ -44,6 +44,7 @@ MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
 
 
 //准备发送给STM32的状态
+#define START_STATE			0x80
 #define TRUE_RESULT			0x60 //STM_STATE =
 #define FALSE_RESULT		0x40 //
 #define READY_STATE			0x40 //STM_STATE = (STM_STATE | 0x40)

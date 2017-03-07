@@ -112,6 +112,9 @@ void GetCCD(u8 *CCDRes)
 
 u8 IsHatDone(void)
 {
+	delay_ms(500);
+	return 'Y';
+	/*
 	u8 i = 0;
 	u8 CCDRes[128] = {0};
 	u8 wCnt = 1;
@@ -148,4 +151,5 @@ u8 IsHatDone(void)
 	{
 		return 'U';
 	}
+	*/
 }

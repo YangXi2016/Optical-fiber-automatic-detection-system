@@ -19,12 +19,14 @@
 /********************简单控制*********************************************/
 //#define hat_check()
 
-#define clamp()						GPIO_SetBits(GPIOA,GPIO_Pin_4)				//电磁铁吸合夹紧
-#define loosen()					GPIO_ResetBits(GPIOA,GPIO_Pin_4)			//电磁铁掉电松弛
+#define CLAMP()						GPIO_SetBits(GPIOA,GPIO_Pin_4)				//电磁铁吸合夹紧
+#define LOOSEN()					GPIO_ResetBits(GPIOA,GPIO_Pin_4)			//电磁铁掉电松弛
 
-#define compress()				GPIO_SetBits(GPIOD,GPIO_Pin_0)			//电磁铁上载前吸合
-#define uncompress()			GPIO_ResetBits(GPIOD,GPIO_Pin_0)			//电磁铁卸载前掉电
+#define COMPRESS()				GPIO_SetBits(GPIOD,GPIO_Pin_0)			//电磁铁上载前吸合
+#define UNCOMPRESS()			GPIO_ResetBits(GPIOD,GPIO_Pin_0)			//电磁铁卸载前掉电
 
+#define MOTION_ON()				GPIO_SetBits(GPIOD,GPIO_Pin_12)			//动力电源开启
+#define MOTION_OFF()				GPIO_ResetBits(GPIOD,GPIO_Pin_12)			//动力电源关闭
 /*
 #define red_on()					GPIO_SetBits(GPIOD,GPIO_Pin_5);
 #define red_off()					GPIO_ResetBits(GPIOD,GPIO_Pin_5);

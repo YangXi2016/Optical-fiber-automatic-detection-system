@@ -16,7 +16,7 @@ extern u8 clean_position,wipe_time;
 void InitAll(void)
 {
 	u8 FLASH_DATA[3]={0,0,0};
-	
+	delay_ms(1000);
 	delay_clockint();
 	
 	uart_init(115200);	
