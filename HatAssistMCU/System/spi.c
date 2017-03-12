@@ -170,10 +170,10 @@ void SPI1_IRQHandler(void)
 					while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
 					SPI_I2S_SendData(SPI1, CMD_COMFIRM);
 					//printf("%c",SYS_STATE);
-					//USART1->DR=SYS_STATE;
-					//while((USART1->SR&0X40)==0);//等待发送结束
+
 				}
-			
+				USART1->DR=SYS_STATE;
+				while((USART1->SR&0X40)==0);//等待发送结束			
 			}
 		}else{
 			if(Slave_Temp == HEAD) head_flag=1;

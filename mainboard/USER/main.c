@@ -49,14 +49,14 @@ int main(void)
 	{
 		if (Check_DetectMCU_Start())
 			break;
-		delay_ms(1);
+		delay_ms(50);
 	}
 	/********初始化阶段***********/
 	MOTION_ON();
 
 	while (1) {
 		COMPRESS();		//夹具上载前电磁铁吸合
-		while (Check_Clip_Ready() == 0)	;			//等待夹具上载
+		while (Check_Clip_Upload() == 0)	;			//等待夹具上载
 
 		period = upload;
 
@@ -69,19 +69,21 @@ int main(void)
 			get_period(temp);
 
 			station_work(period);
+			Rail_RunStation();
 
 		}
 		period = back;
-		g_num_clean = 0;
-		g_num_detect = 0;
-		g_num_hat = 0;
+		g_num_clean = -1;
+		g_num_detect = -1;
+		g_num_hat = -1;
 		Rail_Back();
 
 		while (Check_Limit_L() == 0);
+		Rail_Stop();
 		UNCOMPRESS();
 		delay_ms(2000);
 		while (Check_Clip_Unload() == 0);
-		period = upload;
+		period = unload;
 
 	}
 
@@ -119,14 +121,17 @@ void get_period(u8 temp) {
 		g_num_detect++;
 		g_num_hat++;
 	}
-	else if (temp < NUM_TOTAL + DISTANCE1 + DISTANCE2) {
+	else if (temp < NUM_TOTAL + DISTANCE1) {
 		period = detect_hat;
 		g_num_detect++;
 		g_num_hat++;
 	}
-	else {
+	else if(temp < NUM_TOTAL + DISTANCE1 + DISTANCE2){
 		period = hat;
 		g_num_hat++;
+	}
+	else{
+		printf("ERROR\n");
 	}
 
 }
@@ -135,19 +140,19 @@ void get_period(u8 temp) {
 void station_work(u8 period) {
 	while (1) {
 		Fixture_Push();
-		while (Check_PushMCU_Ready() == 0) delay_ms(1);
+		while (Check_PushMCU_Ready() == 0) delay_ms(50);
 		CLAMP();
 		Fixture_Open();
-		while (Check_PushMCU_Ready() == 0) delay_ms(1);
+		while (Check_PushMCU_Ready() == 0) delay_ms(50);
 
 		if (period == clean) {
 			Clean();
-			while (Check_CleanMCU_Ready() == 0) delay_ms(1);
+			while (Check_CleanMCU_Ready() == 0) delay_ms(50);
 		}
 		else if (period == clean_detect) {
 			Clean();
 			Detect();
-			while ((Check_CleanMCU_Ready() == 0) || Check_DetectMCU_Ready() == 0) delay_ms(1);
+			while ((Check_CleanMCU_Ready() == 0) || Check_DetectMCU_Ready() == 0) delay_ms(50);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect] = detect_result;
 		}
@@ -157,7 +162,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_CleanMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(1);
+			while ((Check_CleanMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(50);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 		}
@@ -166,7 +171,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(1);
+			while ((Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(50);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 
@@ -175,24 +180,24 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while (Check_HatMCU_Ready() == 0) delay_ms(1);
+			while (Check_HatMCU_Ready() == 0) delay_ms(50);
 		}
 
 		LOOSEN();
 
 		if ((g_num_hat >=0 ) && (g_status[g_num_hat] == 1)) {
-			while (Check_PushMCU_Ready() == 0) delay_ms(1);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(50);	//等待回退完成
 			Fixture_Draw();
 			Hat_Check();								//回退时检测是否戴帽成功
-			while (Check_PushMCU_Ready() == 0) delay_ms(1);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(50);	//等待回退完成
 
-			while (Check_HatMCU_Ready()== 0) delay_ms(1);				//等待戴帽的结果
+			while (Check_HatMCU_Ready()== 0) delay_ms(50);				//等待戴帽的结果
 
 			if (Check_HatMCU_Result()== 1)	break;
 		}
 		else {
 			Fixture_Draw();
-			while (Check_PushMCU_Ready() == 0) delay_ms(1);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(50);	//等待回退完成
 			break; 
 		
 		}
@@ -282,8 +287,8 @@ void peripheral_test(void){
 			if(Check_Limit_R()==1){
 				printf("Limit_R arrived\n");
 			}
-			if(Check_Clip_Ready()){
-				printf("Clip Ready\n");
+			if(Check_Clip_Upload()){
+				printf("Clip Upload\n");
 			}
 			//if(status_station2 == 1){
 			if(Check_Locat() == 1){

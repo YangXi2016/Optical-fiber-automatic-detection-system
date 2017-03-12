@@ -21,7 +21,7 @@
 //#define SYS_START				GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_8)//读取开始暂停
 
 //void KEY_Init(void);//IO初始化
-u8 Check_Clip_Ready(void);  	//
+u8 Check_Clip_Upload(void);  	//
 u8 Check_Clip_Unload(void);
 /*********************************弹夹上载检测********************************/
 

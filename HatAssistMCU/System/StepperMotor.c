@@ -267,8 +267,8 @@ void HMotion(float angleDeg, u8 dir, u16 spd)
 
 	TIM_Cmd(TIM2,ENABLE);
 	
- 	printf("hSteps: %d\n",g_hStps);
- 	printf("hPrec: %d\n",g_thPresc);
+// 	printf("hSteps: %d\n",g_hStps);
+// 	printf("hPrec: %d\n",g_thPresc);
 }
 
 /*******************************************************************************

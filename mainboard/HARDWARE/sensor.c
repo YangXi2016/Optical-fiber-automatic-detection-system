@@ -43,7 +43,7 @@ void Sensor_gpio_init(void)
 *输出参数：status:0代表未上载，1代表已上载
 *返回参数：无 
 *******************************************************************************/
-u8 Check_Clip_Ready(void)
+u8 Check_Clip_Unload(void)
 { 
 	if((HOLDER_PLACE_1==1)||(HOLDER_PLACE_2==1))
 	{
@@ -54,7 +54,7 @@ u8 Check_Clip_Ready(void)
 	return 0;// 无按键按下
 }
 
-u8 Check_Clip_Unload(void)
+u8 Check_Clip_Upload(void)
 {
 	if((HOLDER_PLACE_1==0) && (HOLDER_PLACE_2==0))
 	{
@@ -274,7 +274,7 @@ u8 Check_Ready(u16 try_times)
 				}
 			}
 		}
-		delay_ms(1);
+		delay_ms(50);
 }
 
 }
