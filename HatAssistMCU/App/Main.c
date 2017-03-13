@@ -43,6 +43,11 @@ int main(void)
 			
 			if(MASTER_CMD == CMD_Hat){
 				SYS_STATE = WORK_STATE;
+				status = IsHatExist();
+				if(status == 0){
+					SYS_STATE = HATNULL_STATE;
+					while(1);
+				}
 				Hat();
 			}
 			else if(MASTER_CMD == CMD_HatCheck){

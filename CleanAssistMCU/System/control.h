@@ -25,6 +25,7 @@
 //#define WIPE_LEN		3 //一次擦拭宽度 mm
 //#define CLOTH_LEN		(50*1000)
 #define MAX_TIME		(30000) //仅横向移动次数
+#define ROLL_TIME		(1000)	//ms
 
 void Clean(void);
 void Clean_Reset(void);

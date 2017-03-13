@@ -15,7 +15,8 @@
 u8 i;
 
 extern u8 MASTER_CMD,SYS_STATE;
-
+extern u8 clean_position,wipe_time;	
+extern u8 FLASH_DATA[3];
 int main(void)
 {
 	InitAll();
@@ -25,6 +26,10 @@ int main(void)
 	
 	while(1)
 	{
+		if(wipe_time > MAX_TIME){
+			SYS_STATE=DROPOUT_STATE;
+			while(1);
+		}
 		if((IsStepMotActDone()) && (IsDCMotActDone()))	SYS_STATE = READY_STATE;
 		if(MASTER_CMD != DUMY){
 			if(MASTER_CMD == CMD_Clean){
@@ -34,6 +39,14 @@ int main(void)
 			else if(MASTER_CMD == CMD_CleanReset){
 				SYS_STATE = WORK_STATE;
 				Clean_Reset();				
+			}
+			else if(MASTER_CMD == CMD_RecordReset){
+				clean_position = 0;
+				wipe_time = 0;
+				FLASH_DATA[0] = 1;
+				FLASH_DATA[1] = clean_position;
+				FLASH_DATA[2] = wipe_time;
+				STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
 			}
 			else if(MASTER_CMD == CMD_CleanStop){
 				SYS_STATE = WORK_STATE;

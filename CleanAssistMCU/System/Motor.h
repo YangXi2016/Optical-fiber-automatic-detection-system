@@ -27,9 +27,9 @@
 #define MM_PID_I  0.001
 
 
-#define CM_DEFAULT_PRE 144 //主动轮电机默认预分频
-#define CM_DEFAULT_PERIOD 100 //主动轮默认周期，可定义100级速度 
-#define CM_DEFAULT_SPD 50 //默认速度50
+#define CM_DEFAULT_PRE 144 //卷纸电机默认预分频
+#define CM_DEFAULT_PERIOD 100 //卷纸电机默认周期，可定义100级速度 
+#define CM_DEFAULT_SPD 25 //默认速度25
 
 #define MM_CW  {GPIO_SetBits(GPIOA,GPIO_Pin_1);GPIO_ResetBits(GPIOA,GPIO_Pin_2);}
 #define MM_CCW  {GPIO_SetBits(GPIOA,GPIO_Pin_2);GPIO_ResetBits(GPIOA,GPIO_Pin_1);}

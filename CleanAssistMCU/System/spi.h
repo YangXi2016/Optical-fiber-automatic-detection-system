@@ -39,6 +39,7 @@ MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
 //#define CMD_CleanStop(CMD)					(CMD & 0xBF)
 #define CMD_Clean											0x40
 #define CMD_CleanReset								0x20
+#define CMD_RecordReset								0x10
 #define CMD_CleanStop									0xBF
 
 #define READY_STATE							0x40

@@ -20,9 +20,9 @@
 #define DEFAULT_PERIOD   20 //定时器默认计数周期
 #define DEFAULT_PRESCALE 72  //定时器默认预分频1000KhZ计数频率
 
-//推线电机若干参数
+//步进电机若干参数
 #define P_DEFAULT_PRE 10 //电机输出脉冲计数周期
-#define P_MOTOR_DIV 50 //50脉冲一周
+#define P_MOTOR_DIV 48 //48脉冲一周
 #define STEP_ACC_NUM 30 //推夹具步进电机加速脉冲数
 #define PA_COEFF  2.0 //定义进入最大加速度的时间，参数越大，进入越快，2.0在居中的时间进入
 #define PS_COEFF 5 //推夹具步进电机S加速曲线参数，最大加速区间曲线斜率大小参数

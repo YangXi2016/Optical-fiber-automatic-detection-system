@@ -12,6 +12,7 @@
 #include "control.h"
 #include "spi.h"
 #include "stmflash.h"
+#include "delay.h"
 
 u8 clean_position,wipe_time;	//0代表在最下方准备往上擦；1代表在中间准备往上擦；2代表在上方准备往下擦；3代表在中间准备往下擦；
 
@@ -40,6 +41,7 @@ void Clean(void)
 		
 		CMotStart(CM_SPEED);
 		MMotMotion(MM_ANGLE, '+', MM_SPEED);
+		delay_ms(ROLL_TIME);
 		while(IsDCMotActDone() == 0 );
 		CMotStop();
 		clean_position = 2;
@@ -61,6 +63,7 @@ void Clean(void)
 		
 		CMotStart(CM_SPEED);
 		MMotMotion(MM_ANGLE, '+', MM_SPEED);
+		delay_ms(ROLL_TIME);
 		while(IsDCMotActDone() == 0 );
 		CMotStop();
 		clean_position = 0;
