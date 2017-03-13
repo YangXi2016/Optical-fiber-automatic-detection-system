@@ -38,6 +38,11 @@ void Rail_RunStation(void)
 	MTMotion(RAIL_STATION_ANGLE, '+', RAIL_STATION_SPEED);
 }
 
+void Rail_RunToStation(void)
+{
+	MTMotion(RAIL_FIRSTSTATION_ANGLE, '+', RAIL_STATION_SPEED);
+}
+
 void Rail_Back(void)
 {
 	MTMotion(RAIL_FREE_ANGLE, '+', RAIL_FREE_SPEED);

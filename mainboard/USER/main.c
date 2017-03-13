@@ -22,6 +22,7 @@ void get_period(u8 temp);
 void station_work(u8 period);
 void mutual_test(void);
 void peripheral_test(void);
+void rail_state_init(void);
 u8 i,len,t;
 //u8 MASTER_CMD=((u8)?0B11110000));
 //u8 master_temp;
@@ -53,18 +54,14 @@ int main(void)
 	}
 	/********初始化阶段***********/
 	MOTION_ON();
-
+	rail_state_init();
+	Rail_RunTo_Station();
 	while (1) {
 		COMPRESS();		//夹具上载前电磁铁吸合
 		while (Check_Clip_Upload() == 0)	;			//等待夹具上载
 
 		period = upload;
 
-		Rail_Forward();
-
-		while (status_station2 == 0);		//	弹夹到达第一个工位的前方
-		status_station2 = 0;
-		Rail_Stop();
 		for (temp = 0; temp < NUM_TOTAL - 1 + DISTANCE1 + DISTANCE2; temp++) {
 			get_period(temp);
 
@@ -78,8 +75,10 @@ int main(void)
 		g_num_hat = -1;
 		Rail_Back();
 
-		while (Check_Limit_L() == 0);
+		while (status_station2 == 0);
+		status_station2 = 0;
 		Rail_Stop();
+		
 		UNCOMPRESS();
 		delay_ms(2000);
 		while (Check_Clip_Unload() == 0);
@@ -104,6 +103,16 @@ void Init_All() {
 	SPI2_Init();
 }
 
+void rail_state_init(void){
+	Rail_Back();
+	while (Check_Limit_L() == 0);
+	Rail_Stop();
+	
+	Rail_Forward();
+	while (status_station2 == 0);		//	弹夹到达第一个工位的前方
+	status_station2 = 0;
+	Rail_Stop();
+}
 
 void get_period(u8 temp) {
 	if (temp < DISTANCE1) {

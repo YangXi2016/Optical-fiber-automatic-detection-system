@@ -24,6 +24,8 @@
 #define RAIL_STATION_ANGLE	(360*1)
 #define RAIL_STATION_SPEED	(300)
 
+#define RAIL_FIRSTSTATION_ANGLE (360*2.5)
+
 //电机自由移动参数
 #define RAIL_FREE_ANGLE		(360*100)
 #define RAIL_FREE_SPEED		(300)
@@ -32,6 +34,7 @@ void Hat(void);
 //void Hat_Check(void);
 void Hat_Stop(void);
 void Rail_RunStation(void);
+void Rail_RunToStation(void);
 void Rail_Back(void); 
 void Rail_Forward(void);
 void Rail_Stop(void);

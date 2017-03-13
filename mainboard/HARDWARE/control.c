@@ -172,6 +172,12 @@ u8 Rail_RunStation(void)
 	else return 0;
 }
 
+u8 Rail_RunTo_Station(void){
+	u8 status;
+	status = HAT_ReadWriteByte(CMD_RailRunToStation);
+	if(status == CMD_COMFIRM)	return 1;
+	else return 0;	
+}
 
 u8 Rail_Back(void)
 {

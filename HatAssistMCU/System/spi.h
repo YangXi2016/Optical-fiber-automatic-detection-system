@@ -38,6 +38,7 @@ MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
 #define CMD_Hat									0x40	//(CMD | 0x40)     //0100,0000
 #define CMD_HatStop 						0xBF	//(CMD & 0xBF)			//1011,1111
 #define CMD_RailRunStation 			0x20	//(CMD | 0x20)     	//0010,0000
+#define CMD_RailRunToStation		0x80
 #define CMD_RailBack 						0x10	//(CMD | 0x10)     	//0001,0000
 #define CMD_RailForward 				0x08	//(CMD | 0x08)			//0000,1000
 #define CMD_RailStop 						0xC7	//(CMD & 0xC7)			//1100,0111

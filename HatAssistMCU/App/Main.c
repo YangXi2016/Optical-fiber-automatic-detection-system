@@ -56,6 +56,10 @@ int main(void)
 				SYS_STATE = WORK_STATE;
 				Rail_RunStation();
 			}
+			else if(MASTER_CMD == CMD_RailRunToStation){
+				SYS_STATE = WORK_STATE;
+				Rail_RunToStation();
+			}
 			else if(MASTER_CMD == CMD_RailBack){
 				SYS_STATE = WORK_STATE;
 				Rail_Back();
