@@ -38,7 +38,7 @@ MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
 #define Is_Push(CMD)								(CMD ==0x40)
 #define Is_Draw(CMD)								(CMD ==0x20)
 #define Is_Open(CMD)								(CMD ==0x10)
-#define Is_Close(CMD)								(CMD ==0x08)
+//#define Is_Close(CMD)								(CMD ==0x08)
 #define Is_Stop(CMD)								(CMD ==0x87)
 
 #define READY_STATE			0x40//(SYS_STATE = 0x40)// = (SYS_STATE | 0x40)

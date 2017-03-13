@@ -64,6 +64,7 @@ u8 IsMotActDone(u8 motor);//检查运动是否完成
 
 #define CLAMP_ANGLE			1000		//用于夹紧的电机所需走的距离
 #define	PROCESS_ANGLE		3600		//用于推拉的电机所需走的距离
+#define STICK_ANGLE			1000		//往回拉的拨片贴紧/移开的距离
 #define SPEED						700
 void Fixture_Stop(void);
 
