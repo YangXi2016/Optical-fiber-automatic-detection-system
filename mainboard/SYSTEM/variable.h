@@ -42,14 +42,13 @@ enum running_status
 
 
 //system operating status
-enum operating_status
+enum system_status
 {
-	usual,			//perform well
-	drop_out,		//optical fiber
-	halt,			//worker suddun stop system
-	wipe_error,		//the material used for wiping finish or break
-	hat_error,		//the hat finish
-};
+	normal,			
+	tissueNull,		//optical fiber
+	hatNull,			//worker suddun stop system
+	SafeGate_error,
+}sys_error;
 
 //u8 rail_run = 0;
 

@@ -85,6 +85,10 @@ static void SAFE_MONITOR_Init(void);
 //#define CMD_UnDetect 					(CMD & 0xBF)
 #define CMD_Head								0x20
 #define CMD_Tail								0x10
+#define CMD_SafeGateErr					0x80
+#define CMD_HatNull							0x90
+#define CMD_TissueNull					0xC1
+
 
 #define CMD_Clean 							0x40	//(CMD | 0x40)     //0100,0000
 #define CMD_CleanStop 					0xBF	//(CMD & 0xBF)
@@ -130,9 +134,10 @@ u8 Fixture_Close(void);
 
 u8 Hat(void);
 
-u8 Detect(void);
-
 u8 Clean(void);
+
+u8 Detect(void);
+u8 Inform_Detect(u8 txdata);
 
 u8 Stop_All(void);
 

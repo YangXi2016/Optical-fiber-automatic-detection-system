@@ -125,6 +125,12 @@ u8 Detect(void)
 	else return 0;
 }
 
+u8 Inform_Detect(u8 txdata){
+	u8 status;
+	status = DETECT_ReadWriteByte(txdata);
+	if(status == CMD_COMFIRM)	return 1;
+	else return 0;
+}	
 
 //擦拭协机的控制
 u8 Clean(void)

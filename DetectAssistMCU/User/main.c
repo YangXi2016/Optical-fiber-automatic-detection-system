@@ -22,7 +22,7 @@
 
 #include "spi.h"						/*added by yangxi in 2017/2/15*/
 extern uint8_t MASTER_CMD, STM_STATE;	//used in communicating with STM32
-struct STATUS COM_STATUS = {0,0,0,0};							//used in communicating with COMPUTER
+struct STATUS COM_STATUS = {0,0,0,0,0};							//used in communicating with COMPUTER
 
 uint8_t 	Ins_Flag = 0;
 uint8_t 	Ins_Count = 0;
@@ -138,8 +138,8 @@ int main(void)
 					STM_STATE = START_STATE;
 					break;
 				
-				case 'E':
-					printf("%d%d%d%dE/n",COM_STATUS.Union_Status,COM_STATUS.Detect_Status,COM_STATUS.Clamp_Status,COM_STATUS.Period_Status);
+				case 'B':
+					printf("SB%d%d%d%d%dE/n",COM_STATUS.Union_Status,COM_STATUS.Detect_Status,COM_STATUS.Clamp_Status,COM_STATUS.Period_Status,COM_STATUS.ERROR_Status);
 					break;
 				
 				default	: printf("PE\n");break;
@@ -157,33 +157,42 @@ int main(void)
 				{
 					//Detect();
 					STM_STATE = WORK_STATE;
-					//COM_STATUS = WORK_STATUS;
 					COM_STATUS.Detect_Status = 1;
 					printf(CMD_Detect);
 				}
 				else if(Is_Clamp(MASTER_CMD))
 				{
-					//COM_STATUS = CLAMP_STATUS;
 					COM_STATUS.Clamp_Status = 1;
 				}
 				else if(Is_Loosen(MASTER_CMD))
 				{
-					//COM_STATUS = LOOSEN_STATUS;
 					COM_STATUS.Clamp_Status = 0;
 				}
 				else if(Is_Head(MASTER_CMD))
 				{
-					//COM_STATUS = HEAD_STATUS;
 					COM_STATUS.Period_Status = 1;
 					printf(CMD_Head);
 				}
 				else if(Is_Tail(MASTER_CMD))
-				{
-					//COM_STATUS = TAIL_STATUS;
+				{			
 					COM_STATUS.Period_Status = 3;
 					printf(CMD_Tail);
 				}
-				
+				else if(Is_SafeGateErr(MASTER_CMD))
+				{
+					COM_STATUS.ERROR_Status = 1;
+					printf(CMD_ERROR);
+				}
+				else if(Is_HatNull(MASTER_CMD))
+				{
+					COM_STATUS.ERROR_Status = 2;
+					printf(CMD_ERROR);
+				}
+				else if(Is_TissueNull(MASTER_CMD))
+				{
+					COM_STATUS.Period_Status = 3;
+					printf(CMD_ERROR);
+				}	
 
 				MASTER_CMD=DUMY;
 			}

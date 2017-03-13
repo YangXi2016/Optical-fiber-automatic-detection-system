@@ -73,16 +73,20 @@ u8 Check_Locat(void);
 //戴帽MCU状态
 //#define HatCheck_Done(rx_data)	((rx_data & 0x08) == 0x08)
 #define HatCheck_Result(rx_data) ((rx_data & 0x60) == 0x60)	//1成功，0失败
+#define Is_HatNull(rx_data)				((rx_data & 0x10) == 0x10)	//1没帽，
+
+//纸巾用光状态
+#define Is_TissueNull(rx_data)		((rx_data & 0x41) == 0x41)	//1没纸
 
 u8 Check_HatMCU_Result(void);
 
- u8 Check_CleanMCU_Ready(void);
- u8 Check_PushMCU_Ready(void);
- u8 Check_HatMCU_Ready(void);
+u8 Check_CleanMCU_Ready(void);
+u8 Check_PushMCU_Ready(void);
+u8 Check_HatMCU_Ready(void);
 
- u8 Check_DetectMCU_Ready(void);
+u8 Check_DetectMCU_Ready(void);
 
- u8 Check_DetectMCU_Start(void);
+u8 Check_DetectMCU_Start(void);
 
 u8 Check_DetectMCU_Result(void);
 

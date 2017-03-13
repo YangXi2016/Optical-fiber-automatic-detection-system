@@ -31,7 +31,6 @@ u8 detect_result;
 
 extern u8 status_station2;
 
-
 int main(void)
 {
 	//peripheral_test();
@@ -40,6 +39,7 @@ int main(void)
 	Init_All();
 	printf("Mainboard ready\r\n");
 	period = ready;
+	sys_error = normal;
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
 		Stop_All();
 		printf("check_ready error");
