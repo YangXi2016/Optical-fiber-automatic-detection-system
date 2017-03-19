@@ -21,6 +21,14 @@
 #include "clampmotor.h"			/*added by yangxi in 2016/12/23*/
 
 #include "spi.h"						/*added by yangxi in 2017/2/15*/
+
+#define INTERACTION		1
+#if INTERACTION	
+	#define INFORM_COM(MSG)		printf(MSG)
+#else
+	#define INFORM_COM(MSG)		
+#endif
+
 extern uint8_t MASTER_CMD, STM_STATE;	//used in communicating with STM32
 struct STATUS COM_STATUS = {0,0,0,0,0};							//used in communicating with COMPUTER
 
@@ -117,29 +125,37 @@ int main(void)
 				case 'Z':
 					switch(Ins_Table[2])
 					{
-						case '1':ClampMotor_Up();printf("OKE\n");break;
-						case '0':ClampMotor_Down();Delayms(50);ClampMotor_Off();printf("OKE\n");break;
-						default:ClampMotor_Off();printf("OKE\n");;break;
+						case '1':ClampMotor_Up();break;
+						case '0':ClampMotor_Down();Delayms(50);ClampMotor_Off();break;
+						default:ClampMotor_Off();break;
 					}
+					printf("OKE\n");
 					break;
 					
 					//Where to updata STM_STATE /*added by yangxi in 2017/2/15*/
 				case 'P':
 					if(Ins_Table[2] == '0')	COM_STATUS.Union_Status = 0;
 					else	COM_STATUS.Union_Status = 1;
+					printf("OKE\n");
 					break;
 					
 				case 'R':
 					if(Ins_Table[2] == '1')	STM_STATE = TRUE_RESULT;
 					else	STM_STATE = FALSE_RESULT;
+					COM_STATUS.Detect_Status = 0;
+					COM_STATUS.Clamp_Status = 0;
+					if(COM_STATUS.Period_Status == 1)	COM_STATUS.Period_Status = 2;
+					if(COM_STATUS.Period_Status == 3)	COM_STATUS.Period_Status = 0;
+					printf("OKE\n");
 					break;
 				
 				case 'T':
 					STM_STATE = START_STATE;
+					printf("OKE\n");
 					break;
 				
-				case 'B':
-					printf("SB%d%d%d%d%dE/n",COM_STATUS.Union_Status,COM_STATUS.Detect_Status,COM_STATUS.Clamp_Status,COM_STATUS.Period_Status,COM_STATUS.ERROR_Status);
+				case 'I':
+					printf("SI%d%d%d%d%dE/n",COM_STATUS.Union_Status,COM_STATUS.Detect_Status,COM_STATUS.Clamp_Status,COM_STATUS.Period_Status,COM_STATUS.ERROR_Status);
 					break;
 				
 				default	: printf("PE\n");break;
@@ -158,40 +174,41 @@ int main(void)
 					//Detect();
 					STM_STATE = WORK_STATE;
 					COM_STATUS.Detect_Status = 1;
-					printf(CMD_Detect);
-				}
-				else if(Is_Clamp(MASTER_CMD))
-				{
 					COM_STATUS.Clamp_Status = 1;
+					INFORM_COM(CMD_Detect);
 				}
-				else if(Is_Loosen(MASTER_CMD))
-				{
-					COM_STATUS.Clamp_Status = 0;
-				}
+// 				else if(Is_Clamp(MASTER_CMD))
+// 				{
+// 					COM_STATUS.Clamp_Status = 1;
+// 				}
+// 				else if(Is_Loosen(MASTER_CMD))
+// 				{
+// 					COM_STATUS.Clamp_Status = 0;
+// 				}
 				else if(Is_Head(MASTER_CMD))
 				{
 					COM_STATUS.Period_Status = 1;
-					printf(CMD_Head);
+					INFORM_COM(CMD_Head);
 				}
 				else if(Is_Tail(MASTER_CMD))
 				{			
 					COM_STATUS.Period_Status = 3;
-					printf(CMD_Tail);
+					INFORM_COM(CMD_Tail);
 				}
 				else if(Is_SafeGateErr(MASTER_CMD))
 				{
 					COM_STATUS.ERROR_Status = 1;
-					printf(CMD_ERROR);
+					INFORM_COM(CMD_ERROR);
 				}
 				else if(Is_HatNull(MASTER_CMD))
 				{
 					COM_STATUS.ERROR_Status = 2;
-					printf(CMD_ERROR);
+					INFORM_COM(CMD_ERROR);
 				}
 				else if(Is_TissueNull(MASTER_CMD))
 				{
 					COM_STATUS.Period_Status = 3;
-					printf(CMD_ERROR);
+					INFORM_COM(CMD_ERROR);
 				}	
 
 				MASTER_CMD=DUMY;

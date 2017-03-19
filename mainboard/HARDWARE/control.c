@@ -105,6 +105,7 @@ void EXTI9_5_IRQHandler(void)
 		MOTION_OFF();
 		Stop_All();
 		printf("Safe Gate Work\n");
+		while(1);
 	EXTI_ClearITPendingBit(EXTI_Line9);  
 	}
 

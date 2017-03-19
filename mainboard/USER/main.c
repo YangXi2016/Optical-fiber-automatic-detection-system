@@ -62,7 +62,7 @@ int main(void)
 
 		period = upload;
 
-		for (temp = 0; temp < NUM_TOTAL - 1 + DISTANCE1 + DISTANCE2; temp++) {
+		for (temp = 0; temp < NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
 			get_period(temp);
 
 			station_work(period);
@@ -92,8 +92,8 @@ int main(void)
 
 void Init_All() {
 	delay_init();	    	 //延时函数初始化	 
-	//delay_ms(1000);
-	//delay_ms(1000);
+	delay_ms(1000);
+	delay_ms(1000);
 	//delay_ms(1000);
 	Sensor_gpio_init();
 	Control_gpio_init();
@@ -134,15 +134,21 @@ void get_period(u8 temp) {
 		period = detect_hat;
 		g_num_detect++;
 		g_num_hat++;
+		g_num_clean = -1;
 	}
 	else if(temp < NUM_TOTAL + DISTANCE1 + DISTANCE2){
 		period = hat;
 		g_num_hat++;
+		g_num_detect = -1;
 	}
 	else{
 		printf("ERROR\n");
 	}
-
+	
+	if(g_num_detect == 0)	
+		while(Inform_Detect(CMD_Head)==0);			//弹夹检查开始发送CMD_Head指令
+	if(g_num_detect == NUM_TOTAL - 1) 
+		while(Inform_Detect(CMD_Tail)==0);	//弹夹检查结束发送CMD_Tail指令
 }
 
 

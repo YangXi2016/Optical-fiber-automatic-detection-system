@@ -5,8 +5,8 @@
 #include <stdio.h>
 
 #define CMD_Detect	"SDE\n"
-#define CMD_Head		"SIE\n"
-#define CMD_Tail		"SOE\n"
+#define CMD_Head		"SHE\n"
+#define CMD_Tail		"STE\n"
 #define CMD_ERROR		"SXE\n"
 
 struct STATUS{
