@@ -29,8 +29,14 @@ u8 i,len,t;
 u8 temp;
 u8 detect_result;
 
-extern u8 status_station2;
+int g_status[20] = {0};	//20个夹具20个工位，但工位间距是19个。
+int g_num_clean  = -1;		//计数统一从0开始，19结束
+int g_num_detect = -1;
+int g_num_hat  = -1;	
 
+extern u8 status_station2;
+enum running_status period;
+enum system_status sys_error;
 int main(void)
 {
 	//peripheral_test();
@@ -42,8 +48,10 @@ int main(void)
 	sys_error = normal;
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
 		Stop_All();
-		while(1)
-			printf("check_ready error");delay_ms(1000);
+		while(1){
+			printf("check_ready error");
+			delay_ms(1000);
+		}
 	}
 	
 	while (1)											//等待上位机的开始信号。
@@ -57,7 +65,7 @@ int main(void)
 	rail_state_init();
 	Rail_RunTo_Station();
 	while (1) {
-		if(Check_DetectMCU_CleanSet){		//周期开始前检测是否有纸巾校准信号
+		if(Check_DetectMCU_CleanSet()){		//周期开始前检测是否有纸巾校准信号
 			Clean_Set();
 			Inform_Detect(CMD_ClearFlag);
 		}
@@ -204,7 +212,7 @@ void station_work(u8 period) {
 
 		LOOSEN();
 
-		if ((g_num_hat >=0 ) && (g_status[g_num_hat] == 1)) {
+		if ((g_num_hat >= 0 ) && (g_num_hat <= NUM_TOTAL ) && (g_status[g_num_hat] == 1)) {
 			while (Check_PushMCU_Ready() == 0) delay_ms(50);	//等待回退完成
 			Fixture_Draw();
 			Hat_Check();								//回退时检测是否戴帽成功

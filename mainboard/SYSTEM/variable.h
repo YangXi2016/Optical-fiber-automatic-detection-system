@@ -19,10 +19,7 @@
 #define DISTANCE1 8
 #define DISTANCE2 6
 
-u8 g_status[20] = {0};	//20个夹具20个工位，但工位间距是19个。
-u8 g_num_clean  = -1;		//计数统一从0开始，19结束
-u8 g_num_detect = -1;
-u8 g_num_hat  = -1;			
+		
 
 //system running status;recording the status of one peried 
 enum running_status
@@ -37,7 +34,7 @@ enum running_status
 	hat,
 	back,
 	unload,
-} period;
+} ;
 
 
 //system operating status
@@ -47,7 +44,7 @@ enum system_status
 	tissueNull,		//optical fiber
 	hatNull,			//worker suddun stop system
 	SafeGate_error,
-}sys_error;
+};
 
 //u8 rail_run = 0;
 

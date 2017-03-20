@@ -39,8 +39,10 @@ u8 Check_Limit_R(void);
 
 //见GPIOD10/GPIOD11中断处理函数;后面实际只使用了D10.
 #define LOCAT		GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_11)
-static void LOCAT_Init(void);
 u8 Check_Locat(void);
+//above is for check the method, below is for interrupt method
+static void LOCAT_Init(void);
+
 /*********************************红外反射定位********************************/
 
 
@@ -50,13 +52,11 @@ u8 Check_Locat(void);
 //通用状态
 #define Is_Ready(rx_data)			((rx_data & 0x40) == 0x40)	//0100,0000 用于同所有从机确认是否准备好
 
-
 //检测仪检测结果
 #define Is_Start(rx_data)			((rx_data & 0x80) == 0x80)	//0010,0000
 #define Qualified(rx_data)		((rx_data & 0x60) == 0x60)
 #define UnQualified(rx_data)	((rx_data & 0x60) == 0x40)
 #define Is_CleanSet(rx_data)	((rx_data & 0x10)	== 0x10)
-
 
 //戴帽MCU状态
 //#define HatCheck_Done(rx_data)	((rx_data & 0x08) == 0x08)

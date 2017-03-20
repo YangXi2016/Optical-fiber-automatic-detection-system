@@ -13,6 +13,7 @@
 #include "delay.h"
 #include "spi.h"
 #include "control.h"
+#include "variable.h"
 
 void Sensor_gpio_init(void)
 {
@@ -181,6 +182,7 @@ u8 Check_Limit_R(void)
 
 
 /*********************************协处理器状态查询*******************************/
+extern enum system_status sys_error;
 
 u8 Check_CleanMCU_Ready(void)
 {
@@ -190,7 +192,14 @@ u8 Check_CleanMCU_Ready(void)
 		MOTION_OFF();
 		Inform_Detect(CMD_TissueNull);
 		Stop_All();
-		while(1);
+		sys_error = tissueNull;
+		while(1){
+			if(Check_DetectMCU_CleanSet()){
+				Clean_Set();
+				Inform_Detect(CMD_ClearFlag);
+			}
+		}
+				
 	}
 	if(Is_Ready(RxData))
 		return 1;
@@ -217,6 +226,7 @@ u8 Check_HatMCU_Ready(void)
 		MOTION_OFF();
 		Inform_Detect(CMD_HatNull);
 		Stop_All();
+		sys_error = hatNull;
 		while(1);
 	}
 	if(Is_Ready(RxData))
@@ -250,7 +260,7 @@ u8 Check_DetectMCU_Start()
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
 	if(Is_CleanSet(RxData))
-		PUSH_ReadWriteByte(CMD_CleanSet)
+		PUSH_ReadWriteByte(CMD_CleanSet);
 	if(Is_Start(RxData))
 		return 1;
 	else 

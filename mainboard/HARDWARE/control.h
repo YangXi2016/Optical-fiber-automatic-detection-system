@@ -47,6 +47,7 @@ static void SAFE_MONITOR_Init(void);
 //戴帽装置		1、戴帽是否结束。 	2、平移台电机移动是否结束。	
 //推夹装置		1、推夹是否结束。		2、夹拽是否结束。
 
+//the cmd sent to DetectMCU
 #define CMD_Detect 							0x40	//(CMD | 0x40)     //0100,0000
 #define CMD_Head								0x20
 #define CMD_Tail								0x10
@@ -55,10 +56,12 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_TissueNull					0xC1
 #define CMD_ClearFlag						0x08
 
+//the cmd sent to CleanAssistMCU
 #define CMD_Clean 							0x40	//(CMD | 0x40)     //0100,0000
 #define CMD_CleanSet						0x20
 #define CMD_CleanStop 					0xBF	//(CMD & 0xBF)
 
+//the cmd sent to HatAssistMCU
 #define CMD_Hat									0x40	//(CMD | 0x40)     //0100,0000
 #define CMD_HatStop 						0xBF	//(CMD & 0xBF)			//1011,1111
 #define CMD_RailRunStation 			0x20	//(CMD | 0x20)     	//0010,0000
@@ -68,7 +71,8 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_HatCheck						0x04
 #define CMD_RailRunToStation		0x80
 #define CMD_AllStop							0x87
-			
+
+//the cmd sent to PushAssistMCU
 #define CMD_Push 								0x40	//(CMD | 0x40)
 #define CMD_Draw 								0x20	//(CMD | 0x20)
 #define CMD_Open								0x10	

@@ -13,7 +13,7 @@
 #include "delay.h"
 #include "spi.h"
 #include "control.h"
-
+#include "variable.h"
 
 
 void Control_gpio_init(void)
@@ -72,6 +72,7 @@ static void SAFE_MONITOR_Init(void)
 	
 }
 
+extern enum system_status sys_error;
 void EXTI9_5_IRQHandler(void)
 {
 
@@ -79,8 +80,9 @@ void EXTI9_5_IRQHandler(void)
 		MOTION_OFF();
 		Stop_All();
 		printf("Safe Gate Work\n");
+		sys_error = SafeGate_error;
+		EXTI_ClearITPendingBit(EXTI_Line9); 
 		while(1);
-	EXTI_ClearITPendingBit(EXTI_Line9);  
 	}
 
 }
