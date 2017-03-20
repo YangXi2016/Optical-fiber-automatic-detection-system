@@ -45,12 +45,14 @@ MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
 #define Is_SafeGateErr(CMD)	((CMD & 0x80) == 0x80)
 #define Is_HatNull(CMD)			((CMD & 0x90) == 0x90)
 #define Is_TissueNull(CMD)	((CMD & 0xC1) == 0xC1)
+#define Is_ClearFlag(CMD)		((CMD & 0x08)	== 0x08)
 
 //准备发送给STM32的状态
 #define START_STATE			0x80
 #define TRUE_RESULT			0x60 //STM_STATE =
 #define FALSE_RESULT		0x40 //
 #define READY_STATE			0x40 //STM_STATE = (STM_STATE | 0x40)
+#define CLEANSET_STATE	0x50 //after change tissue reset the record.
 #define WORK_STATE			0x00 //STM_STATE = (STM_STATE & 0xBF)
 	
 

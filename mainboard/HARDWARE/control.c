@@ -142,7 +142,12 @@ u8 Clean(void)
 	else return 0;
 }
 
-
+u8 Clean_Set(void){
+	u8 status;
+	status = CLEAN_ReadWriteByte(CMD_CleanSet);
+	if(status == CMD_COMFIRM)	return 1;
+	else return 0;
+}
 
 //戴帽及平移台移动协机的控制
 u8 Hat(void)

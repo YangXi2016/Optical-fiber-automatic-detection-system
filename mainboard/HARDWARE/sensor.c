@@ -252,11 +252,23 @@ u8 Check_DetectMCU_Start()
 {
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
+	if(Is_CleanSet(RxData))
+		PUSH_ReadWriteByte(CMD_CleanSet)
 	if(Is_Start(RxData))
 		return 1;
 	else 
 		return 0;
 
+}
+
+u8 Check_DetectMCU_CleanSet(void){
+	
+	u8 RxData;
+	RxData = DETECT_ReadWriteByte(CHECK);
+	if(Is_CleanSet(RxData))
+		return 1;
+	else 
+		return 0;	
 }
 
 u8 Check_DetectMCU_Result(void)

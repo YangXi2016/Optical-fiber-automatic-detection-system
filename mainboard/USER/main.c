@@ -42,8 +42,8 @@ int main(void)
 	sys_error = normal;
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
 		Stop_All();
-		printf("check_ready error");
-		while(1);
+		while(1)
+			printf("check_ready error");delay_ms(1000);
 	}
 	
 	while (1)											//等待上位机的开始信号。
@@ -57,6 +57,10 @@ int main(void)
 	rail_state_init();
 	Rail_RunTo_Station();
 	while (1) {
+		if(Check_DetectMCU_CleanSet){		//周期开始前检测是否有纸巾校准信号
+			Clean_Set();
+			Inform_Detect(CMD_ClearFlag);
+		}
 		COMPRESS();		//夹具上载前电磁铁吸合
 		while (Check_Clip_Upload() == 0)	;			//等待夹具上载
 

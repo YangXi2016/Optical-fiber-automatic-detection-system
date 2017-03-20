@@ -153,7 +153,10 @@ int main(void)
 					STM_STATE = START_STATE;
 					printf("OKE\n");
 					break;
-				
+				case 'V':
+					STM_STATE = CLEANSET_STATE;
+					printf("OKE\n");
+					break;
 				case 'I':
 					printf("SI%d%d%d%d%dE/n",COM_STATUS.Union_Status,COM_STATUS.Detect_Status,COM_STATUS.Clamp_Status,COM_STATUS.Period_Status,COM_STATUS.ERROR_Status);
 					break;
@@ -209,7 +212,11 @@ int main(void)
 				{
 					COM_STATUS.Period_Status = 3;
 					INFORM_COM(CMD_ERROR);
-				}	
+				}
+				else if(Is_ClearFlag(MASTER_CMD))
+				{
+					STM_STATE = READY_STATE;
+				}				
 
 				MASTER_CMD=DUMY;
 			}
