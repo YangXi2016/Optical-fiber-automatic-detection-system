@@ -93,6 +93,8 @@ void SPI1_IRQHandler(void)
 				}else{
 					while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
 					SPI_I2S_SendData(SPI1, CMD_COMFIRM);
+					if(MASTER_CMD == ERROR)
+						MASTER_CMD = DUMY;
 					//printf("%c",STM_STATE);
 					//USART1->DR=STM_STATE;
 					//while((USART1->SR&0X40)==0);//等待发送结束

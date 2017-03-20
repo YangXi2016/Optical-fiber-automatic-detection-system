@@ -17,22 +17,8 @@
 
 #define DUMY				0x00
 #define HEAD				0x01
-
-/**
-SPI通讯协议：
-接收到[HEAD,MASTER_CMD,DUMY];
-DUMY仅为主机提供时钟信号，数据无意义。接收到的意义数据为MASTER_CMD;
-MASTER_CMD | 0x0F ==0xFF代表命令指令(高位全为1)
-MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
-返回数据 SYS_STATE CMD_COMFIRM
-*/
-//u8 SYS_STATE = 0x00;
-//u8 MASTER_CMD = 0x00;
-/***/
-
 #define CMD_COMFIRM		0x02
 #define ERROR					0xff
-
 #define CHECK					0x02
 
 #define CMD_Hat									0x40	//(CMD | 0x40)     //0100,0000
