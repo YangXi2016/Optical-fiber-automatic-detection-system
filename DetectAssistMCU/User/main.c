@@ -180,14 +180,6 @@ int main(void)
 					COM_STATUS.Clamp_Status = 1;
 					INFORM_COM(CMD_Detect);
 				}
-// 				else if(Is_Clamp(MASTER_CMD))
-// 				{
-// 					COM_STATUS.Clamp_Status = 1;
-// 				}
-// 				else if(Is_Loosen(MASTER_CMD))
-// 				{
-// 					COM_STATUS.Clamp_Status = 0;
-// 				}
 				else if(Is_Head(MASTER_CMD))
 				{
 					COM_STATUS.Period_Status = 1;

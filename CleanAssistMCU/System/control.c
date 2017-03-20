@@ -22,9 +22,6 @@ u8 FLASH_DATA[3];//={1,0,0}; //{FLAG,clean_position,wipe_time}
 
 void Clean(void)
 {
-	//CMotStart(CM_SPEED);
-	//MMotMotion(MM_ANGLE, MM_SPEED,'+');
-	//while(IsMotActDone()==0);
 	if(clean_position == 0){
 		SYS_STATE = WORK_STATE;
 		StepMotion(SM_ANGLE, '-', SM_SPEED);

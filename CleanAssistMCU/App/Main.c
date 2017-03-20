@@ -36,10 +36,6 @@ int main(void)
 				SYS_STATE = WORK_STATE;
 				Clean();
 			}
-// 			else if(MASTER_CMD == CMD_CleanReset){
-// 				SYS_STATE = WORK_STATE;
-// 				Clean_Reset();				
-// 			}
 			else if(MASTER_CMD == CMD_CleanSet){//motor don't need reset,just data.
 				clean_position = 0;
 				wipe_time = 0;

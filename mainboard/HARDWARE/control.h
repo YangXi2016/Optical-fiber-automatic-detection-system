@@ -27,23 +27,9 @@
 
 #define MOTION_ON()				GPIO_SetBits(GPIOD,GPIO_Pin_12)			//动力电源开启
 #define MOTION_OFF()				GPIO_ResetBits(GPIOD,GPIO_Pin_12)			//动力电源关闭
-/*
-#define red_on()					GPIO_SetBits(GPIOD,GPIO_Pin_5);
-#define red_off()					GPIO_ResetBits(GPIOD,GPIO_Pin_5);
 
-#define blue_on()					GPIO_SetBits(GPIOD,GPIO_Pin_6);
-#define blue_off()				GPIO_ResetBits(GPIOD,GPIO_Pin_6);
-
-#define buzzer_on()				GPIO_SetBits(GPIOD,GPIO_Pin_7);
-#define buzzer_off()			GPIO_ResetBits(GPIOD,GPIO_Pin_7);
-*/
 
 void Control_gpio_init(void);
-//void HatResult_Check(void);	
-
-//void sys_normal(void);
-//void sys_warn(void);
-//void sys_error(void);
 static void SAFE_MONITOR_Init(void);
 /********************简单控制*********************************************/
 
@@ -61,28 +47,7 @@ static void SAFE_MONITOR_Init(void);
 //戴帽装置		1、戴帽是否结束。 	2、平移台电机移动是否结束。	
 //推夹装置		1、推夹是否结束。		2、夹拽是否结束。
 
-/*
-#define CMD_Detect(CMD)							(CMD | 0x40)     //0100,0000
-//#define CMD_UnDetect(CMD)					(CMD & 0xBF)
-
-#define CMD_Clean(CMD)							(CMD | 0x40)     //0100,0000
-#define CMD_CleanStop(CMD)					(CMD & 0xBF)
-
-#define CMD_Hat(CMD)								(CMD | 0x40)     //0100,0000
-#define CMD_HatStop(CMD)						(CMD & 0xBF)			//1011,1111
-#define CMD_RailRun(CMD)						(CMD | 0x20)     	//0010,0000
-#define CMD_RailBack(CMD)						(CMD | 0x10)     	//0001,0000
-#define CMD_RailForward(CMD)				(CMD | 0x08)			//0000,1000
-#define CMD_RailStop(CMD)						(CMD & 0xC7)			//1100,0111
-			
-
-#define CMD_Push(CMD)								(CMD | 0x40)
-#define CMD_Draw(CMD)								(CMD | 0x20)
-#define CMD_PushStop(CMD)						(CMD & 0x9F)
-*/
-
 #define CMD_Detect 							0x40	//(CMD | 0x40)     //0100,0000
-//#define CMD_UnDetect 					(CMD & 0xBF)
 #define CMD_Head								0x20
 #define CMD_Tail								0x10
 #define CMD_SafeGateErr					0x80

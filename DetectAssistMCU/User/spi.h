@@ -37,8 +37,6 @@ MASTER_CMD | 0x0F ==0x0F代表查询指令(高位全为0)
 
 //判断从STM32接收到的命令
 #define Is_Detect(CMD)			((CMD & 0x40) == 0x40)
-//#define Is_Clamp(CMD)				((CMD & 0x20) == 0x20)
-//#define Is_Loosen(CMD)			((CMD & 0x10) == 0x10)
 #define Is_Head(CMD)				((CMD & 0x20) == 0x20)
 #define Is_Tail(CMD)				((CMD & 0x10) == 0x10)
 

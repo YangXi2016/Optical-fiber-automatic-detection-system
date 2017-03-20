@@ -114,6 +114,7 @@ u8 IsHatDone(void)
 {
 	delay_ms(500);
 	return 'Y';
+	//above is for test,below is real codes.
 	/*
 	u8 i = 0;
 	u8 CCDRes[128] = {0};

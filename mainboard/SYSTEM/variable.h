@@ -35,7 +35,6 @@ enum running_status
 	clean_detect_hat,
 	detect_hat,
 	hat,
-	//finish,
 	back,
 	unload,
 } period;

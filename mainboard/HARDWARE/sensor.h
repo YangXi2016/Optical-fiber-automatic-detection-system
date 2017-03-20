@@ -18,25 +18,10 @@
 /*********************************弹夹上载检测********************************/
 #define HOLDER_PLACE_1  GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_1)//读取微动开关1
 #define HOLDER_PLACE_2  GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_2)//读取微动开关2
-//#define SYS_START				GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_8)//读取开始暂停
 
-//void KEY_Init(void);//IO初始化
 u8 Check_Clip_Upload(void);  	//
 u8 Check_Clip_Unload(void);
 /*********************************弹夹上载检测********************************/
-
-
-/********************************戴帽结果检测*******************************/
-//已移到戴帽MCU中一起处理
-//#define HAT_CHECK_FLAG  		GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3)//线性CCD检测戴帽，是否已得出结果
-//#define HAT_CHECK_RESULT  	GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_1)//线性CCD检测戴帽得到的结果
-
-
-/********************************戴帽结果检测******************************/
-
-
-
-
 
 /*********************************导轨限位检测********************************/
 

@@ -31,7 +31,6 @@
 #define RAIL_FREE_SPEED		(300)
 
 void Hat(void);
-//void Hat_Check(void);
 void Hat_Stop(void);
 void Rail_RunStation(void);
 void Rail_RunToStation(void);

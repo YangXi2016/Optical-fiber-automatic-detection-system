@@ -30,9 +30,6 @@ void InitAll(void)
 	STMFLASH_Read(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
 	
 	if(FLASH_DATA[0] == 1){
-		//FLASH_DATA[0] = 1;
-		//FLASH_DATA[1] = 0;
-		//FLASH_DATA[2] = 0;
 		clean_position = FLASH_DATA[1];
 		wipe_time = FLASH_DATA[2];
 		

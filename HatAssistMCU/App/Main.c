@@ -24,24 +24,12 @@ int main(void)
 	SYS_STATE = READY_STATE;
 	while(1)
 	{
-		/*
-		while(1){
-			if (IsHatExist() == 0){
-				All_Stop();
-				SYS_STATE = HATNULL_STATE;
-				printf("HAT NULL");
-				for(temp =0;temp<10;temp++)	delay_ms(1000);
-			}
-			else 
-				break;
-		}
-		*/
 		if(IsMotActDone('H') && IsMotActDone('T')) SYS_STATE = READY_STATE;
 		if(MASTER_CMD != DUMY){
 			USART1->DR=MASTER_CMD;
 			while((USART1->SR&0X40)==0);
 			
-			if(MASTER_CMD == CMD_Hat){
+			if(MASTER_CMD == CMD_Hat){	//带帽前检测帽子是否还有
 				SYS_STATE = WORK_STATE;
 				status = IsHatExist();
 				if(status == 0){

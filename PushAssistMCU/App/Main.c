@@ -143,9 +143,7 @@ int main(void)
 				Fixture_Stop();
 				SYS_STATE = ACCIDENT_STATE;
 			}
-			//else if(MASTER_CMD == CHECK)	//查询命令
-			//	;
-			//else	SYS_STATE = ERROR;			//接收命令出错
+
 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;
 			

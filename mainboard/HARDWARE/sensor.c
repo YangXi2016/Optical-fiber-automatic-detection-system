@@ -181,9 +181,6 @@ u8 Check_Limit_R(void)
 
 
 /*********************************协处理器状态查询*******************************/
-//#define CHECK		0x01
-//#define Is_Ready(rx_data)	((rx_data | 0xBF) == 0xFF)	//1011,1111 头文件中定义
-//extern enum system_status sys_error;
 
 u8 Check_CleanMCU_Ready(void)
 {

@@ -38,32 +38,6 @@ void Control_gpio_init(void)
 }
 
 /********************简单片上硬件控制******************************************/
-/*移到协处理器
-void HatResult_Check(void){
-	GPIO_SetBits(GPIOA,GPIO_Pin_2);
-	delay_ms(1);
-	GPIO_ResetBits(GPIOA,GPIO_Pin_2);
-}
-*/
-/*
-void sys_normal(){
-	red_off();
-	blue_on();
-	buzzer_off();
-}
-
-void sys_warn(){
-	red_on();
-	blue_off();
-	buzzer_off();
-}
-
-void sys_error(){
-	red_on();
-	blue_off();
-	buzzer_on();
-}
-*/
 
 static void SAFE_MONITOR_Init(void)
 {
@@ -234,15 +208,6 @@ u8 Fixture_Open(void)
 	if(status == CMD_COMFIRM)	return 1;
 	else return 0;
 }
-/*
-u8 Fixture_Close(void)
-{
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_Close);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
-}
-*/
 
 u8 Stop_All(void)
 {

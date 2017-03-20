@@ -228,16 +228,7 @@ void station_work(u8 period) {
 void mutual_test(void){
 	Init_All();
 	printf("Mainboard ready\r\n");           
-	while(1){/*
-		while(1){
-			//CLEAN_ReadWriteByte(CMD_CleanStop);
-			//HAT_ReadWriteByte(CMD_HatStop|CMD_RailStop);
-			//SPI2_ReadWriteByte(0x22);
-			temp = PUSH_ReadWriteByte(CMD_PushStop);//PUSH_ReadWriteByte(0x02);
-			USART1->DR=temp;
-			while((USART1->SR&0X40)==0);
-			delay_ms(1800);
-		}*/
+	while(1){
 		if(USART_RX_STA&0x8000){
 			len=USART_RX_STA&0x3fff;
 			//printf("\r\n您发送的消息为:\r\n");
