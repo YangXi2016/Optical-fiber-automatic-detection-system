@@ -21,19 +21,20 @@ int main(void)
 {
 	InitAll();
 	//MotorEN('P','E');
-	SYS_STATE = READY_STATE;
+	SYS_STATE |= READY_STATE;
 	printf("CLEAN ready\n");
 	
 	while(1)
 	{
 		if(wipe_time > MAX_TIME){
-			SYS_STATE=DROPOUT_STATE;
-			
+			SYS_STATE |= DROPOUT_STATE;
+		}else{
+			SYS_STATE &= (!DROPOUT_STATE);
 		}
-		if((IsStepMotActDone()) && (IsDCMotActDone()))	SYS_STATE = READY_STATE;
+		if((IsStepMotActDone()) && (IsDCMotActDone()))	SYS_STATE |= READY_STATE;
 		if(MASTER_CMD != DUMY){
 			if(MASTER_CMD == CMD_Clean){
-				SYS_STATE = WORK_STATE;
+				SYS_STATE &= WORK_STATE;
 				Clean();
 			}
 			else if(MASTER_CMD == CMD_CleanSet){//motor don't need reset,just data.
@@ -45,7 +46,7 @@ int main(void)
 				STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
 			}
 			else if(MASTER_CMD == CMD_CleanStop){
-				SYS_STATE = WORK_STATE;
+				SYS_STATE &= WORK_STATE;
 				Clean_Stop();
 			}
 			MASTER_CMD = DUMY;

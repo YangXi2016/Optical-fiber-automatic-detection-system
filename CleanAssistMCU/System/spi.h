@@ -30,7 +30,8 @@
 //the sent state
 #define READY_STATE							0x40
 #define WORK_STATE							0x00
-#define DROPOUT_STATE						0x41		//	纸即将用光
+//#define DROPOUT_STATE						0x41		//	纸即将用光
+#define DROPOUT_STATE						0x01
 
 void SPI1_Init(void);			 //初始化SPI口
 static void CSN_Init(void);
