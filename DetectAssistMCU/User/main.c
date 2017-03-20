@@ -77,7 +77,7 @@ int main(void)
 	
 	/*added by yangxi in 2017/2/15*/
 	SPI1_Init(SPI_Mode_Slave);		   //初始化SPI
-	STM_STATE = READY_STATE;
+	STM_STATE |= READY_STATE;
 	printf("detect ready\n");
 	while(1)
 	{
@@ -140,8 +140,8 @@ int main(void)
 					break;
 					
 				case 'R':
-					if(Ins_Table[2] == '1')	STM_STATE = TRUE_RESULT;
-					else	STM_STATE = FALSE_RESULT;
+					if(Ins_Table[2] == '1')	STM_STATE |= TRUE_RESULT;
+					else	STM_STATE |= FALSE_RESULT;
 					COM_STATUS.Detect_Status = 0;
 					COM_STATUS.Clamp_Status = 0;
 					if(COM_STATUS.Period_Status == 1)	COM_STATUS.Period_Status = 2;
@@ -150,11 +150,11 @@ int main(void)
 					break;
 				
 				case 'T':
-					STM_STATE = START_STATE;
+					STM_STATE |= START_STATE;
 					printf("OKE\n");
 					break;
 				case 'V':
-					STM_STATE = CLEANSET_STATE;
+					STM_STATE |= CLEANSET_STATE;
 					printf("OKE\n");
 					break;
 				case 'I':
@@ -175,7 +175,7 @@ int main(void)
 				if(Is_Detect(MASTER_CMD))
 				{
 					//Detect();
-					STM_STATE = WORK_STATE;
+					STM_STATE &= WORK_STATE;
 					COM_STATUS.Detect_Status = 1;
 					COM_STATUS.Clamp_Status = 1;
 					INFORM_COM(CMD_Detect);
@@ -207,7 +207,7 @@ int main(void)
 				}
 				else if(Is_ClearFlag(MASTER_CMD))
 				{
-					STM_STATE = READY_STATE;
+					STM_STATE &= (!CLEANSET_STATE);
 				}				
 
 				MASTER_CMD=DUMY;
