@@ -117,7 +117,8 @@ void StepMotorInit(void)
 	
 	GPIO_SetBits(GPIOA,GPIO_Pin_8);
 	GPIO_SetBits(GPIOB,GPIO_Pin_0);
-
+	MotorEN('H','E');
+	MotorEN('T','E');
 	
 	//依次更新预分频表中的每一项 按照 f = fmin + (fmax - fmin)/(1 + e^(-a(i/num -1)))
 	//进行加减速，此处将f转化到了预分频上，因此公式有变型

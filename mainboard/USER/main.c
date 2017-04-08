@@ -39,7 +39,7 @@ enum running_status period;
 enum system_status sys_error;
 int main(void)
 {
-	//peripheral_test();
+	peripheral_test();
 	//mutual_test();
 	/********初始化阶段***********/
 	Init_All();
@@ -92,7 +92,8 @@ int main(void)
 		Rail_Stop();
 		
 		UNCOMPRESS();
-		delay_ms(2000);
+		for(temp=0;temp<WAIT_TIME;temp++)
+			delay_ms(1000);
 		while (Check_Clip_Unload() == 0);
 		period = unload;
 

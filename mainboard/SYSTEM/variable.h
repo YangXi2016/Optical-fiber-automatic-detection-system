@@ -15,10 +15,10 @@
 
 //system parameter
 #define NUM_TOTAL 20
-#define DISTANCE  4			//弹夹通过红外反射定位时弹夹距离擦拭工位的距离
+//#define DISTANCE  4			//弹夹通过红外反射定位时弹夹距离擦拭工位的距离(该距离应该在HatAssistMCU内设定)
 #define DISTANCE1 8
 #define DISTANCE2 6
-
+#define WAIT_TIME	5			//换弹夹时电磁铁掉电时间
 		
 
 //system running status;recording the status of one peried 

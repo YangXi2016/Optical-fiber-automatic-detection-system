@@ -42,12 +42,12 @@ void Rail_RunToStation(void)
 
 void Rail_Back(void)
 {
-	MTMotion(RAIL_FREE_ANGLE, '+', RAIL_FREE_SPEED);
+	MTMotion(RAIL_FREE_ANGLE, '-', RAIL_FREE_SPEED);
 }
 
 void Rail_Forward(void)
 {
-	MTMotion(RAIL_FREE_ANGLE, '-', RAIL_FREE_SPEED);
+	MTMotion(RAIL_FREE_ANGLE, '+', RAIL_FREE_SPEED);
 }
 
 void Rail_Stop(void)
