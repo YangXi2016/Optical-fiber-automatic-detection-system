@@ -54,9 +54,11 @@ static void LOCAT_Init(void);
 
 //检测仪检测结果
 #define Is_Start(rx_data)			((rx_data & 0x80) == 0x80)	//0010,0000
-#define Qualified(rx_data)		((rx_data & 0x60) == 0x60)
-#define UnQualified(rx_data)	((rx_data & 0x60) == 0x40)
+#define Is_Stop(rx_data)			((rx_data & 0x80) == 0x00)
+#define Qualified(rx_data)		((rx_data & 0x20) == 0x20)
+#define UnQualified(rx_data)	((rx_data & 0x20) == 0x00)
 #define Is_CleanSet(rx_data)	((rx_data & 0x10)	== 0x10)
+
 
 //戴帽MCU状态
 //#define HatCheck_Done(rx_data)	((rx_data & 0x08) == 0x08)

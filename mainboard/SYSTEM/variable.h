@@ -43,7 +43,8 @@ enum system_status
 	normal,			
 	tissueNull,		//optical fiber
 	hatNull,			//worker suddun stop system
-	SafeGate_error,
+	safeGate_error,
+	detect_error,
 };
 
 //u8 rail_run = 0;

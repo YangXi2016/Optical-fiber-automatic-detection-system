@@ -239,6 +239,12 @@ u8 Check_DetectMCU_Ready(void)
 {
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
+	if(Is_Stop(RxData)){
+		MOTION_OFF();
+		Stop_All();
+		sys_error = detect_error;
+		while(1);
+	}
 	if(Is_Ready(RxData))
 		return 1;
 	else 

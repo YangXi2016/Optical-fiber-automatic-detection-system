@@ -33,11 +33,11 @@
 
 //准备发送给STM32的状态
 #define START_STATE			0x80
-#define TRUE_RESULT			0x60 
-#define FALSE_RESULT		0x40 //
+#define TRUE_RESULT			0x20 
+//#define FALSE_RESULT		0x40 //该状态即TRUE_SRATE取反，废除
 #define READY_STATE			0x40 //STM_STATE = (STM_STATE | 0x40)
 #define CLEANSET_STATE	0x10 //after change tissue reset the record.
-#define WORK_STATE			0x00 //STM_STATE = (STM_STATE & 0xBF)
+//#define WORK_STATE			0x00 //STM_STATE = (STM_STATE & 0xBF)  该状态即READY_SRATE取反，废除
 //除WORK_STATE使用&来清除标志位，其他状态都使用'|'来置标志位
 
 void SPI1_Init(uint16_t Mode);			 //初始化SPI口

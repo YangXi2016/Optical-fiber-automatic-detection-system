@@ -80,7 +80,7 @@ void EXTI9_5_IRQHandler(void)
 		MOTION_OFF();
 		Stop_All();
 		printf("Safe Gate Work\n");
-		sys_error = SafeGate_error;
+		sys_error = safeGate_error;
 		EXTI_ClearITPendingBit(EXTI_Line9); 
 		while(1);
 	}

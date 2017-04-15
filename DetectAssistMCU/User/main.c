@@ -140,8 +140,9 @@ int main(void)
 					break;
 					
 				case 'R':
+					STM_STATE |= READY_STATE;	//收到结果自然说明检测结束了
 					if(Ins_Table[2] == '1')	STM_STATE |= TRUE_RESULT;
-					else	STM_STATE |= FALSE_RESULT;
+					else	STM_STATE &= (!TRUE_RESULT);
 					COM_STATUS.Detect_Status = 0;
 					COM_STATUS.Clamp_Status = 0;
 					if(COM_STATUS.Period_Status == 1)	COM_STATUS.Period_Status = 2;
@@ -150,7 +151,10 @@ int main(void)
 					break;
 				
 				case 'T':
-					STM_STATE |= START_STATE;
+					if(Ins_Table[2] == '1')
+						STM_STATE |= START_STATE;
+					else
+						STM_STATE &= (!START_STATE);
 					printf("OKE\n");
 					break;
 				case 'V':
@@ -175,7 +179,7 @@ int main(void)
 				if(Is_Detect(MASTER_CMD))
 				{
 					//Detect();
-					STM_STATE &= WORK_STATE;
+					STM_STATE &= (!READY_STATE);
 					COM_STATUS.Detect_Status = 1;
 					COM_STATUS.Clamp_Status = 1;
 					INFORM_COM(CMD_Detect);
