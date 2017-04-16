@@ -157,20 +157,20 @@ u8 Check_Locat(void){
 
 u8 Check_Limit_L(void)
 {
-	if(L_LIMIT==1)
+	if(L_LIMIT==0)
 	{
 		delay_ms(10); 
-		if(L_LIMIT==1)return 1;
+		if(L_LIMIT==0)return 1;
 	}     
 	return 0;
 }
 
 u8 Check_Limit_R(void)
 {
-	if(R_LIMIT==1)
+	if(R_LIMIT==0)
 	{
 		delay_ms(10); 
-		if(R_LIMIT==1)return 1;
+		if(R_LIMIT==0)return 1;
 	}     
 	return 0;
 }

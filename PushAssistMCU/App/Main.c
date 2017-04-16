@@ -45,13 +45,25 @@ enum status_period
 
 enum status_period push_period = END,draw_period = END,open_period = END;	
 
+u8 last_state_c=0;
+u8 last_state_m=0;
 int main(void)
 {
 	InitAll();
 	printf("Push Ready\n");
 	SYS_STATE = READY_STATE;
+	while(1){
+		if(Check_Position_C() != last_state_c){
+			last_state_c = Check_Position_C();
+			printf("Check clean\n");
+		}
+		if(Check_Position_M() != last_state_m){
+			last_state_m = Check_Position_M();
+			printf("Check mid\n");
+		}
+	}
 	while(1)
-	{
+	{		
 		if((push_period == END) && (draw_period == END) && (open_period ==END)) 
 			SYS_STATE = READY_STATE;
 		else{

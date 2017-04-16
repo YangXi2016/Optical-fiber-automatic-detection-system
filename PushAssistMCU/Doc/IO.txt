@@ -28,7 +28,7 @@ EN  - PB4 - CN13:3
 
 左夹持电机刹车
 BARKE - PB6 - CN16
-
+改为用于光电门检测
 
 中夹持电机
 CLK - PA8  - CN12:1
@@ -37,7 +37,7 @@ EN  - PA12 - CN12:3
 
 中夹持电机刹车
 BARKE - PB5 - CN15
-
+改为用于光电门检测
 
 右夹持电机
 CLK - PB0 - CN14:1
@@ -46,6 +46,7 @@ EN  - PB4 - CN14:3
 
 右夹持电机刹车
 BARKE - PB7 - CN17
+
 
 与主控处理器通信SPI
 SPI_CSN - PA4

@@ -25,6 +25,13 @@ void Hat(void)
 	HMotion(HAT_ANGLE, '-', HAT_SPEED);
 }
 
+void Hat_Init(void)
+{
+	HMotion(HAT_ANGLE + 30, '-', HAT_SPEED);
+	while(IsMotActDone('H')==0);
+	HMotion(20, '+', HAT_SPEED);
+}
+
 void Hat_Stop(void)
 {
 	 MotorEN('H','D');

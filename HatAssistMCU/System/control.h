@@ -17,8 +17,8 @@
 //#include "spi.h"
 
 //戴帽用电机参数
-#define HAT_ANGLE		(360*3)
-#define HAT_SPEED		(500)
+#define HAT_ANGLE		(1140)
+#define HAT_SPEED		(1000)
 
 //电机移动一工位参数
 #define RAIL_STATION_ANGLE	(14*360/75)
@@ -31,6 +31,7 @@
 #define RAIL_FREE_SPEED		(800)
 
 void Hat(void);
+void Hat_Init(void);
 void Hat_Stop(void);
 void Rail_RunStation(void);
 void Rail_RunToStation(void);

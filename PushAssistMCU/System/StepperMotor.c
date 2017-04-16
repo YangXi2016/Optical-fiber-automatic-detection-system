@@ -61,7 +61,7 @@ void StepMotorGPIOInit(void)
 	GPIO_Init(GPIOA, &GPIO_InitStructure); 
 		
 	// 左右夹持电机 CLK - PB0   DIR - PB3   EN - PB4  (刹车左)BARKE - PB6   (刹车右)BARKE - PB7
-	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_6 | GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_4;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
@@ -72,7 +72,9 @@ void StepMotorGPIOInit(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5| GPIO_Pin_6 | GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //内部上拉
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
 }
@@ -854,4 +856,11 @@ void Fixture_Stop(void){
 	MotorEN('S','D');
 }
 
+u8 Check_Position_C(void){
+	return GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5);
+}
+
+u8 Check_Position_M(void){
+	return GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6);
+}
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

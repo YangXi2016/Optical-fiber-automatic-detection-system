@@ -68,6 +68,10 @@ u8 IsMotActDone(u8 motor);//检查运动是否完成
 #define SPEED						700
 void Fixture_Stop(void);
 
+u8 Check_Position_C(void);		//推向擦拭工位的电机位置检查
+u8 Check_Position_M(void);		//中间的电机位置检查
+//1到位，0未到位
+
 //模块内部使用函数
 void StepMotorGPIOInit(void);
 void StepMotorTIMInit(void);

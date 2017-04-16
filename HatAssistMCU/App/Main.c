@@ -20,7 +20,7 @@ int main(void)
 	//u16 i = 0;
 	u8 status;
 	InitAll();
-
+	printf("HAT ready\n");
 	SYS_STATE = READY_STATE;
 	while(1)
 	{
@@ -29,14 +29,27 @@ int main(void)
 			USART1->DR=MASTER_CMD;
 			while((USART1->SR&0X40)==0);
 			
-			if(MASTER_CMD == CMD_Hat){	//带帽前检测帽子是否还有
+			if(MASTER_CMD == 0x10){
+				HMotion(10, '+', HAT_SPEED);
+			}
+			else if(MASTER_CMD == 0x11){
+				HMotion(10, '-', HAT_SPEED);
+			}
+			else if(MASTER_CMD == CMD_Hat){	//带帽前检测帽子是否还有
 				SYS_STATE = WORK_STATE;
 				status = IsHatExist();
 				if(status == 0){
 					SYS_STATE = HATNULL_STATE;
-					while(1);
+					printf("HAT NULL\n");
+					//while(1);
 				}
-				Hat();
+				else{
+					printf("HAT exist\n");
+				}
+// 				while(1){
+// 					while(IsMotActDone('H')==0);
+// 					Hat();
+// 				}
 			}
 			else if(MASTER_CMD == CMD_HatCheck){
 				SYS_STATE = WORK_STATE;
