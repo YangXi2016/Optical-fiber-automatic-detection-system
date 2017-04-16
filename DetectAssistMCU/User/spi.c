@@ -93,8 +93,8 @@ void SPI1_IRQHandler(void)
 				}else{
 					while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
 					SPI_I2S_SendData(SPI1, CMD_COMFIRM);
-					if(MASTER_CMD == ERROR)
-						MASTER_CMD = DUMY;
+					//if(MASTER_CMD == ERROR)
+						//MASTER_CMD = DUMY;
 					//printf("%c",STM_STATE);
 					//USART1->DR=STM_STATE;
 					//while((USART1->SR&0X40)==0);//等待发送结束
@@ -103,7 +103,10 @@ void SPI1_IRQHandler(void)
 				while((USART1->SR&0X40)==0);//等待发送结束
 			}
 		}else{
-			if(Slave_Temp == HEAD) head_flag=1;
+			if(Slave_Temp == HEAD){
+				head_flag=1;
+				SPI_I2S_SendData(SPI1, HEAD);
+			}
 			else{
 				SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,DISABLE);//关闭中断
 				SPI_Cmd(SPI1, DISABLE); //失能SPI外设

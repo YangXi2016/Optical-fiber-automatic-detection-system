@@ -45,6 +45,7 @@ enum system_status
 	hatNull,			//worker suddun stop system
 	safeGate_error,
 	detect_error,
+	communication_error,
 };
 
 //u8 rail_run = 0;

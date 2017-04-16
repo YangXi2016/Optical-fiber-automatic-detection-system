@@ -77,6 +77,7 @@ u8 DETECT_ReadWriteByte(u8 TxData){
 	RxData = SPI1_ReadWriteByte(HEAD);
 	delay_us(200);
 	RxData = SPI1_ReadWriteByte(TxData);
+	if(RxData != HEAD) return ERROR;
 	delay_us(200);
 	RxData = SPI1_ReadWriteByte(DUMY);
 	return RxData;
@@ -151,6 +152,7 @@ u8 PUSH_ReadWriteByte(u8 TxData)
 	RxData = SPI2_ReadWriteByte(HEAD);
 	delay_us(200);
 	RxData = SPI2_ReadWriteByte(TxData);
+	if(RxData != HEAD) return ERROR;
 	delay_us(200);
 	RxData = SPI2_ReadWriteByte(DUMY);
 	delay_us(200);
@@ -167,6 +169,7 @@ u8 CLEAN_ReadWriteByte(u8 TxData)
 	RxData = SPI2_ReadWriteByte(HEAD);
 	delay_us(200);
 	RxData = SPI2_ReadWriteByte(TxData);
+	if(RxData != HEAD) return ERROR;
 	delay_us(200);
 	RxData = SPI2_ReadWriteByte(DUMY);
 	delay_us(200);
@@ -183,6 +186,7 @@ u8 HAT_ReadWriteByte(u8 TxData)
 	RxData = SPI2_ReadWriteByte(HEAD);
 	delay_us(200);
 	RxData = SPI2_ReadWriteByte(TxData);
+	if(RxData != HEAD) return ERROR;
 	delay_us(200);
 	RxData = SPI2_ReadWriteByte(DUMY);
 	delay_us(200);

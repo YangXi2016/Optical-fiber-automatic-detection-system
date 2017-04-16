@@ -16,6 +16,7 @@
 
 #define DUMY	0x00
 #define HEAD	0x01
+#define ERROR	0xff
 
 void SPI1_Init(void);			 //初始化SPI口
 static u8 SPI1_ReadWriteByte(u8 TxData);//SPI总线读写一个字节

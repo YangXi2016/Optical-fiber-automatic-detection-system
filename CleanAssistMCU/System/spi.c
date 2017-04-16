@@ -13,7 +13,8 @@
 
 #include "spi.h"
 //#include "delay.h"
- 	  
+#include "control.h"
+
 /*SYS_STATE为全局变量，可代表当前的系统状态*/ 
 u8 SYS_STATE = CHECK;
 u8 MASTER_CMD = DUMY;
@@ -162,10 +163,11 @@ void SPI1_IRQHandler(void)
 					while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
 					SPI_I2S_SendData(SPI1, SYS_STATE);
 				}else{
+					if(MASTER_CMD == CMD_CleanStop)	Clean_Stop();
 					while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
 					SPI_I2S_SendData(SPI1, CMD_COMFIRM);
-					if(MASTER_CMD == ERROR)
-						MASTER_CMD = DUMY;
+					//if(MASTER_CMD == ERROR)
+						//MASTER_CMD = DUMY;
 					//printf("%c",SYS_STATE);
 				}
 				USART1->DR=SYS_STATE;
@@ -173,7 +175,10 @@ void SPI1_IRQHandler(void)
 			
 			}
 		}else{
-			if(Slave_Temp == HEAD) head_flag=1;
+			if(Slave_Temp == HEAD){
+				head_flag=1;
+				SPI_I2S_SendData(SPI1, HEAD);
+			}
 		}
 	
 	}	

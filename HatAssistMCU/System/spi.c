@@ -164,8 +164,8 @@ void SPI1_IRQHandler(void)
 					while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
 					SPI_I2S_SendData(SPI1, SYS_STATE);
 				}else{
-					if(MASTER_CMD == ERROR)
-						MASTER_CMD = DUMY;
+					//if(MASTER_CMD == ERROR)
+						//MASTER_CMD = DUMY;
 					if(MASTER_CMD == CMD_AllStop)	All_Stop();
 					else if(MASTER_CMD == CMD_HatStop) Hat_Stop();
 					else if(MASTER_CMD == CMD_RailStop) Rail_Stop();	
@@ -178,7 +178,10 @@ void SPI1_IRQHandler(void)
 				while((USART1->SR&0X40)==0);//等待发送结束			
 			}
 		}else{
-			if(Slave_Temp == HEAD) head_flag=1;
+			if(Slave_Temp == HEAD){
+				head_flag=1;
+				SPI_I2S_SendData(SPI1, HEAD);
+			}
 		}
 	
 	}	
