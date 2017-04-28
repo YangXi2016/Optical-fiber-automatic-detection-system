@@ -24,7 +24,15 @@ int main(void)
 	SYS_STATE = READY_STATE;
 	while(1)
 	{
-		if(IsMotActDone('H') && IsMotActDone('T')) SYS_STATE = READY_STATE;
+		if(IsMotActDone('H') && IsMotActDone('T')){
+			SYS_STATE = READY_STATE;
+			MotorEN('H','D');
+// 			MotorEN('T','D');		this motor's driver can't support
+		}
+		if(IsMotActDone('H'))
+			MotorEN('H','D');
+// 		if(IsMotActDone('T'))
+// 			MotorEN('T','D');		
 		if(MASTER_CMD != DUMY){
 			USART1->DR=MASTER_CMD;
 			while((USART1->SR&0X40)==0);
@@ -46,10 +54,11 @@ int main(void)
 				else{
 					printf("HAT exist\n");
 				}
-// 				while(1){
-// 					while(IsMotActDone('H')==0);
-// 					Hat();
-// 				}
+				while(1){
+					while(IsMotActDone('H')==0);
+					Hat();
+				}
+				Hat();
 			}
 			else if(MASTER_CMD == CMD_HatCheck){
 				SYS_STATE = WORK_STATE;

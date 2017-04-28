@@ -66,7 +66,7 @@ void Clean(void)
 		clean_position = 0;
 		wipe_time++;		
 	}
-	
+	MotorEN('P','D');
 	FLASH_DATA[0] = 1;
 	FLASH_DATA[1] = clean_position;
 	FLASH_DATA[2] = wipe_time;

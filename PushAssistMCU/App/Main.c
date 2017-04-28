@@ -64,8 +64,10 @@ int main(void)
 	}
 	while(1)
 	{		
-		if((push_period == END) && (draw_period == END) && (open_period ==END)) 
+		if((push_period == END) && (draw_period == END) && (open_period ==END)){
 			SYS_STATE = READY_STATE;
+			Fixture_Stop();
+		}
 		else{
 			if(push_period != END){
 				if(push_period == START){
