@@ -23,6 +23,7 @@ void station_work(u8 period);
 void mutual_test(void);
 void peripheral_test(void);
 void rail_state_init(void);
+void section_test(void);
 u8 i,len,t;
 //u8 MASTER_CMD=((u8)?0B11110000));
 //u8 master_temp;
@@ -39,7 +40,8 @@ enum running_status period;
 enum system_status sys_error;
 int main(void)
 {
-	peripheral_test();
+	section_test();
+	//peripheral_test();
 	//mutual_test();
 	/********初始化阶段***********/
 	Init_All();
@@ -117,14 +119,27 @@ void Init_All() {
 }
 
 void rail_state_init(void){
-	Rail_Back();
-	while (Check_Limit_L() == 0);
-	Rail_Stop();
+	//Rail_Back();
+	//while (Check_Limit_L() == 0);
+	//Rail_Stop();
 	
-	Rail_Forward();
-	while (status_station2 == 0);		//	弹夹到达第一个工位的前方
+	//Rail_Forward();
+	//printf("Begin\n");
+	//Rail_Back();
+	int i;
 	status_station2 = 0;
-	Rail_Stop();
+	
+	i =0;
+	while (status_station2 == 0){		//	弹夹到达第一个工位的前方
+		Rail_TuneForward();
+		while(Check_HatMCU_Ready()==0);
+		i++;
+	}
+// 	while(status_station2 == 0);
+  	status_station2 = 0;
+//  	Rail_Stop();
+ 	printf("%d\n",i);
+	//printf("stop\n");
 }
 
 void get_period(u8 temp) {
@@ -346,4 +361,32 @@ void peripheral_test(void){
 }
 
 
+void section_test(void){
+	int i;
+	Init_All();
+	printf("Mainboard section_test ready\r\n");
+	period = ready;
+	sys_error = normal;
+	MOTION_ON();
+	if(!Check_HatMCU_Ready()){
+		printf("Check error\n");
+		while(1);
+	}
+	rail_state_init();
+	while(1){
+		Rail_RunTo_Station();
+		for(i=0;i<4;i++){
+			Rail_RunStation();
+		}
+		Rail_Back();
+		status_station2 = 0;
+		while(status_station2==0);
+		status_station2 = 0;
+		Rail_Stop();
+		while (status_station2 == 0){		//	弹夹到达第一个工位的前方
+			Rail_TuneForward();
+			while(Check_HatMCU_Ready()==0);
+		}
+	}
+}
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

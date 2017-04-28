@@ -27,8 +27,12 @@
 #define RAIL_FIRSTSTATION_ANGLE (80*360/75)
 
 //电机自由移动参数
-#define RAIL_FREE_ANGLE		(700*360/75)
-#define RAIL_FREE_SPEED		(800)
+#define RAIL_FREE_ANGLE		(300*360/75)
+#define RAIL_FREE_SPEED		(500)
+
+//电机微调移动参数
+#define TUNE_ANGLE		(2)
+#define TUNE_SPEED		(800)
 
 void Hat(void);
 void Hat_Init(void);
@@ -39,6 +43,8 @@ void Rail_Back(void);
 void Rail_Forward(void);
 void Rail_Stop(void);
 void All_Stop(void);
+void Tune_Back(void);
+void Tune_Forward(void);
 #endif
 
 

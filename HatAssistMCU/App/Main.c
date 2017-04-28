@@ -37,10 +37,10 @@ int main(void)
 			USART1->DR=MASTER_CMD;
 			while((USART1->SR&0X40)==0);
 			
-			if(MASTER_CMD == 0x10){
+			if(MASTER_CMD == 0x01){
 				HMotion(10, '+', HAT_SPEED);
 			}
-			else if(MASTER_CMD == 0x11){
+			else if(MASTER_CMD == 0x02){
 				HMotion(10, '-', HAT_SPEED);
 			}
 			else if(MASTER_CMD == CMD_Hat){	//带帽前检测帽子是否还有
@@ -72,6 +72,7 @@ int main(void)
 				Rail_RunStation();
 			}
 			else if(MASTER_CMD == CMD_RailRunToStation){
+				printf("RunToStation\n");
 				SYS_STATE = WORK_STATE;
 				Rail_RunToStation();
 			}
@@ -88,6 +89,12 @@ int main(void)
 			}
 			else if(MASTER_CMD == CMD_AllStop){
 				All_Stop();
+			}
+			else if(MASTER_CMD == CMD_TuneBack){
+				Tune_Back();
+			}
+			else if(MASTER_CMD == CMD_TuneForward){
+				Tune_Forward();
 			}
 			MASTER_CMD = DUMY;
 		}

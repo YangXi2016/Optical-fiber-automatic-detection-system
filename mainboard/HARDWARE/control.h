@@ -68,6 +68,8 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_RailBack 						0x10	//(CMD | 0x10)     	//0001,0000
 #define CMD_RailForward 				0x08	//(CMD | 0x08)			//0000,1000
 #define CMD_RailStop 						0xC7	//(CMD & 0xC7)			//1100,0111
+#define CMD_RailTuneBack				0x30
+#define CMD_RailTuneForward			0x0C
 #define CMD_HatCheck						0x04
 #define CMD_RailRunToStation		0x80
 #define CMD_AllStop							0x87
@@ -91,6 +93,9 @@ u8 Rail_RunTo_Station(void);
 u8 Rail_Back(void);
 
 u8 Rail_Stop(void);
+
+u8 Rail_TuneBack(void);
+u8 Rail_TuneForward(void);
 
 u8 Hat_Check(void);	
 

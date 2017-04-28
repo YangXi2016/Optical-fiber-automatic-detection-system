@@ -183,6 +183,22 @@ u8 Rail_Stop(void)
 	else return 0;
 }
 
+u8 Rail_TuneBack(void)
+{
+	u8 status;
+	status = HAT_ReadWriteByte(CMD_RailTuneBack);
+	if(status == CMD_COMFIRM)	return 1;
+	else return 0;	
+}
+
+u8 Rail_TuneForward(void)
+{
+	u8 status;
+	status = HAT_ReadWriteByte(CMD_RailTuneForward);
+	if(status == CMD_COMFIRM)	return 1;
+	else return 0;	
+}
+
 //戴帽及平移台移动协机的控制
 
 

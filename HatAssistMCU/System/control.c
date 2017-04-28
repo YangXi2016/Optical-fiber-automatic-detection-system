@@ -57,10 +57,16 @@ void Rail_Forward(void)
 	MTMotion(RAIL_FREE_ANGLE, '+', RAIL_FREE_SPEED);
 }
 
+extern u8 g_hClkFlg;
 void Rail_Stop(void)
 {
-	MotorEN('T','D');
-	SYS_STATE = ACCIDENT_STATE;
+	//以下三种停止方式制动效果依次提升
+	//MotorEN('T','D');
+	//g_hClkFlg = 1;
+	TIM_Cmd(TIM2,DISABLE);
+	MTMotion(0, '+', RAIL_FREE_SPEED);
+	//printf("Stop\n");
+	//SYS_STATE = ACCIDENT_STATE;
 }
 
 void All_Stop(void)
@@ -68,6 +74,16 @@ void All_Stop(void)
 	MotorEN('H','D');
 	MotorEN('T','D');
 	SYS_STATE = ACCIDENT_STATE;
+}
+
+void Tune_Back(void)
+{
+	MTMotion(TUNE_ANGLE, '-', TUNE_SPEED);
+}
+
+void Tune_Forward(void)
+{
+	MTMotion(TUNE_ANGLE, '+', TUNE_SPEED);
 }
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/
