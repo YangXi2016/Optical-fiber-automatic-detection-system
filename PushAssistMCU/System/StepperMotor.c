@@ -135,7 +135,7 @@ void StepMotorInit(void)
 	GPIO_SetBits(GPIOA,GPIO_Pin_3);
 	GPIO_SetBits(GPIOA,GPIO_Pin_8);
 	GPIO_SetBits(GPIOB,GPIO_Pin_0);
-	GPIO_SetBits(GPIOA,GPIO_Pin_12);
+	//GPIO_SetBits(GPIOA,GPIO_Pin_12);
 	
 	//依次更新预分频表中的每一项 按照 f = fmin + (fmax - fmin)/(1 + e^(-a(i/num -1)))
 	//进行加减速，此处将f转化到了预分频上，因此公式有变型
@@ -200,11 +200,11 @@ void MotorEN(u8 motor,u8 oper)
 		
 		case 'M':
 		{
-			if (oper == 'E')
+			if (oper == 'D')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_12);
 			}
-			else if (oper == 'D')
+			else if (oper == 'E')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_12);	
 			}
