@@ -52,93 +52,94 @@ int main(void)
 	InitAll();
 	printf("Push Ready\n");
 	SYS_STATE = READY_STATE;
-	while(1){
-		if(Check_Position_C() != last_state_c){
-			last_state_c = Check_Position_C();
-			printf("Check clean\n");
-		}
-		if(Check_Position_M() != last_state_m){
-			last_state_m = Check_Position_M();
-			printf("Check mid\n");
-		}
-	}
+// 	while(1){
+// 		if(Check_Position_C() != last_state_c){
+// 			last_state_c = Check_Position_C();
+// 			printf("Check clean\n");
+// 		}
+// 		if(Check_Position_M() != last_state_m){
+// 			last_state_m = Check_Position_M();
+// 			printf("Check mid\n");
+// 		}
+// 	}
 	while(1)
 	{		
-		if((push_period == END) && (draw_period == END) && (open_period ==END)){
-			SYS_STATE = READY_STATE;
-			Fixture_Stop();
-		}
-		else{
-			if(push_period != END){
-				if(push_period == START){
-					PushMotion(STICK_ANGLE, '-', SPEED);
-					push_period = STICK_S;
-				}
-				else if(push_period == STICK_S){
-					if(IsMotActDone('P'))	push_period = STICK_E;
-				}
-				else if(push_period == STICK_E){
-					MCMotion(CLAMP_ANGLE, '+', SPEED);
-					SCMotion(CLAMP_ANGLE, '+', SPEED);
-					push_period = CAMP_S;
-				}
-				else if(push_period == CAMP_S){
-					if(IsMotActDone('M') && IsMotActDone('S')) push_period = CAMP_E;
-				}
-				else if(push_period == CAMP_E){
-					PushMotion(PROCESS_ANGLE, '+', SPEED);
-					push_period = PUSH_S;
-				}
-				else if(push_period == PUSH_S){
-					if(IsMotActDone('P')){
-						push_period = END;
-						printf("push done\n");
-					}
-				}
-			}
-			
-			if(draw_period != END){			
-					if(draw_period == START){
-					SCMotion(CLAMP_ANGLE, '-', SPEED);
-					draw_period =OPEN_S ;
-				}
-				else if(draw_period == OPEN_S){
-					if(IsMotActDone('S')) draw_period = OPEN_E;
-				}
-				else if(draw_period == OPEN_E){
-					PushMotion(PROCESS_ANGLE, '-', SPEED);
-					draw_period = DRAW_S;
-				}
-				else if(draw_period == DRAW_S){
-					if(IsMotActDone('P')) draw_period = DRAW_E;
-				}
-				else if(draw_period == DRAW_E){
-					PushMotion(STICK_ANGLE, '+', SPEED);
-					draw_period = DETACH;
-				}
-				else if(draw_period == DETACH){
-					if(IsMotActDone('P')){
-						draw_period = END;
-						printf("draw done\n");
-					}
-				}
-			}
-			
-			if(open_period != END){
-				if(open_period == START){
-					MCMotion(CLAMP_ANGLE, '-', SPEED);
-					open_period =OPEN;					
-				}
-				else if(open_period == OPEN){
-					if(IsMotActDone('M')){
-						open_period = END;
-						printf("open done\n");
-					}
-				}
-			}
-			
-		}
-		
+// 		if((push_period == END) && (draw_period == END) && (open_period ==END)){
+// 			SYS_STATE = READY_STATE;
+// 			Fixture_Stop();
+// 		}
+// 		else{
+// 			if(push_period != END){
+// 				if(push_period == START){
+// 					PushMotion(STICK_ANGLE, '-', SPEED);
+// 					push_period = STICK_S;
+// 				}
+// 				else if(push_period == STICK_S){
+// 					if(IsMotActDone('P'))	push_period = STICK_E;
+// 				}
+// 				else if(push_period == STICK_E){
+// 					MCMotion(CLAMP_ANGLE, '+', SPEED);
+// 					SCMotion(CLAMP_ANGLE, '+', SPEED);
+// 					push_period = CAMP_S;
+// 				}
+// 				else if(push_period == CAMP_S){
+// 					if(IsMotActDone('M') && IsMotActDone('S')) push_period = CAMP_E;
+// 				}
+// 				else if(push_period == CAMP_E){
+// 					PushMotion(PROCESS_ANGLE, '+', SPEED);
+// 					push_period = PUSH_S;
+// 				}
+// 				else if(push_period == PUSH_S){
+// 					if(IsMotActDone('P')){
+// 						push_period = END;
+// 						printf("push done\n");
+// 					}
+// 				}
+// 			}
+// 			
+// 			if(draw_period != END){			
+// 					if(draw_period == START){
+// 					SCMotion(CLAMP_ANGLE, '-', SPEED);
+// 					draw_period =OPEN_S ;
+// 				}
+// 				else if(draw_period == OPEN_S){
+// 					if(IsMotActDone('S')) draw_period = OPEN_E;
+// 				}
+// 				else if(draw_period == OPEN_E){
+// 					PushMotion(PROCESS_ANGLE, '-', SPEED);
+// 					draw_period = DRAW_S;
+// 				}
+// 				else if(draw_period == DRAW_S){
+// 					if(IsMotActDone('P')) draw_period = DRAW_E;
+// 				}
+// 				else if(draw_period == DRAW_E){
+// 					PushMotion(STICK_ANGLE, '+', SPEED);
+// 					draw_period = DETACH;
+// 				}
+// 				else if(draw_period == DETACH){
+// 					if(IsMotActDone('P')){
+// 						draw_period = END;
+// 						printf("draw done\n");
+// 					}
+// 				}
+// 			}
+// 			
+// 			if(open_period != END){
+// 				if(open_period == START){
+// 					MCMotion(CLAMP_ANGLE, '-', SPEED);
+// 					open_period =OPEN;					
+// 				}
+// 				else if(open_period == OPEN){
+// 					if(IsMotActDone('M')){
+// 						open_period = END;
+// 						printf("open done\n");
+// 					}
+// 				}
+// 			}
+// 			
+// 		}
+// 		
+// 		
 		if(MASTER_CMD!=DUMY){
 			if(Is_Push(MASTER_CMD)){
 				push_period = START;
@@ -157,7 +158,16 @@ int main(void)
 				Fixture_Stop();
 				SYS_STATE = ACCIDENT_STATE;
 			}
-
+			else if(MASTER_CMD == 0x80){
+				//GPIO_SetBits(GPIOA,GPIO_Pin_12);
+				//while(1){
+				MCMotion(180, '+', 120);
+					while(IsMotActDone('M')==0);
+				//MCMotion(CLAMP_ANGLE, '-', SPEED);
+				printf("done\n");
+					//delay_ms(100);
+				//}
+			}
 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;
 			

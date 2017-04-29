@@ -50,7 +50,7 @@ void StepMotorGPIOInit(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA
-						  | RCC_APB2Periph_GPIOB, ENABLE); // 使能PC端口时钟
+						  | RCC_APB2Periph_GPIOB, ENABLE); // 使能PA/PB端口时钟
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
@@ -135,7 +135,7 @@ void StepMotorInit(void)
 	GPIO_SetBits(GPIOA,GPIO_Pin_3);
 	GPIO_SetBits(GPIOA,GPIO_Pin_8);
 	GPIO_SetBits(GPIOB,GPIO_Pin_0);
-
+	GPIO_SetBits(GPIOA,GPIO_Pin_12);
 	
 	//依次更新预分频表中的每一项 按照 f = fmin + (fmax - fmin)/(1 + e^(-a(i/num -1)))
 	//进行加减速，此处将f转化到了预分频上，因此公式有变型
@@ -200,11 +200,11 @@ void MotorEN(u8 motor,u8 oper)
 		
 		case 'M':
 		{
-			if (oper == 'D')
+			if (oper == 'E')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_12);
 			}
-			else if (oper == 'E')
+			else if (oper == 'D')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_12);	
 			}

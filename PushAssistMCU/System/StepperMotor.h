@@ -31,12 +31,12 @@
 
 //中间夹线电机若干参数
 #define MC_DEFAULT_PRE 10 //电机输出脉冲计数周期
-#define MC_MOTOR_DIV 400 //400脉冲一周
+#define MC_MOTOR_DIV 1600 //400脉冲一周
 #define MC_ACC_NUM 50 
 #define MCA_COEFF 2.0
 #define MCS_COEFF 5
 #define MC_MIN_SPD 60
-#define MC_MAX_SPD 1000
+#define MC_MAX_SPD 250
 
 //两边夹线电机若干参数
 #define SC_DEFAULT_PRE 10 //电机输出脉冲计数周期
