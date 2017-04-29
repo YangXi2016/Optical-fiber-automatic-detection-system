@@ -47,12 +47,13 @@ enum status_period push_period = END,draw_period = END,open_period = END;
 
 u8 last_state_c=0;
 u8 last_state_m=0;
+extern u8 Position_Flag_C,Position_Flag_M;
 int main(void)
 {
 	InitAll();
 	printf("Push Ready\n");
 	SYS_STATE = READY_STATE;
-// 	while(1){
+	while(1){
 // 		if(Check_Position_C() != last_state_c){
 // 			last_state_c = Check_Position_C();
 // 			printf("Check clean\n");
@@ -61,7 +62,7 @@ int main(void)
 // 			last_state_m = Check_Position_M();
 // 			printf("Check mid\n");
 // 		}
-// 	}
+	}
 	while(1)
 	{		
 // 		if((push_period == END) && (draw_period == END) && (open_period ==END)){
@@ -158,7 +159,7 @@ int main(void)
 				Fixture_Stop();
 				SYS_STATE = ACCIDENT_STATE;
 			}
-			else if(MASTER_CMD == 0x80){
+			else if(MASTER_CMD == 0x80){	//test the motor and driver
 				//GPIO_SetBits(GPIOA,GPIO_Pin_12);
 				//while(1){
 				MCMotion(180, '+', 120);
@@ -167,6 +168,15 @@ int main(void)
 				printf("done\n");
 					//delay_ms(100);
 				//}
+			}
+			else if(MASTER_CMD == 0x60){	//test the optical gate
+				MCMotion(360, '+', 120);
+				while(IsMotActDone('M')==0){
+					if(Position_Flag_M != 0)
+						break;
+				}
+				Position_Flag_M = 0;
+				Fixture_Stop();
 			}
 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;

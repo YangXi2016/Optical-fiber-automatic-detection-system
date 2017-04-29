@@ -48,12 +48,14 @@ u8  g_scClkFlg  = 0; //两边夹线电机脉冲输出使能标志位
 *******************************************************************************/
 void StepMotorGPIOInit(void)
 {
+	NVIC_InitTypeDef NVIC_InitStructure;
+	EXTI_InitTypeDef EXTI_InitStructure; //外部中断配置结参数
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA
 						  | RCC_APB2Periph_GPIOB, ENABLE); // 使能PA/PB端口时钟
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
+	//GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
 	// 推夹具电机 CLK - PA1  DIR - PA2   EN  - PA3
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3; 	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;							 
@@ -74,8 +76,27 @@ void StepMotorGPIOInit(void)
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5| GPIO_Pin_6 | GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //内部上拉
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	
+	//photogate IRQ
+	
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB ,GPIO_PinSource5);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB ,GPIO_PinSource6);
+	//外部触发设置，边沿
+	EXTI_InitStructure.EXTI_Line = EXTI_Line5 | EXTI_Line6 ;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling; //沿触发 
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&EXTI_InitStructure);		
+
+	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;  
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;  
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
+	NVIC_Init(&NVIC_InitStructure);
 	
 }
 
@@ -851,9 +872,10 @@ void TIM2_IRQHandler(void)   //TIM2中断
 
 
 void Fixture_Stop(void){
-	MotorEN('P','D');
-	MotorEN('M','D');
-	MotorEN('S','D');
+	//MotorEN('P','D');
+	//MotorEN('M','D');
+	//MotorEN('S','D');
+	TIM_Cmd(TIM2,DISABLE);
 }
 
 u8 Check_Position_C(void){
@@ -863,4 +885,37 @@ u8 Check_Position_C(void){
 u8 Check_Position_M(void){
 	return GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_6);
 }
+
+
+u8 state;
+u8 Position_Flag_C =0,Position_Flag_M =0;
+void EXTI9_5_IRQHandler(void)
+{
+	//printf("handler\n");
+	if(EXTI_GetITStatus(EXTI_Line5) == SET){
+		state = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5);
+		if( state == 0){
+			printf("Position_Flag_C = 1;\n");
+			Position_Flag_C = 1;
+		}else{
+			printf("Position_Flag_C = 2;\n");
+			Position_Flag_C = 2;
+		}
+		EXTI_ClearITPendingBit(EXTI_Line5);
+	}
+	
+	if(EXTI_GetITStatus(EXTI_Line6) == SET){
+		state = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_6);
+		if( state == 0){
+			printf("Position_Flag_M = 1;\n");
+			Position_Flag_M = 1;
+		}else{
+			printf("Position_Flag_M = 2;\n");
+			Position_Flag_M = 2;
+		}
+		EXTI_ClearITPendingBit(EXTI_Line6);
+	}
+
+}
+
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/
