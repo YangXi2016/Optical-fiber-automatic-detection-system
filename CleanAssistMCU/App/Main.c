@@ -17,6 +17,7 @@ u8 i;
 extern u8 MASTER_CMD,SYS_STATE;
 extern u8 clean_position,wipe_time;	
 extern u8 FLASH_DATA[3];
+extern int g_mmTargPulse;
 int main(void)
 {
 	InitAll();
@@ -26,6 +27,8 @@ int main(void)
 	
 	while(1)
 	{
+		//printf("%d\n",g_mmTargPulse);
+
 		if(wipe_time > MAX_TIME){
 			SYS_STATE |= DROPOUT_STATE;
 		}else{

@@ -156,11 +156,11 @@ void MotorDir(u8 motor,u8 oper)
 	{
 		case 'P':
 		{
-			if (oper == '+')
+			if (oper == '-')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_11);
 			}
-			else if (oper == '-')
+			else if (oper == '+')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_11);	
 			}

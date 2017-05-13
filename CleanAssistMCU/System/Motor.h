@@ -17,9 +17,9 @@
 #define MM_DEFAULT_PRE 720 //主动轮电机默认预分频
 #define MM_DEFAULT_PERIOD 100 //主动轮默认周期，可定义100级占空比
 #define MM_DEFAULT_SPD 50 //默认速度50，最大速度100
-#define MM_REDUCT_RAT 75 //主动轮电机减速比
-#define MM_PULSE_R 1 //主动轮编码器每转输出脉冲数
-#define MM_DEAD_RANGE 0 //允许±3个脉冲的误差
+#define MM_REDUCT_RAT 298//75 //主动轮电机减速比
+#define MM_PULSE_R 7//1 //主动轮编码器每转输出脉冲数
+#define MM_DEAD_RANGE 5 //允许±3个脉冲的误差
 #define MM_MIN_SPD 0
 #define MM_MAX_SPD 100
 #define MM_MAX_INTEGRA 20000

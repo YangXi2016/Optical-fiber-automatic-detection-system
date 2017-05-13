@@ -38,7 +38,7 @@ void Clean(void)
 		
 		CMotStart(CM_SPEED);
 		MMotMotion(MM_ANGLE, '+', MM_SPEED);
-		delay_ms(ROLL_TIME);
+		//delay_ms(ROLL_TIME);
 		while(IsDCMotActDone() == 0 );
 		CMotStop();
 		clean_position = 2;
@@ -54,13 +54,13 @@ void Clean(void)
 	}
 	else if(clean_position == 3){
 		SYS_STATE = WORK_STATE;
-		StepMotion(SM_ANGLE, '+', SM_SPEED);
+		StepMotion(SM_ANGLE*1.2, '+', SM_SPEED);
 		while(IsStepMotActDone() == 0);
 		SYS_STATE = READY_STATE;
 		
 		CMotStart(CM_SPEED);
-		MMotMotion(MM_ANGLE, '+', MM_SPEED);
-		delay_ms(ROLL_TIME);
+		MMotMotion(MM_ANGLE*1.2, '+', MM_SPEED);//因为在低端和顶端，与拉纸电机空间距离发生了变化，因为额外的拉扯需要1.2来修正
+		//delay_ms(ROLL_TIME);
 		while(IsDCMotActDone() == 0 );
 		CMotStop();
 		clean_position = 0;
@@ -74,13 +74,13 @@ void Clean(void)
 	STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
 	
 	if(wipe_time>=MAX_TIME)	SYS_STATE = DROPOUT_STATE;
-	printf("D\n");
+	printf("%d\n",clean_position);
 }
 
 void Clean_Reset(void)
 {
 	u8 temp = 0;
-	StepMotion(2*SM_ANGLE, '+', SM_SPEED);
+	StepMotion(2*SM_ANGLE*1.2, '+', SM_SPEED);
 	while(1){
 		temp = IsStepMotActDone();
 		if(temp == 1) break;
