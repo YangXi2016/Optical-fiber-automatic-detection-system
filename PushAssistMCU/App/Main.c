@@ -53,7 +53,7 @@ int main(void)
 	InitAll();
 	printf("Push Ready\n");
 	SYS_STATE = READY_STATE;
-	while(1){
+// 	while(1){
 // 		if(Check_Position_C() != last_state_c){
 // 			last_state_c = Check_Position_C();
 // 			printf("Check clean\n");
@@ -62,7 +62,7 @@ int main(void)
 // 			last_state_m = Check_Position_M();
 // 			printf("Check mid\n");
 // 		}
-	}
+// 	}
 	while(1)
 	{		
 // 		if((push_period == END) && (draw_period == END) && (open_period ==END)){
@@ -165,7 +165,7 @@ int main(void)
 				MCMotion(180, '+', 120);
 					while(IsMotActDone('M')==0);
 				//MCMotion(CLAMP_ANGLE, '-', SPEED);
-				printf("done\n");
+				printf("done1\n");
 					//delay_ms(100);
 				//}
 			}
@@ -178,6 +178,24 @@ int main(void)
 				Position_Flag_M = 0;
 				Fixture_Stop();
 			}
+			else if(MASTER_CMD == 0x70){
+				SCMotion(CLAMP_ANGLE, '-', SPEED);
+				while(IsMotActDone('S')==0);
+				printf("done2\n");
+			}
+			else if(MASTER_CMD == 0x71){
+				SCMotion(CLAMP_ANGLE, '+', SPEED);
+				while(IsMotActDone('S')==0);
+				printf("done2\n");
+			}
+			else if(MASTER_CMD == 0x72){
+				while(1){
+					SCMotion(CLAMP_ANGLE, '+', SPEED);
+					while(IsMotActDone('S')==0);
+					SCMotion(CLAMP_ANGLE, '-', SPEED);
+					while(IsMotActDone('S')==0);
+				}
+			}			
 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;
 			

@@ -55,7 +55,7 @@ void StepMotorGPIOInit(void)
 						  | RCC_APB2Periph_GPIOB, ENABLE); // 使能PA/PB端口时钟
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	//GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);	
 	// 推夹具电机 CLK - PA1  DIR - PA2   EN  - PA3
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3; 	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;							 
@@ -234,11 +234,11 @@ void MotorEN(u8 motor,u8 oper)
 		
 		case 'S':
 		{
-			if (oper == 'D')
+			if (oper == 'E')
 			{
 				GPIO_SetBits(GPIOB,GPIO_Pin_4);
 			}
-			else if (oper == 'E')
+			else if (oper == 'D')
 			{
 				GPIO_ResetBits(GPIOB,GPIO_Pin_4);	
 			}
@@ -258,6 +258,7 @@ void MotorEN(u8 motor,u8 oper)
 *******************************************************************************/
 void MotorDir(u8 motor,u8 oper)
 {
+	printf("%c%c\n",motor,oper);
 	switch(motor)
 	{
 		case 'P':

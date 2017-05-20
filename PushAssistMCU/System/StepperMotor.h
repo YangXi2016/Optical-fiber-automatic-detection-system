@@ -41,11 +41,11 @@
 //两边夹线电机若干参数
 #define SC_DEFAULT_PRE 10 //电机输出脉冲计数周期
 #define SC_MOTOR_DIV 400 //400脉冲一周
-#define SC_ACC_NUM 50 
+#define SC_ACC_NUM 30 
 #define SCA_COEFF 2.0
 #define SCS_COEFF 5
 #define SC_MIN_SPD 60
-#define SC_MAX_SPD 1000
+#define SC_MAX_SPD 1250
 
 
 //函数
@@ -62,10 +62,10 @@ void SCMotion(float angleDeg, u8 dir, u16 spd);
 
 u8 IsMotActDone(u8 motor);//检查运动是否完成
 
-#define CLAMP_ANGLE			1000		//用于夹紧的电机所需走的距离
+#define CLAMP_ANGLE			80		//用于夹紧的电机所需走的距离
 #define	PROCESS_ANGLE		3600		//用于推拉的电机所需走的距离
 #define STICK_ANGLE			1000		//往回拉的拨片贴紧/移开的距离
-#define SPEED						700
+#define SPEED						600
 void Fixture_Stop(void);
 
 u8 Check_Position_C(void);		//推向擦拭工位的电机位置检查
