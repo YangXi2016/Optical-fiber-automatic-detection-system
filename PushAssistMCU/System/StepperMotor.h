@@ -22,21 +22,21 @@
 
 //推线电机若干参数
 #define P_DEFAULT_PRE 10 //电机输出脉冲计数周期
-#define P_MOTOR_DIV 400 //400脉冲一周
-#define PUSH_ACC_NUM 100 //推夹具步进电机加速脉冲数
+#define P_MOTOR_DIV 3200 //3200脉冲一周
+#define PUSH_ACC_NUM 50 //推夹具步进电机加速脉冲数
 #define PA_COEFF  2.0 //定义进入最大加速度的时间，参数越大，进入越快，2.0在居中的时间进入
 #define PS_COEFF 5 //推夹具步进电机S加速曲线参数，最大加速区间曲线斜率大小参数
 #define P_MIN_SPD 60 //推夹具电机加速初始转速r/min
-#define P_MAX_SPD 1000 //推夹具电机最大转速r/min
+#define P_MAX_SPD 250 //推夹具电机最大转速r/min
 
 //中间夹线电机若干参数
 #define MC_DEFAULT_PRE 10 //电机输出脉冲计数周期
-#define MC_MOTOR_DIV 3200 //400脉冲一周
-#define MC_ACC_NUM 50 
+#define MC_MOTOR_DIV 400 //400脉冲一周
+#define MC_ACC_NUM 100 
 #define MCA_COEFF 2.0
 #define MCS_COEFF 5
 #define MC_MIN_SPD 60
-#define MC_MAX_SPD 250
+#define MC_MAX_SPD 1000
 
 //两边夹线电机若干参数
 #define SC_DEFAULT_PRE 10 //电机输出脉冲计数周期

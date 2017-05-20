@@ -162,21 +162,22 @@ int main(void)
 			else if(MASTER_CMD == 0x80){	//test the motor and driver
 				//GPIO_SetBits(GPIOA,GPIO_Pin_12);
 				//while(1){
-				MCMotion(180, '+', 120);
-					while(IsMotActDone('M')==0);
+				PushMotion(180, '+', 100);
+					while(IsMotActDone('P')==0);
 				//MCMotion(CLAMP_ANGLE, '-', SPEED);
 				printf("done1\n");
 					//delay_ms(100);
 				//}
 			}
 			else if(MASTER_CMD == 0x60){	//test the optical gate
-				MCMotion(360, '+', 120);
-				while(IsMotActDone('M')==0){
-					if(Position_Flag_M != 0)
+				PushMotion(400, '+', 100);
+				while(IsMotActDone('P')==0){
+					if(Position_Flag_M == 1)
 						break;
 				}
 				Position_Flag_M = 0;
 				Fixture_Stop();
+				printf("done0\n");
 			}
 			else if(MASTER_CMD == 0x70){
 				SCMotion(CLAMP_ANGLE, '-', SPEED);
