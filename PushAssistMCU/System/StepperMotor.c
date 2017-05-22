@@ -16,6 +16,7 @@
 
 
 static u16 gs_pAccPrescTab[PUSH_ACC_NUM] = {0};//推夹具电机加/减速预分频表
+static u16 gs_pcAccPrescTab[PC_ACC_NUM] = {0};//推夹具电机加/减速预分频表
 static u16 gs_mcAccPrescTab[MC_ACC_NUM] = {0};//中间夹线电机加/减速预分频表
 static u16 gs_scAccPrescTab[SC_ACC_NUM] = {0};//两边夹线电机加/减速预分频表
 
@@ -24,6 +25,12 @@ u16 g_tpPresc = 0;//推夹具电机目标速度对应的预分频数
 u8  g_npActFlg = 0; //推夹具电机新动作标志位
 u8  g_pActDFlg = 0; //推夹具电机动作结束标志位
 u8  g_pClkFlg  = 0; //推夹具电机脉冲输出使能标志位
+
+u32 g_pcStps = 0;//推夹具电机需要运转的步数
+u16 g_tpcPresc = 0;//推夹具电机目标速度对应的预分频数
+u8  g_npcActFlg = 0; //推夹具电机新动作标志位
+u8  g_pcActDFlg = 0; //推夹具电机动作结束标志位
+u8  g_pcClkFlg  = 0; //推夹具电机脉冲输出使能标志位
 
 u32 g_mcStps = 0;//中间夹线电机需要运转的步数
 u16 g_tmcPresc = 0;//中间夹线电机目标速度对应的预分频数
@@ -61,6 +68,12 @@ void StepMotorGPIOInit(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;							 
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure); 
+	
+	// 推夹具电机 CLK - PB8  DIR - PB9   EN  - PB10
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10; 	
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;							 
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &GPIO_InitStructure); 
 		
 	// 左右夹持电机 CLK - PB0   DIR - PB3   EN - PB4  (刹车左)BARKE - PB6   (刹车右)BARKE - PB7
 	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_4;
@@ -156,7 +169,7 @@ void StepMotorInit(void)
 	GPIO_SetBits(GPIOA,GPIO_Pin_3);
 	GPIO_SetBits(GPIOA,GPIO_Pin_8);
 	GPIO_SetBits(GPIOB,GPIO_Pin_0);
-	//GPIO_SetBits(GPIOA,GPIO_Pin_12);
+	GPIO_SetBits(GPIOB,GPIO_Pin_8);
 	
 	//依次更新预分频表中的每一项 按照 f = fmin + (fmax - fmin)/(1 + e^(-a(i/num -1)))
 	//进行加减速，此处将f转化到了预分频上，因此公式有变型
@@ -169,6 +182,16 @@ void StepMotorInit(void)
 	{
 		t_sx = 1.0 + pow(e, (double)(-PS_COEFF * (PA_COEFF * i / PUSH_ACC_NUM - 1)));
 		gs_pAccPrescTab[i] = (u16)((1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin)) + 0.5);
+		//printf("pPrescTab[%d]:%d\n",i,gs_pAccPrescTab[i]);
+	}
+	
+	//更新擦拭工位推杆电机加减速预分频表
+	prescMin =  TIFreq / (PC_MAX_SPD * 1.0 / 60 * PC_MOTOR_DIV);//计算设定的最大最小预分频
+	prescMax = TIFreq /  (PC_MIN_SPD * 1.0 / 60 * PC_MOTOR_DIV);
+	for (i=0; i<PC_ACC_NUM; i++)
+	{
+		t_sx = 1.0 + pow(e, (double)(-PCS_COEFF * (PCA_COEFF * i / PC_ACC_NUM - 1)));
+		gs_pcAccPrescTab[i] = (u16)((1.0*t_sx * prescMin * prescMax / (t_sx * prescMin + prescMax - prescMin)) + 0.5);
 		//printf("pPrescTab[%d]:%d\n",i,gs_pAccPrescTab[i]);
 	}
 	
@@ -217,7 +240,20 @@ void MotorEN(u8 motor,u8 oper)
 				GPIO_ResetBits(GPIOA,GPIO_Pin_1);	
 			}
 			break;
-		}//推夹具电机
+		}//主推夹具电机
+
+		case 'C':
+		{
+			if (oper == 'E')
+			{
+				GPIO_SetBits(GPIOB,GPIO_Pin_10);
+			}
+			else if (oper == 'D')
+			{
+				GPIO_ResetBits(GPIOB,GPIO_Pin_10);	
+			}
+			break;
+		}//擦拭工位推夹具电机
 		
 		case 'M':
 		{
@@ -272,7 +308,20 @@ void MotorDir(u8 motor,u8 oper)
 				GPIO_ResetBits(GPIOA,GPIO_Pin_2);	
 			}
 			break;
-		}//推夹具电机
+		}//主推夹具电机
+
+		case 'C':
+		{
+			if (oper == '+')
+			{
+				GPIO_SetBits(GPIOB,GPIO_Pin_9);
+			}
+			else if (oper == '-')
+			{
+				GPIO_ResetBits(GPIOB,GPIO_Pin_9);	
+			}
+			break;
+		}//擦拭工位推夹具电机
 		
 		case 'M':
 		{
@@ -338,6 +387,49 @@ void PushMotion(float angleDeg, u8 dir, u16 spd)
 	g_pStps = (u32)((angleDeg * 1.0 / 360 * P_MOTOR_DIV)+0.5);//更新待运动的步数
 	g_npActFlg = 1;
 	g_pActDFlg = 0;
+
+	TIM_Cmd(TIM2,ENABLE);
+	
+	//printf("psteps: %d\n",g_pStps);
+ 	//printf("pPrec: %d\n",g_tpPresc);
+
+}
+
+/*******************************************************************************
+*函数名称：PCMotion
+*函数说明：擦拭工位推夹具步进电机动作调用接口
+*输入参数：angleDeg : 步进电机需要转过的度数 单位°
+		   dir: + 正向 ; -反向；规定面向电机出轴，顺时针为正
+		   spd:速度，单位r/min
+*输出参数：无
+*返回参数：无 
+*******************************************************************************/
+void PCMotion(float angleDeg, u8 dir, u16 spd)
+{
+	float TIFreq = 0;  //定时器产生中断的频率
+	float spdFreq = 0; //达到相应速度需要的脉冲频率
+	
+	MotorEN('C','E');//使能推夹具电机
+	MotorDir('C',dir);//设定转向
+	
+	//速度限制
+	if (spd > PC_MAX_SPD)
+	{
+		spd = PC_MAX_SPD;
+	}
+	else if (spd < PC_MIN_SPD)
+	{
+		spd = PC_MIN_SPD;
+	}
+	
+	//更新全局变量
+	TIFreq = 72000000.0 / DEFAULT_PERIOD / DEFAULT_PRESCALE;//定时器中断频率
+	spdFreq = spd * 1.0 / 60 * PC_MOTOR_DIV;//达到指定速度需要的脉冲频率	
+	
+	g_tpcPresc = (u16)( TIFreq / spdFreq  +0.5);//更新最大速度对应的预分频值		
+	g_pcStps = (u32)((angleDeg * 1.0 / 360 * PC_MOTOR_DIV)+0.5);//更新待运动的步数
+	g_npcActFlg = 1;
+	g_pcActDFlg = 0;
 
 	TIM_Cmd(TIM2,ENABLE);
 	
@@ -465,6 +557,42 @@ void PMClkGen(void)
 	if (s_clkCnt == s_presc)
 	{
 		s_presc = PushMotorDrive();
+		s_clkCnt = 0;
+	}
+}
+
+/*******************************************************************************
+*函数名称：PCMClkGen
+*函数说明：基于时钟中断产生脉冲输出，用于擦拭工位推夹具电机
+*输入参数：无
+*输出参数：无
+*返回参数：无 
+*******************************************************************************/
+void PCMClkGen(void)
+{
+	static u16 s_clkCnt = 0;
+	static u16 s_presc = PC_DEFAULT_PRE;
+	
+	s_clkCnt ++;
+	
+	if (g_pcClkFlg == 1)
+	{
+		if (s_clkCnt > (s_presc>>1))
+		{
+			GPIO_SetBits(GPIOB,GPIO_Pin_8);
+		}
+		else
+		{
+			GPIO_ResetBits(GPIOB,GPIO_Pin_8);
+			return;
+		}			
+	}
+	else
+	{;}
+	
+	if (s_clkCnt == s_presc)
+	{
+		s_presc = PCMotorDrive();
 		s_clkCnt = 0;
 	}
 }
@@ -629,6 +757,99 @@ u16 PushMotorDrive(void)
 			{
 				g_pActDFlg = 1;
 				g_pClkFlg = 0;
+			}
+		}
+	}
+	return s_currPresc;
+}
+
+/*******************************************************************************
+*函数名称：PCMotorDrive
+*函数说明：基于pcmClkGen函数生成的脉冲驱动电机
+*输入参数：无
+*输出参数：用于调节脉冲频率的分频
+*返回参数：无 
+*******************************************************************************/
+u16 PCMotorDrive(void)
+{
+	static u16 s_currPresc = DEFAULT_PRESCALE ;
+	static u8 s_state = 0;
+	static u16 s_accCnt = 0;
+	static u16 s_maxAccNum = 0;
+		
+	if (g_npcActFlg == 1)
+	{
+		s_accCnt = 0;
+		s_state = 0;
+		g_npcActFlg = 0;
+	}
+	else
+	{;}//如果发现是新动作，则更新运行的状态
+	
+	//printf("s : %d\n",s_state);
+	switch (s_state)
+	{
+		case 0:
+		{
+			if (g_pcStps > 2*PC_ACC_NUM)
+			{
+				s_maxAccNum = PC_ACC_NUM;
+			}
+			else 
+			{
+				s_maxAccNum = g_pcStps / 2;
+			}
+			
+			s_accCnt = 0;
+			s_currPresc = gs_pcAccPrescTab[0];
+			s_state = 1;
+			
+			if (g_pcStps !=0)
+			{
+				g_pcClkFlg = 1;
+			}				
+			//break;
+		}
+		case 1:
+		{
+			
+			if (g_tpcPresc < s_currPresc && s_accCnt < s_maxAccNum)
+			{
+				s_currPresc = gs_pcAccPrescTab[s_accCnt];
+				g_pcStps--;
+				s_accCnt++;
+				break;				
+			}
+			else
+			{
+				s_state = 2;
+			}
+		}
+		case 2:
+		{
+			if (g_pcStps > s_accCnt)
+			{
+				g_pcStps --;
+				break;				
+			}
+			else
+			{
+				s_state = 3;
+			}		
+		}
+		case 3:
+		{
+			if (g_pcStps != 0)
+			{
+				g_pcStps --;
+				s_accCnt--;
+				s_currPresc = gs_pcAccPrescTab[s_accCnt];
+				break;
+			}
+			else
+			{
+				g_pcActDFlg = 1;
+				g_pcClkFlg = 0;
 			}
 		}
 	}
@@ -840,6 +1061,7 @@ u8 IsMotActDone(u8 motor)
 	switch (motor)
 	{
 		case 'P':return g_pActDFlg;
+		case 'C':return g_pcActDFlg;
 		case 'M':return g_mcActDFlg;
 		case 'S':return g_scActDFlg;
 		default:return 0;		
@@ -865,6 +1087,7 @@ void TIM2_IRQHandler(void)   //TIM2中断
 	}//确保是指定中断源触发中断
 	
 	PMClkGen(); //生成驱动步进电机的脉冲信号
+	PCMClkGen();
 	MCMClkGen();
 	SCMClkGen();
 }

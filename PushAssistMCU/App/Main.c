@@ -170,12 +170,12 @@ int main(void)
 				//}
 			}
 			else if(MASTER_CMD == 0x60){	//test the optical gate
-				PushMotion(400, '+', 100);
-				while(IsMotActDone('P')==0){
-					if(Position_Flag_M == 1)
+				PCMotion(400, '+', 100);
+				while(IsMotActDone('C')==0){
+					if(Position_Flag_C == 1)
 						break;
 				}
-				Position_Flag_M = 0;
+				Position_Flag_C = 0;
 				Fixture_Stop();
 				printf("done0\n");
 			}
