@@ -39,9 +39,9 @@ void HatExistDectInit(void)
 *******************************************************************************/
 u8 IsHatExist(void)
 {
-	u8 state;
-	state =	GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3);
-	return !state;
-	//return 1;//for test.
+// 	u8 state;
+// 	state =	GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3);
+// 	return !state;
+	return 1;//for test.
 }
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

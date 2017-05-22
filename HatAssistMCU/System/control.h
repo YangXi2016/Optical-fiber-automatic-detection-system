@@ -22,17 +22,17 @@
 
 //电机移动一工位参数
 #define RAIL_STATION_ANGLE	(14*360/75)
-#define RAIL_STATION_SPEED	(800)
+#define RAIL_STATION_SPEED	(500)
 
-#define RAIL_FIRSTSTATION_ANGLE (80*360/75)
+#define RAIL_FIRSTSTATION_ANGLE (25*360/75)
 
 //电机自由移动参数
-#define RAIL_FREE_ANGLE		(300*360/75)
+#define RAIL_FREE_ANGLE		(320*360/75)
 #define RAIL_FREE_SPEED		(500)
 
 //电机微调移动参数
 #define TUNE_ANGLE		(2)
-#define TUNE_SPEED		(800)
+#define TUNE_SPEED		(500)
 
 void Hat(void);
 void Hat_Init(void);
