@@ -13,13 +13,35 @@
 
 
 extern u8 SYS_STATE,MASTER_CMD;
-u8 temp;
+u8 position,temp;
+//u32 tatal_angles,last_angles,angles,total_pulses,last_pulses,pulses;
+float absolute_angles[38],relative_angles[38];
+u32 pulses[38];
+
+void coordinate_conversion(){
+	absolute_angles[0]=0;
+	absolute_angles[1]=(52.5*360/75);
+	pulses[0]=0;
+	relative_angles[0]=0;
+	for(temp = 2;temp<38;temp++){
+		absolute_angles[temp]=absolute_angles[temp-1]+(14.0*360/75);
+	}
+
+	for(temp =1;temp<38;temp++){
+		pulses[temp]=(u32)(absolute_angles[temp]/360*MT_MOTOR_DIV + 0.5);
+	}
+
+	for(temp =1;temp<38;temp++){
+		relative_angles[temp]=((pulses[temp]-pulses[temp-1])-0.5)/MT_MOTOR_DIV*360;
+	}
+}
 int main(void)
 {
 	//u8 CCDRes[128] = {0};
 	//u16 i = 0;
 	u8 status;
 	InitAll();
+	coordinate_conversion();
 	printf("HAT ready\n");
 	SYS_STATE = READY_STATE;
 	while(1)
@@ -70,16 +92,22 @@ int main(void)
 			}
 			else if(MASTER_CMD == CMD_RailRunStation){
 				SYS_STATE = WORK_STATE;
-				Rail_RunStation();
+				position++;
+				MTMotion(relative_angles[position], '+', RAIL_STATION_SPEED);
+				//Rail_RunStation();
 			}
 			else if(MASTER_CMD == CMD_RailRunToStation){
 				printf("RunToStation\n");
 				SYS_STATE = WORK_STATE;
-				Rail_RunToStation();
+				position = 1;
+				MTMotion(relative_angles[position], '+', RAIL_STATION_SPEED);
+				//Rail_RunToStation();
+				
 			}
 			else if(MASTER_CMD == CMD_RailBack){
 				SYS_STATE = WORK_STATE;
-				Rail_Back();
+				MTMotion(absolute_angles[position], '-', RAIL_STATION_SPEED);
+				//Rail_Back();
 			}
 			else if(MASTER_CMD == CMD_RailForward){
 				SYS_STATE = WORK_STATE;
@@ -101,10 +129,12 @@ int main(void)
 			}
 			else if(MASTER_CMD == 0x33){
 				while(1){
-				MTMotion(1500, '+', 800);
+				MTMotion(2700, '+', 800);
 				while(IsMotActDone('T')==0);
-				MTMotion(1500, '-', 800);
-				while(IsMotActDone('T')==0);				
+				delay_ms(1000);
+				MTMotion(2700, '-', 800);
+				while(IsMotActDone('T')==0);	
+				delay_ms(1000);					
 				}
 			}
 			MASTER_CMD = DUMY;
@@ -113,4 +143,6 @@ int main(void)
 	}
 }
 
+
+	
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/
