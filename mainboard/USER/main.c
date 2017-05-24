@@ -377,20 +377,34 @@ void section_test(void){
 	rail_state_init();
 	while(1){
 		Rail_RunTo_Station();
-		for(i=0;i<5;i++){
+		printf("step 1\n");
+		for(i=2;i<=37;i++){
+			delay_ms(1000);
+			printf("step %d\n",i);
 			Rail_RunStation();
 			while(Check_HatMCU_Ready()==0)
 				delay_ms(33);
-			delay_ms(1000);
-			printf("step %d\n",i);
+
 		}
+		delay_ms(1000);
 		Rail_Back();
+		for(i=0;i<3;i++)
+			delay_ms(1000);
+// 	}
+// 	{
 // 		status_station2 = 0;
 // 		printf("back begin\n");
 // 		while(status_station2!=2);
 // 		status_station2 = 0;
-		while(Check_Limit_L()==0);
-		Rail_Stop();
+		i = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
+		if(i==0){
+			printf("back suitable %d\n",i);
+			delay_ms(1000);
+			continue;
+		}
+		while(Check_Limit_L()==0){
+			Rail_TuneBack();
+		}
 		printf("back end\n");
 		status_station2 = 0;
 		while (status_station2 == 0){		//	弹夹到达第一个工位的前方

@@ -101,9 +101,9 @@ int main(void)
 			}
 			else if(MASTER_CMD == 0x33){
 				while(1){
-				MTMotion(300, '+', 800);
+				MTMotion(1500, '+', 800);
 				while(IsMotActDone('T')==0);
-				MTMotion(300, '-', 800);
+				MTMotion(1500, '-', 800);
 				while(IsMotActDone('T')==0);				
 				}
 			}

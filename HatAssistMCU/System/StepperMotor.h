@@ -32,9 +32,9 @@
 //平移台电机若干参数
 #define MT_DEFAULT_PRE 10 //电机输出脉冲计数周期
 #define MT_MOTOR_DIV 400 //400脉冲一周
-#define MT_ACC_NUM 100 
+#define MT_ACC_NUM 150 
 #define MTA_COEFF 2.0
-#define MTS_COEFF 5
+#define MTS_COEFF 2
 #define MT_MIN_SPD 60
 #define MT_MAX_SPD 1000
 
