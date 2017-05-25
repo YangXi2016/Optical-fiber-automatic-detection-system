@@ -40,7 +40,7 @@ enum running_status period;
 enum system_status sys_error;
 int main(void)
 {
-	section_test();
+	//section_test();
 	//peripheral_test();
 	//mutual_test();
 	/********初始化阶段***********/
@@ -65,7 +65,6 @@ int main(void)
 	/********初始化阶段***********/
 	MOTION_ON();
 	rail_state_init();
-	Rail_RunTo_Station();
 	while (1) {
 		if(Check_DetectMCU_CleanSet()){		//周期开始前检测是否有纸巾校准信号
 			Clean_Set();
@@ -75,8 +74,8 @@ int main(void)
 		while (Check_Clip_Upload() == 0)	;			//等待夹具上载
 
 		period = upload;
-
-		for (temp = 0; temp < NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
+		Rail_RunTo_Station();
+		for (temp = 1; temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
 			get_period(temp);
 
 			station_work(period);
@@ -89,9 +88,18 @@ int main(void)
 		g_num_hat = -1;
 		Rail_Back();
 
-		while (status_station2 == 0);
-		status_station2 = 0;
-		Rail_Stop();
+		if(GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11)==1){		//返回时出现了误差
+			while(Check_Limit_L()==0){
+				Rail_TuneBack();
+			}
+			
+			status_station2 = 0;
+			while (status_station2 == 0){		//	弹夹到达第一个工位的前方
+				Rail_TuneForward();
+				while(Check_HatMCU_Ready()==0)
+					delay_ms(33);
+			}
+		}
 		
 		UNCOMPRESS();
 		for(temp=0;temp<WAIT_TIME;temp++)
@@ -126,10 +134,11 @@ void rail_state_init(void){
 	//Rail_Forward();
 	//printf("Begin\n");
 	//Rail_Back();
-	int i;
+	int i=0;
+	while(Check_Limit_L()==0){
+		Rail_TuneBack();
+	}
 	status_station2 = 0;
-	
-	i =0;
 	while (status_station2 == 0){		//	弹夹到达第一个工位的前方
 		Rail_TuneForward();
 		while(Check_HatMCU_Ready()==0)
@@ -153,19 +162,19 @@ void get_period(u8 temp) {
 		g_num_clean++;
 		g_num_detect++;
 	}
-	else if (temp < NUM_TOTAL) {
+	else if (temp <= NUM_TOTAL) {
 		period = clean_detect_hat;
 		g_num_clean++;
 		g_num_detect++;
 		g_num_hat++;
 	}
-	else if (temp < NUM_TOTAL + DISTANCE1) {
+	else if (temp <= NUM_TOTAL + DISTANCE1) {
 		period = detect_hat;
 		g_num_detect++;
 		g_num_hat++;
 		g_num_clean = -1;
 	}
-	else if(temp < NUM_TOTAL + DISTANCE1 + DISTANCE2){
+	else if(temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2){
 		period = hat;
 		g_num_hat++;
 		g_num_detect = -1;
