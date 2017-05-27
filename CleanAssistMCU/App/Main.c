@@ -29,7 +29,7 @@ int main(void)
 		if(wipe_time > MAX_TIME){
 			SYS_STATE |= DROPOUT_STATE;
 		}else{
-			SYS_STATE &= (!DROPOUT_STATE);
+			SYS_STATE &= (~DROPOUT_STATE);
 		}
 		if((IsStepMotActDone()) && (IsDCMotActDone()))	SYS_STATE |= READY_STATE;
 		if(MASTER_CMD != DUMY){

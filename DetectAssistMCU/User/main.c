@@ -142,7 +142,7 @@ int main(void)
 				case 'R':
 					STM_STATE |= READY_STATE;	//收到结果自然说明检测结束了
 					if(Ins_Table[2] == '1')	STM_STATE |= TRUE_RESULT;
-					else	STM_STATE &= (!TRUE_RESULT);
+					else	STM_STATE &= (~TRUE_RESULT);
 					COM_STATUS.Detect_Status = 0;
 					COM_STATUS.Clamp_Status = 0;
 					if(COM_STATUS.Period_Status == 1)	COM_STATUS.Period_Status = 2;
@@ -179,7 +179,7 @@ int main(void)
 				if(Is_Detect(MASTER_CMD))
 				{
 					//Detect();
-					STM_STATE &= (!READY_STATE);
+					STM_STATE &= (~READY_STATE);
 					COM_STATUS.Detect_Status = 1;
 					COM_STATUS.Clamp_Status = 1;
 					INFORM_COM(CMD_Detect);
@@ -211,7 +211,7 @@ int main(void)
 				}
 				else if(Is_ClearFlag(MASTER_CMD))
 				{
-					STM_STATE &= (!CLEANSET_STATE);
+					STM_STATE &= (~CLEANSET_STATE);
 				}				
 
 				MASTER_CMD=DUMY;
