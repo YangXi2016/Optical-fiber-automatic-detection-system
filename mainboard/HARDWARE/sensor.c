@@ -188,6 +188,12 @@ u8 Check_CleanMCU_Ready(void)
 {
 	u8 RxData;
 	RxData = CLEAN_ReadWriteByte(CHECK);
+	if(RxData == FAULT){
+		MOTION_OFF();
+		sys_error = communication_error;
+		while(1)
+			printf("communication error\n");
+	}	
 	if(Is_TissueNull(RxData)){
 		MOTION_OFF();
 		Inform_Detect(CMD_TissueNull);
@@ -213,6 +219,12 @@ u8 Check_PushMCU_Ready(void)
 {
 	u8 RxData;
 	RxData = PUSH_ReadWriteByte(CHECK);
+	if(RxData == FAULT){
+		MOTION_OFF();
+		sys_error = communication_error;
+		while(1)
+			printf("communication error\n");
+	}
 	if(Is_Ready(RxData))
 		return 1;
 	else 
@@ -223,6 +235,12 @@ u8 Check_HatMCU_Ready(void)
 {
 	u8 RxData;
 	RxData = HAT_ReadWriteByte(CHECK);
+	if(RxData == FAULT){
+		MOTION_OFF();
+		sys_error = communication_error;
+		while(1)
+			printf("communication error\n");
+	}
 	if(Is_HatNull(RxData)){
 		MOTION_OFF();
 		Inform_Detect(CMD_HatNull);
@@ -268,6 +286,12 @@ u8 Check_HatMCU_Result(void)
 {
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
+	if(RxData == FAULT){
+		MOTION_OFF();
+		sys_error = communication_error;
+		while(1)
+			printf("communication error\n");
+	}
 	if(HatCheck_Result(RxData))
 		return 1;
 	else 
@@ -278,6 +302,12 @@ u8 Check_DetectMCU_Start()
 {
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
+	if(RxData == FAULT){
+		MOTION_OFF();
+		sys_error = communication_error;
+		while(1)
+			printf("communication error\n");
+	}
 	if(Is_CleanSet(RxData))
 		PUSH_ReadWriteByte(CMD_CleanSet);
 	if(Is_Start(RxData))
@@ -291,6 +321,12 @@ u8 Check_DetectMCU_CleanSet(void){
 	
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
+	if(RxData == FAULT){
+		MOTION_OFF();
+		sys_error = communication_error;
+		while(1)
+			printf("communication error\n");
+	}
 	if(Is_CleanSet(RxData))
 		return 1;
 	else 
@@ -301,6 +337,12 @@ u8 Check_DetectMCU_Result(void)
 {
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
+	if(RxData == FAULT){
+		MOTION_OFF();
+		sys_error = communication_error;
+		while(1)
+			printf("communication error\n");
+	}
 	if(Qualified(RxData))
 		return 1;
 	else// if(UnQualified(RxData))
