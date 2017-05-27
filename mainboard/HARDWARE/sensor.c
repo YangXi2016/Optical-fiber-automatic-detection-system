@@ -197,6 +197,7 @@ u8 Check_CleanMCU_Ready(void)
 			if(Check_DetectMCU_CleanSet()){
 				Clean_Set();
 				Inform_Detect(CMD_ClearFlag);
+				break;
 			}
 		}
 				
@@ -242,14 +243,20 @@ u8 Check_DetectMCU_Ready(void)
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1);
+		while(1)
+			printf("communication error\n");
 	}
 	
 	if(Is_Stop(RxData)){
 		MOTION_OFF();
 		Stop_All();
 		sys_error = detect_error;
-		while(1);
+		while(1){
+			RxData = DETECT_ReadWriteByte(CHECK);
+			if(!Is_Stop(RxData)){
+				break;
+			}
+		}
 	}
 	if(Is_Ready(RxData))
 		return 1;
