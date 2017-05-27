@@ -89,13 +89,13 @@ static void LOCAT_Init(void)
   GPIO_EXTILineConfig(GPIO_PortSourceGPIOD ,GPIO_PinSource10 | GPIO_PinSource11); //指定外部中断输入是PD10/11
 	
 	//外部触发设置，边沿
-	EXTI_InitStructure.EXTI_Line = EXTI_Line10 ;
+	EXTI_InitStructure.EXTI_Line = EXTI_Line11 ;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling; //沿触发 
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);		
-	EXTI_InitStructure.EXTI_Line = EXTI_Line11 ;
-	EXTI_Init(&EXTI_InitStructure);	
+// 	EXTI_InitStructure.EXTI_Line = EXTI_Line10 ;
+// 	EXTI_Init(&EXTI_InitStructure);	
 	
 	//中断参数设定
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
@@ -111,21 +111,24 @@ static void LOCAT_Init(void)
 u8 status_station1 = 0,status_station2 = 0;
 //u8 status_station = 0;
 u8 state;
+
 void EXTI15_10_IRQHandler(void)
 {
-	
+	int t;
 	if(EXTI_GetITStatus(EXTI_Line10) == SET){
-		
-		state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
-		if( state == 1){
-			printf("laser1 loacat IRQ1\n");
-			status_station1 = 1;
-		}else{
-			printf("laser1 loacat IRQ0\n");
-			status_station1 = 1;
-		}
+// 		
+// 		state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
+// 		if( state == 1){
+// 			printf("laser1 loacat IRQ1\n");
+// 			status_station1 = 1;
+// 		}else{
+// 			printf("laser1 loacat IRQ0\n");
+// 			status_station1 = 1;
+// 		}
+		for(t=0;t<1000;t++);
 	EXTI_ClearITPendingBit(EXTI_Line10);  //清除EXTI4线路挂起
 	}
+	//printf("EXTI15_10_IRQHandler\n");
 	
 	if(EXTI_GetITStatus(EXTI_Line11) == SET){
 		
