@@ -16,7 +16,7 @@
 #include "control.h"
 
 /*SYS_STATE为全局变量，可代表当前的系统状态*/ 
-u8 SYS_STATE = CHECK;
+u8 SYS_STATE = DUMY;//CHECK;
 u8 MASTER_CMD = DUMY;
 /*MASTER_CMD为接收到的指令，有命令和查询两种*/
 //收发过程由中断完成
