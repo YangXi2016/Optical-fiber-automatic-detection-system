@@ -39,7 +39,7 @@ enum running_status period;
 enum system_status sys_error;
 int main(void)
 {
-	peripheral_test();
+	//peripheral_test();
 	//mutual_test();
 	/********初始化阶段***********/
 	Init_All();

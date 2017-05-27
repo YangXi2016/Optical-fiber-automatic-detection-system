@@ -239,7 +239,7 @@ u8 Check_DetectMCU_Ready(void)
 {
 	u8 RxData;
 	RxData = DETECT_ReadWriteByte(CHECK);
-	if(RxData == ERROR){
+	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
 		while(1);
@@ -308,13 +308,13 @@ u8 Check_Ready(u16 try_times)
 	{
 		retry += 1;
 		if(retry > try_times)	return 0;
-		if(Check_DetectMCU_Ready())
+		if(Check_HatMCU_Ready())
 		{
-			if(Check_CleanMCU_Ready())
+			if(Check_PushMCU_Ready())
 			{
-				if(Check_PushMCU_Ready())
+				if(Check_CleanMCU_Ready())
 				{
-					if(Check_HatMCU_Ready())
+					if(Check_DetectMCU_Ready())
 						return 1;
 				}
 			}

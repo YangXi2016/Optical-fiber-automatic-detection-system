@@ -18,7 +18,7 @@
 #define DUMY				0x00
 #define HEAD				0x01
 #define CMD_COMFIRM		0x02
-#define ERROR					0xff
+#define FAULT					0xff
 #define CHECK					0x02
 
 #define Is_Push(CMD)								(CMD ==0x40)

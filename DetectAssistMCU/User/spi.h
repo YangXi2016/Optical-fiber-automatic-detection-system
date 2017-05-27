@@ -18,7 +18,7 @@
 #define DUMY				0x00
 #define HEAD				0x01
 #define CMD_COMFIRM		0x02
-#define ERROR					0xff
+#define FAULT					0xff
 #define CHECK					0x02
 
 //判断从STM32接收到的命令
