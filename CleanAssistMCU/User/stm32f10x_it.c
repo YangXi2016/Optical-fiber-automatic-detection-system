@@ -42,7 +42,6 @@ void HardFault_Handler(void)
   //while (1)
 	
   {
-		1==2;
   }
 }
  
