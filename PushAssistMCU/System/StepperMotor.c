@@ -257,11 +257,11 @@ void MotorEN(u8 motor,u8 oper)
 		
 		case 'M':
 		{
-			if (oper == 'D')
+			if (oper == 'E')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_12);
 			}
-			else if (oper == 'E')
+			else if (oper == 'D')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_12);	
 			}
