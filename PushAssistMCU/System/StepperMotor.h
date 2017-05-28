@@ -76,7 +76,7 @@ u8 IsMotActDone(u8 motor);//检查运动是否完成
 #define CLAMP_SPEED			250
 //#define	BACKWARD_ANGLE		70		//用于推拉的电机所需走的距离
 #define FORWARD_ANGLE			100		//往回拉的拨片贴紧/移开的距离
-#define PUSH_SPEED			60
+#define PUSH_SPEED			100
 #define PUSH_DIR				'-'
 void Fixture_Stop(void);
 
