@@ -59,13 +59,13 @@ int main(void)
 			USART1->DR=MASTER_CMD;
 			while((USART1->SR&0X40)==0);
 			
-			if(MASTER_CMD == 0x01){
-				HMotion(10, '+', HAT_SPEED);
-			}
-			else if(MASTER_CMD == 0x02){
-				HMotion(10, '-', HAT_SPEED);
-			}
-			else if(MASTER_CMD == CMD_Hat){	//带帽前检测帽子是否还有
+// 			if(MASTER_CMD == 0x01){
+// 				HMotion(10, '+', HAT_SPEED);
+// 			}
+// 			else if(MASTER_CMD == 0x02){
+// 				HMotion(10, '-', HAT_SPEED);
+// 			}
+			if(MASTER_CMD == CMD_Hat){	//带帽前检测帽子是否还有
 				SYS_STATE = WORK_STATE;
 				status = IsHatExist();
 				if(status == 0){
@@ -77,11 +77,11 @@ int main(void)
 					Hat();
 					printf("HAT exist\n");
 				}
-				while(1){
-					while(IsMotActDone('H')==0);
-					Hat();
-				}
-				Hat();
+// 				while(1){
+// 					while(IsMotActDone('H')==0);
+// 					Hat();
+// 				}
+// 				Hat();
 			}
 			else if(MASTER_CMD == CMD_HatCheck){
 				SYS_STATE = WORK_STATE;
