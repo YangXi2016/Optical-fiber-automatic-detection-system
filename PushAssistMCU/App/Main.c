@@ -21,8 +21,8 @@ enum period
 {
 	//push_period所需状态
 	PUSH_START,
-	BACKWARD_S,
-	BACKWARD_E,
+	//BACKWARD_S,
+	//BACKWARD_E,
 	CLAMP_S,
 	CLAMP_E,
 	FORWARD_S,
@@ -75,26 +75,26 @@ int main(void)
 		}
 		else{
 			if(status_period == PUSH_START){
-				PushMotion(BACKWARD_ANGLE, '+', PUSH_SPEED);
-				PCMotion(BACKWARD_ANGLE, '+', PUSH_SPEED);
-				status_period = BACKWARD_S;
-			}
-			else if(status_period == BACKWARD_S){
-				if(IsMotActDone('P')&&IsMotActDone('C'))	
-					status_period = BACKWARD_E;
-			}
-			else if(status_period == BACKWARD_E){
-				MCMotion(CLAMP_ANGLE, '+', PUSH_SPEED);
-				SCMotion(CLAMP_ANGLE, '+', PUSH_SPEED);
+				MCMotion(CLAMP_ANGLE, PUSH_DIR, PUSH_SPEED);
+				SCMotion(CLAMP_ANGLE, PUSH_DIR, PUSH_SPEED);
 				status_period = CLAMP_S;
 			}
+// 			else if(status_period == BACKWARD_S){
+// 				if(IsMotActDone('P')&&IsMotActDone('C'))	
+// 					status_period = BACKWARD_E;
+// 			}
+// 			else if(status_period == BACKWARD_E){
+// 				MCMotion(CLAMP_ANGLE, PUSH_DIR, PUSH_SPEED);
+// 				SCMotion(CLAMP_ANGLE, PUSH_DIR, PUSH_SPEED);
+// 				status_period = CLAMP_S;
+// 			}
 			else if(status_period == CLAMP_S){
 				if(IsMotActDone('M') && IsMotActDone('S')) 
 					status_period = CLAMP_E;
 			}
 			else if(status_period == CLAMP_E){
-				PushMotion(FORWARD_ANGLE, '+', PUSH_SPEED);
-				PCMotion(FORWARD_ANGLE, '+', PUSH_SPEED);
+				PushMotion(FORWARD_ANGLE, PUSH_DIR, PUSH_SPEED);
+				PCMotion(FORWARD_ANGLE, PUSH_DIR, PUSH_SPEED);
 				status_period = FORWARD_S;
 			}
 			else if(status_period == FORWARD_S){
@@ -118,14 +118,14 @@ int main(void)
 			}
 
 			else if(status_period == DRAW_START){
-				SCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
+				//SCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
 				position_init();
 				status_period = DRAW_E;
 				status_period = DRAW_END;
 				printf("draw done\n");
 				
 // 				status_period = DRAW_S;
-// 				PushMotion(400, '+', PUSH_SPEED);
+// 				PushMotion(400, PUSH_DIR, PUSH_SPEED);
 // 				PCMotion(400,'+',PUSH_SPEED);
 // 				SCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
 // 				Position_Flag_M = 0;
@@ -133,10 +133,10 @@ int main(void)
 // 			}
 // 			else if(status_period == DRAW_S){
 // 				if(Position_Flag_M != 0){
-// 					PushMotion(0, '+', PUSH_SPEED);
+// 					PushMotion(0, PUSH_DIR, PUSH_SPEED);
 // 				}
 // 				if(Position_Flag_C != 0){
-// 					PCMotion(0, '+', PUSH_SPEED);	
+// 					PCMotion(0, PUSH_DIR, PUSH_SPEED);	
 // 				}
 // 				if((Position_Flag_M != 0) && (Position_Flag_C != 0)){
 // 					status_period = DRAW_E;
@@ -170,7 +170,8 @@ int main(void)
 			else if(MASTER_CMD == 0x80){	//test the motor and driver
 				//GPIO_SetBits(GPIOA,GPIO_Pin_12);
 				//while(1){
-				PushMotion(180, '+', 100);
+				PushMotion(180, '-', 100);
+				PCMotion(180, '-', 100);
 					while(IsMotActDone('P')==0);
 				//MCMotion(CLAMP_ANGLE, '-', SPEED);
 				printf("done1\n");
@@ -179,7 +180,8 @@ int main(void)
 			}
 			else if(MASTER_CMD == 0x60){	//test the optical gate
 				while(1){
-					PushMotion(400, '+', 100);
+					PushMotion(400, '-', 100);
+					PCMotion(180, '-', 100);
 					while(IsMotActDone('P')==0){
 						if(Position_Flag_M == 1)
 							break;
@@ -225,18 +227,18 @@ int main(void)
 void position_init()
 {
 	int s_flag_m=0,s_flag_c=0;
-	PushMotion(400, '+', PUSH_SPEED);
-	PCMotion(400,'+',PUSH_SPEED);
+	PushMotion(400, PUSH_DIR, PUSH_SPEED);
+	PCMotion(400,PUSH_DIR,PUSH_SPEED);
 	Position_Flag_M = 0;
 	Position_Flag_C = 0;
 	while(IsMotActDone('P')==0 || IsMotActDone('C')==0){
 		if(Position_Flag_M != 0){
-			PushMotion(0, '+', PUSH_SPEED);
+			PushMotion(0, PUSH_DIR, PUSH_SPEED);
 			Position_Flag_M = 0;
 			s_flag_m = 1;
 		}
 		if(Position_Flag_C != 0){
-			PCMotion(0, '+', PUSH_SPEED);		
+			PCMotion(0, PUSH_DIR, PUSH_SPEED);		
 			Position_Flag_C = 0;
 			s_flag_c =1;
 		}
