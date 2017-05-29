@@ -202,6 +202,7 @@ u8 Check_CleanMCU_Ready(void)
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_CleanMCU_Ready\n");
 		
 	}	
 	if(Is_TissueNull(RxData)){
@@ -238,6 +239,7 @@ u8 Check_PushMCU_Ready(void)
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_PushMCU_Ready\n");
 	}
 	if(Is_Ready(RxData))
 		return 1;
@@ -258,6 +260,7 @@ u8 Check_HatMCU_Ready(void)
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_HatMCU_Ready\n");
 	}
 	if(Is_HatNull(RxData)){
 		MOTION_OFF();
@@ -285,6 +288,7 @@ u8 Check_DetectMCU_Ready(void)
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_DetectMCU_Ready\n");
 	}
 	
 	if(Is_Stop(RxData)){
@@ -317,6 +321,7 @@ u8 Check_HatMCU_Result(void)
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_HatMCU_Result\n");
 	}
 	if(HatCheck_Result(RxData))
 		return 1;
@@ -337,6 +342,7 @@ u8 Check_DetectMCU_Start()
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_DetectMCU_Start\n");
 	}
 	if(Is_CleanSet(RxData))
 		PUSH_ReadWriteByte(CMD_CleanSet);
@@ -360,6 +366,7 @@ u8 Check_DetectMCU_CleanSet(void){
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_DetectMCU_CleanSet\n");
 	}
 	if(Is_CleanSet(RxData))
 		return 1;
@@ -380,6 +387,7 @@ u8 Check_DetectMCU_Result(void)
 			if(RxData != FAULT)
 				break;
 		}
+		printf("break Check_DetectMCU_Result\n");
 	}
 	if(Qualified(RxData))
 		return 1;
