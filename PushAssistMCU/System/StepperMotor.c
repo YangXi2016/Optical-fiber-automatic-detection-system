@@ -106,8 +106,8 @@ void StepMotorGPIOInit(void)
 
 	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;  
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;  
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;  
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;  
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
 	NVIC_Init(&NVIC_InitStructure);
 	
@@ -294,7 +294,7 @@ void MotorEN(u8 motor,u8 oper)
 *******************************************************************************/
 void MotorDir(u8 motor,u8 oper)
 {
-	printf("%c%c\n",motor,oper);
+	//printf("%c%c\n",motor,oper);
 	switch(motor)
 	{
 		case 'P':
@@ -1119,10 +1119,10 @@ void EXTI9_5_IRQHandler(void)
 	if(EXTI_GetITStatus(EXTI_Line5) == SET){
 		state = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5);
 		if( state == 0){
-			printf("Position_Flag_C = 1;\n");
+			//printf("Position_Flag_C = 1;\n");
 			Position_Flag_C = 1;
 		}else{
-			printf("Position_Flag_C = 2;\n");
+			//printf("Position_Flag_C = 2;\n");
 			Position_Flag_C = 2;
 		}
 		EXTI_ClearITPendingBit(EXTI_Line5);
@@ -1131,10 +1131,10 @@ void EXTI9_5_IRQHandler(void)
 	if(EXTI_GetITStatus(EXTI_Line6) == SET){
 		state = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_6);
 		if( state == 0){
-			printf("Position_Flag_M = 1;\n");
+			//printf("Position_Flag_M = 1;\n");
 			Position_Flag_M = 1;
 		}else{
-			printf("Position_Flag_M = 2;\n");
+			//printf("Position_Flag_M = 2;\n");
 			Position_Flag_M = 2;
 		}
 		EXTI_ClearITPendingBit(EXTI_Line6);

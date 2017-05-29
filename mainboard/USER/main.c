@@ -31,9 +31,9 @@ u8 temp;
 u8 detect_result;
 
 int g_status[20] = {0};	//20个夹具20个工位，但工位间距是19个。
-int g_num_clean  = -1;		//计数统一从0开始，19结束
-int g_num_detect = -1;
-int g_num_hat  = -1;	
+int g_num_clean  = 0;		//计数统一从0开始，19结束
+int g_num_detect = 0;
+int g_num_hat  = 0;	
 
 extern u8 status_station2;
 enum running_status period;
@@ -51,43 +51,50 @@ int main(void)
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
 		Stop_All();
 		while(1){
-			printf("check_ready error");
+			printf("check_ready error\n");
 			delay_ms(1000);
 		}
 	}
-	
+	printf("check_ready done\n");
 	while (1)											//等待上位机的开始信号。
 	{
 		if (Check_DetectMCU_Start())
 			break;
-		delay_ms(50);
+		delay_ms(CHECK_INTERVAL);
 	}
 	/********初始化阶段***********/
 	MOTION_ON();
 	rail_state_init();
 	while (1) {
 		if(Check_DetectMCU_CleanSet()){		//周期开始前检测是否有纸巾校准信号
+			printf("calibrate issue\n");
 			Clean_Set();
 			Inform_Detect(CMD_ClearFlag);
 		}
 		COMPRESS();		//夹具上载前电磁铁吸合
 		while (Check_Clip_Upload() == 0)	;			//等待夹具上载
-
+		for(temp=0;temp<WAIT_TIME;temp++)
+			delay_ms(1000);
+		
 		period = upload;
+		temp = 1;
+		get_period(temp);
 		Rail_RunTo_Station();
-		for (temp = 1; temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
-			get_period(temp);
-
-			station_work(period);
+		station_work(period);
+		printf("done the work in first station\n");
+		for (temp = 2; temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
 			Rail_RunStation();
+			get_period(temp);
+			station_work(period);
+			
+			printf("arrive at station %d\n",temp);
 
 		}
 		period = back;
-		g_num_clean = -1;
-		g_num_detect = -1;
-		g_num_hat = -1;
+		g_num_clean = 0;
+		g_num_detect = 0;
+		g_num_hat = 0;
 		Rail_Back();
-
 		if(GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11)==1){		//返回时出现了误差
 			while(Check_Limit_L()==0){
 				Rail_TuneBack();
@@ -97,7 +104,7 @@ int main(void)
 			while (status_station2 == 0){		//	弹夹到达第一个工位的前方
 				Rail_TuneForward();
 				while(Check_HatMCU_Ready()==0)
-					delay_ms(33);
+					delay_ms(CHECK_INTERVAL);
 			}
 		}
 		
@@ -117,7 +124,8 @@ void Init_All() {
 	delay_init();	    	 //延时函数初始化	 
 	delay_ms(1000);
 	delay_ms(1000);
-	//delay_ms(1000);
+	delay_ms(1000);
+	delay_ms(1000);
 	Sensor_gpio_init();
 	Control_gpio_init();
 	 
@@ -138,26 +146,28 @@ void rail_state_init(void){
 	while(Check_Limit_L()==0){
 		Rail_TuneBack();
 	}
+	printf("back to limit_L done\n");
 	status_station2 = 0;
 	while (status_station2 == 0){		//	弹夹到达第一个工位的前方
 		Rail_TuneForward();
 		while(Check_HatMCU_Ready()==0)
-			delay_ms(33);
+			delay_ms(CHECK_INTERVAL);
 		i++;
 	}
 // 	while(status_station2 == 0);
   	status_station2 = 0;
 //  	Rail_Stop();
- 	printf("%d\n",i);
+	printf("arrive at init position\n");
+ 	//printf("%d\n",i);
 	//printf("stop\n");
 }
 
 void get_period(u8 temp) {
-	if (temp < DISTANCE1) {
+	if (temp <= DISTANCE1) {
 		period = clean;
 		g_num_clean++;
 	}
-	else if (temp < DISTANCE1 + DISTANCE2) {
+	else if (temp <=DISTANCE1 + DISTANCE2) {
 		period = clean_detect;
 		g_num_clean++;
 		g_num_detect++;
@@ -172,12 +182,12 @@ void get_period(u8 temp) {
 		period = detect_hat;
 		g_num_detect++;
 		g_num_hat++;
-		g_num_clean = -1;
+		g_num_clean = 0;
 	}
 	else if(temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2){
 		period = hat;
 		g_num_hat++;
-		g_num_detect = -1;
+		g_num_detect = 0;
 	}
 	else{
 		printf("ERROR\n");
@@ -193,19 +203,19 @@ void get_period(u8 temp) {
 void station_work(u8 period) {
 	while (1) {
 		Fixture_Push();
-		while (Check_PushMCU_Ready() == 0) delay_ms(50);
+		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 		CLAMP();
 		Fixture_Open();
-		while (Check_PushMCU_Ready() == 0) delay_ms(50);
+		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 
 		if (period == clean) {
 			Clean();
-			while (Check_CleanMCU_Ready() == 0) delay_ms(50);
+			while (Check_CleanMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 		}
 		else if (period == clean_detect) {
 			Clean();
 			Detect();
-			while ((Check_CleanMCU_Ready() == 0) || Check_DetectMCU_Ready() == 0) delay_ms(50);
+			while ((Check_CleanMCU_Ready() == 0) || Check_DetectMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect] = detect_result;
 		}
@@ -215,7 +225,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_CleanMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(50);
+			while ((Check_CleanMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 		}
@@ -224,7 +234,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(50);
+			while ((Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 
@@ -233,24 +243,25 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while (Check_HatMCU_Ready() == 0) delay_ms(50);
+			while (Check_HatMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 		}
 
 		LOOSEN();
 
 		if ((g_num_hat >= 0 ) && (g_num_hat <= NUM_TOTAL ) && (g_status[g_num_hat] == 1)) {
-			while (Check_PushMCU_Ready() == 0) delay_ms(50);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
 			Fixture_Draw();
 			Hat_Check();								//回退时检测是否戴帽成功
-			while (Check_PushMCU_Ready() == 0) delay_ms(50);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
 
-			while (Check_HatMCU_Ready()== 0) delay_ms(50);				//等待戴帽的结果
+// 			while (Check_HatMCU_Ready()== 0) delay_ms(CHECK_INTERVAL);				//等待戴帽的结果
 
-			if (Check_HatMCU_Result()== 1)	break;
+// 			if (Check_HatMCU_Result()== 1)	break;
+			break;		//	暂时不检测带帽
 		}
 		else {
 			Fixture_Draw();
-			while (Check_PushMCU_Ready() == 0) delay_ms(50);	//等待回退完成
+			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
 			break; 
 		
 		}
@@ -389,7 +400,7 @@ void section_test(void){
 			printf("step %d\n",i);
 			Rail_RunStation();
 			while(Check_HatMCU_Ready()==0)
-				delay_ms(33);
+				delay_ms(CHECK_INTERVAL);
 
 		}
 		delay_ms(1000);
@@ -416,7 +427,7 @@ void section_test(void){
 		while (status_station2 == 0){		//	弹夹到达第一个工位的前方
 			Rail_TuneForward();
 			while(Check_HatMCU_Ready()==0)
-				delay_ms(33);
+				delay_ms(CHECK_INTERVAL);
 		}
 		delay_ms(1000);
 	}

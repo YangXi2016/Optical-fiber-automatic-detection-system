@@ -196,8 +196,13 @@ u8 Check_CleanMCU_Ready(void)
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_CleanMCU_Ready communication error\n");
+		while(1){
+			RxData = CLEAN_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
+		
 	}	
 	if(Is_TissueNull(RxData)){
 		MOTION_OFF();
@@ -227,8 +232,12 @@ u8 Check_PushMCU_Ready(void)
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_PushMCU_Ready communication error\n");
+		while(1){
+			RxData = PUSH_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
 	}
 	if(Is_Ready(RxData))
 		return 1;
@@ -243,8 +252,12 @@ u8 Check_HatMCU_Ready(void)
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_HatMCU_Ready communication error\n");
+		while(1){
+			RxData = HAT_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
 	}
 	if(Is_HatNull(RxData)){
 		MOTION_OFF();
@@ -266,8 +279,12 @@ u8 Check_DetectMCU_Ready(void)
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_DetectMCU_Ready communication error\n");
+		while(1){
+			RxData = DETECT_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
 	}
 	
 	if(Is_Stop(RxData)){
@@ -290,12 +307,16 @@ u8 Check_DetectMCU_Ready(void)
 u8 Check_HatMCU_Result(void)
 {
 	u8 RxData;
-	RxData = DETECT_ReadWriteByte(CHECK);
+	RxData = HAT_ReadWriteByte(CHECK);
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_HatMCU_Result communication error\n");
+		while(1){
+			RxData = HAT_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
 	}
 	if(HatCheck_Result(RxData))
 		return 1;
@@ -310,8 +331,12 @@ u8 Check_DetectMCU_Start()
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_DetectMCU_Start communication error\n");
+		while(1){
+			RxData = DETECT_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
 	}
 	if(Is_CleanSet(RxData))
 		PUSH_ReadWriteByte(CMD_CleanSet);
@@ -329,8 +354,12 @@ u8 Check_DetectMCU_CleanSet(void){
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_DetectMCU_CleanSet communication error\n");
+		while(1){
+			RxData = DETECT_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
 	}
 	if(Is_CleanSet(RxData))
 		return 1;
@@ -345,8 +374,12 @@ u8 Check_DetectMCU_Result(void)
 	if(RxData == FAULT){
 		MOTION_OFF();
 		sys_error = communication_error;
-		while(1)
-			printf("communication error\n");
+		printf("Check_DetectMCU_Result communication error\n");
+		while(1){
+			RxData = DETECT_ReadWriteByte(CHECK);
+			if(RxData != FAULT)
+				break;
+		}
 	}
 	if(Qualified(RxData))
 		return 1;

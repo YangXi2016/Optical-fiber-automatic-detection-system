@@ -17,9 +17,9 @@
 #define NUM_TOTAL 20
 //#define DISTANCE  4			//弹夹通过红外反射定位时弹夹距离擦拭工位的距离(该距离应该在HatAssistMCU内设定)
 #define DISTANCE1 9
-#define DISTANCE2 7
-#define WAIT_TIME	5			//换弹夹时电磁铁掉电时间
-		
+#define DISTANCE2 8
+#define WAIT_TIME	5			//换弹夹时电磁铁掉电时间(单位s)
+#define	CHECK_INTERVAL	100		//查询间隔时间（单位ms)
 
 //system running status;recording the status of one peried 
 enum running_status
