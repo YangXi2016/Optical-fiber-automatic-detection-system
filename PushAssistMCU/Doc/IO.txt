@@ -41,7 +41,7 @@ DIR - PA11 - CN12:2
 EN  - PA12 - CN12:3
 
 中夹持电机刹车
-BARKE - PB5 - CN15
+BARKE - PB7 - CN15
 改为用于光电门检测
 
 右夹持电机

@@ -95,10 +95,10 @@ void StepMotorGPIOInit(void)
 	
 	//photogate IRQ
 	
-  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB ,GPIO_PinSource5);
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB ,GPIO_PinSource7);
 	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB ,GPIO_PinSource6);
 	//外部触发设置，边沿
-	EXTI_InitStructure.EXTI_Line = EXTI_Line5 | EXTI_Line6 ;
+	EXTI_InitStructure.EXTI_Line = EXTI_Line7 | EXTI_Line6 ;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;	
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling; //沿触发 
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
@@ -1116,8 +1116,8 @@ u8 Position_Flag_C =0,Position_Flag_M =0;
 void EXTI9_5_IRQHandler(void)
 {
 	//printf("handler\n");
-	if(EXTI_GetITStatus(EXTI_Line5) == SET){
-		state = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5);
+	if(EXTI_GetITStatus(EXTI_Line7) == SET){
+		state = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7);
 		if( state == 0){
 			//printf("Position_Flag_C = 1;\n");
 			Position_Flag_C = 1;
@@ -1125,7 +1125,7 @@ void EXTI9_5_IRQHandler(void)
 			//printf("Position_Flag_C = 2;\n");
 			Position_Flag_C = 2;
 		}
-		EXTI_ClearITPendingBit(EXTI_Line5);
+		EXTI_ClearITPendingBit(EXTI_Line7);
 	}
 	
 	if(EXTI_GetITStatus(EXTI_Line6) == SET){
