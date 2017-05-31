@@ -73,7 +73,7 @@ void All_Stop(void)
 {
 	MotorEN('H','D');
 	MotorEN('T','D');
-	SYS_STATE = ACCIDENT_STATE;
+	//SYS_STATE = ACCIDENT_STATE;
 }
 
 void Tune_Back(void)

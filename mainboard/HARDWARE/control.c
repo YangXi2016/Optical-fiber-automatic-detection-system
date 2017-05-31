@@ -231,7 +231,7 @@ u8 Stop_All(void)
 {
 	u8 status1,status2,status3;
 	status1 = CLEAN_ReadWriteByte(CMD_CleanStop);
-	status2 = HAT_ReadWriteByte(CMD_HatStop|CMD_RailStop);
+	status2 = HAT_ReadWriteByte(CMD_AllStop);
 	status3 = PUSH_ReadWriteByte(CMD_PushStop);
 	if((status1==CMD_COMFIRM) && (status2==CMD_COMFIRM) && (status3==CMD_COMFIRM))
 		return 1;
