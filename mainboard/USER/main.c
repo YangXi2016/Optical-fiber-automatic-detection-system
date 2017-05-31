@@ -251,10 +251,10 @@ void station_work(u8 period) {
 		if ((g_num_hat >= 0 ) && (g_num_hat <= NUM_TOTAL ) && (g_status[g_num_hat] == 1)) {
 			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
 			Fixture_Draw();
-			Hat_Check();								//回退时检测是否戴帽成功
+//			Hat_Check();								//回退时检测是否戴帽成功
 			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
 
-// 			while (Check_HatMCU_Ready()== 0) delay_ms(CHECK_INTERVAL);				//等待戴帽的结果
+//			while (Check_HatMCU_Ready()== 0) delay_ms(CHECK_INTERVAL);				//等待戴帽的结果
 
 // 			if (Check_HatMCU_Result()== 1)	break;
 			break;		//	暂时不检测带帽
