@@ -19,7 +19,7 @@
 #define DISTANCE1 9
 #define DISTANCE2 8
 #define WAIT_TIME	5			//换弹夹时电磁铁掉电时间(单位s)
-#define	CHECK_INTERVAL	100		//查询间隔时间（单位ms)
+#define	CHECK_INTERVAL	200		//查询间隔时间（单位ms)
 
 //system running status;recording the status of one peried 
 enum running_status

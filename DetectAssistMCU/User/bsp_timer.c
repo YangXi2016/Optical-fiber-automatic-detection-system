@@ -145,7 +145,7 @@ static void NVIC_TIM2_Configure()
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);						//抢占1位，响应3位 
 	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_Init(&NVIC_InitStructure);
 }
