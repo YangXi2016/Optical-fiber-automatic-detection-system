@@ -231,11 +231,11 @@ void MotorEN(u8 motor,u8 oper)
 	{
 		case 'P':
 		{
-			if (oper == 'E')
+			if (oper == 'D')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_1);
 			}
-			else if (oper == 'D')
+			else if (oper == 'E')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_1);	
 			}
@@ -244,11 +244,11 @@ void MotorEN(u8 motor,u8 oper)
 
 		case 'C':
 		{
-			if (oper == 'E')
+			if (oper == 'D')
 			{
 				GPIO_SetBits(GPIOB,GPIO_Pin_10);
 			}
-			else if (oper == 'D')
+			else if (oper == 'E')
 			{
 				GPIO_ResetBits(GPIOB,GPIO_Pin_10);	
 			}
@@ -257,11 +257,11 @@ void MotorEN(u8 motor,u8 oper)
 		
 		case 'M':
 		{
-			if (oper == 'E')
+			if (oper == 'D')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_12);
 			}
-			else if (oper == 'D')
+			else if (oper == 'E')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_12);	
 			}
@@ -270,11 +270,11 @@ void MotorEN(u8 motor,u8 oper)
 		
 		case 'S':
 		{
-			if (oper == 'E')
+			if (oper == 'D')
 			{
 				GPIO_SetBits(GPIOB,GPIO_Pin_4);
 			}
-			else if (oper == 'D')
+			else if (oper == 'E')
 			{
 				GPIO_ResetBits(GPIOB,GPIO_Pin_4);	
 			}
@@ -299,11 +299,11 @@ void MotorDir(u8 motor,u8 oper)
 	{
 		case 'P':
 		{
-			if (oper == '+')
+			if (oper == '-')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_2);
 			}
-			else if (oper == '-')
+			else if (oper == '+')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_2);	
 			}
@@ -312,11 +312,11 @@ void MotorDir(u8 motor,u8 oper)
 
 		case 'C':
 		{
-			if (oper == '+')
+			if (oper == '-')
 			{
 				GPIO_SetBits(GPIOB,GPIO_Pin_9);
 			}
-			else if (oper == '-')
+			else if (oper == '+')
 			{
 				GPIO_ResetBits(GPIOB,GPIO_Pin_9);	
 			}
@@ -325,11 +325,11 @@ void MotorDir(u8 motor,u8 oper)
 		
 		case 'M':
 		{
-			if (oper == '+')
+			if (oper == '-')
 			{
 				GPIO_SetBits(GPIOA,GPIO_Pin_11);
 			}
-			else if (oper == '-')
+			else if (oper == '+')
 			{
 				GPIO_ResetBits(GPIOA,GPIO_Pin_11);	
 			}
@@ -338,11 +338,11 @@ void MotorDir(u8 motor,u8 oper)
 		
 		case 'S':
 		{
-			if (oper == '+')
+			if (oper == '-')
 			{
 				GPIO_SetBits(GPIOB,GPIO_Pin_3);
 			}
-			else if (oper == '-')
+			else if (oper == '+')
 			{
 				GPIO_ResetBits(GPIOB,GPIO_Pin_3);	
 			}
