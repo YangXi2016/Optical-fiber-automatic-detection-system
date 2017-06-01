@@ -49,7 +49,7 @@ int main(void)
 				SYS_STATE = WORK_STATE;
 				
 				push_clamp();
-				delay_ms(200);
+				delay_ms(500);
 				push_forward();
 				
 				SYS_STATE = READY_STATE;
@@ -109,15 +109,16 @@ int main(void)
 				while(1){
 					SCMotion(CLAMP_ANGLE, '+', CLAMP_SPEED);
 					while(IsMotActDone('S')==0);
-					delay_ms(500);
+					delay_ms(1500);
 					SCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
 					while(IsMotActDone('S')==0);
 					delay_ms(1500);
 					MCMotion(CLAMP_ANGLE, '+', CLAMP_SPEED);
 					while(IsMotActDone('M')==0);
-					delay_ms(500);
+					delay_ms(1500);
 					MCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
 					while(IsMotActDone('M')==0);
+					delay_ms(1500);
 				}
 			}			
 			printf("%c",MASTER_CMD);

@@ -109,6 +109,7 @@ int main(void)
 		}
 		
 		UNCOMPRESS();
+		while (Check_Clip_Unload() == 0);
 		for(temp=0;temp<WAIT_TIME;temp++)
 			delay_ms(1000);
 		while (Check_Clip_Unload() == 0);
@@ -202,6 +203,7 @@ void get_period(u8 temp) {
 
 void station_work(u8 period) {
 	while (1) {
+		delay_ms(800);
 		Fixture_Push();
 		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 		CLAMP();
