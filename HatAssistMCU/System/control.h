@@ -18,7 +18,7 @@
 
 //戴帽用电机参数
 #define HAT_ANGLE		(1140)
-#define HAT_SPEED		(1000)
+#define HAT_SPEED		(500)
 
 //电机移动一工位参数
 #define RAIL_STATION_ANGLE	(14.0*360/75)
