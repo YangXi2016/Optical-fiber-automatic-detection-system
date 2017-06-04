@@ -15,12 +15,12 @@
 extern u8 SYS_STATE,MASTER_CMD;
 u8 position,temp;
 //u32 tatal_angles,last_angles,angles,total_pulses,last_pulses,pulses;
-float absolute_angles[38],relative_angles[38];
+double absolute_angles[38],relative_angles[38];
 u32 pulses[38];
 
 void coordinate_conversion(){
 	absolute_angles[0]=0;
-	absolute_angles[1]=(52.5*360/75);
+	absolute_angles[1]=(52.0*360/75);
 	pulses[0]=0;
 	relative_angles[0]=0;
 	for(temp = 2;temp<38;temp++){
@@ -47,7 +47,7 @@ int main(void)
 	while(1)
 	{
 		if(IsMotActDone('H') && IsMotActDone('T')){
-			SYS_STATE = READY_STATE;
+			SYS_STATE |= READY_STATE;
 			MotorEN('H','D');
 // 			MotorEN('T','D');		this motor's driver can't support
 		}
