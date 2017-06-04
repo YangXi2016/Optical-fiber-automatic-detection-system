@@ -201,6 +201,7 @@ u8 Check_CleanMCU_Ready(void)
 			RxData = CLEAN_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_CleanMCU_Ready\n");
 		
@@ -216,6 +217,7 @@ u8 Check_CleanMCU_Ready(void)
 				Inform_Detect(CMD_ClearFlag);
 				break;
 			}
+			delay_ms(20);
 		}
 				
 	}
@@ -238,6 +240,7 @@ u8 Check_PushMCU_Ready(void)
 			RxData = PUSH_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_PushMCU_Ready\n");
 	}
@@ -259,6 +262,7 @@ u8 Check_HatMCU_Ready(void)
 			RxData = HAT_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_HatMCU_Ready\n");
 	}
@@ -287,6 +291,7 @@ u8 Check_DetectMCU_Ready(void)
 			RxData = DETECT_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_DetectMCU_Ready\n");
 	}
@@ -300,6 +305,7 @@ u8 Check_DetectMCU_Ready(void)
 			if(!Is_Stop(RxData)){
 				break;
 			}
+			delay_ms(20);
 		}
 	}
 	if(Is_Ready(RxData))
@@ -320,6 +326,7 @@ u8 Check_HatMCU_Result(void)
 			RxData = HAT_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_HatMCU_Result\n");
 	}
@@ -341,6 +348,7 @@ u8 Check_DetectMCU_Start()
 			RxData = DETECT_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_DetectMCU_Start\n");
 	}
@@ -365,6 +373,7 @@ u8 Check_DetectMCU_CleanSet(void){
 			RxData = DETECT_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_DetectMCU_CleanSet\n");
 	}
@@ -386,6 +395,7 @@ u8 Check_DetectMCU_Result(void)
 			RxData = DETECT_ReadWriteByte(CHECK);
 			if(RxData != FAULT)
 				break;
+			delay_ms(20);
 		}
 		printf("break Check_DetectMCU_Result\n");
 	}
