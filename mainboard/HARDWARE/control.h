@@ -73,6 +73,7 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_HatCheck						0x04
 #define CMD_RailRunToStation		0x80
 #define CMD_AllStop							0x87
+#define CMD_HatInit								0x88
 
 //the cmd sent to PushAssistMCU
 #define CMD_Push 								0x40	//(CMD | 0x40)
@@ -80,6 +81,7 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_Open								0x10	
 //push:一直到检测仪夹紧的一系列动作；open:检测仪检测前中间电机松开；Draw:从检测结束一直到所控制的电机恢复初态。
 #define CMD_PushStop 						0x87	//(CMD & 0x9F)
+#define CMD_PushInit						0x88
 
 
 #define CMD_COMFIRM									0x02							//命令的确认回传信息
@@ -107,7 +109,10 @@ u8 Fixture_Open(void);
 
 u8 Fixture_Close(void);
 
+u8 Fixture_Init(void);
+
 u8 Hat(void);
+u8 Hat_Init(void);
 
 u8 Clean(void);
 u8 Clean_Set(void);

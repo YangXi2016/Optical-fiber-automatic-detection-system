@@ -134,6 +134,14 @@ u8 Hat(void)
 	else return 0;
 }
 
+u8 Hat_Init(void)
+{
+	u8 status;
+	status = HAT_ReadWriteByte(CMD_HatInit);
+	if(status == CMD_COMFIRM)	return 1;
+	else return 0;
+}
+
 u8 Hat_Check(void)
 {
 	u8 status;
@@ -223,6 +231,13 @@ u8 Fixture_Open(void)
 {
 	u8 status;
 	status = PUSH_ReadWriteByte(CMD_Open);
+	if(status == CMD_COMFIRM)	return 1;
+	else return 0;
+}
+u8 Fixture_Init(void)
+{
+	u8 status;
+	status = PUSH_ReadWriteByte(CMD_PushInit);
 	if(status == CMD_COMFIRM)	return 1;
 	else return 0;
 }

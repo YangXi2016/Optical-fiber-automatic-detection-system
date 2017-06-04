@@ -62,9 +62,14 @@ int main(void)
 			break;
 		delay_ms(CHECK_INTERVAL);
 	}
+	
 	/********初始化阶段***********/
+	Hat_Init();
+	Fixture_Init();
+	while ((Check_HatMCU_Ready() == 0) || Check_PushMCU_Ready() == 0);
 	MOTION_ON();
 	rail_state_init();
+
 	while (1) {
 		if(Check_DetectMCU_CleanSet()){		//周期开始前检测是否有纸巾校准信号
 			printf("calibrate issue\n");
@@ -194,9 +199,9 @@ void get_period(u8 temp) {
 		printf("ERROR\n");
 	}
 	
-	if(g_num_detect == 0)	
+	if(g_num_detect == 1)	
 		while(Inform_Detect(CMD_Head)==0);			//弹夹检查开始发送CMD_Head指令
-	if(g_num_detect == NUM_TOTAL - 1) 
+	if(g_num_detect == NUM_TOTAL) 
 		while(Inform_Detect(CMD_Tail)==0);	//弹夹检查结束发送CMD_Tail指令
 }
 

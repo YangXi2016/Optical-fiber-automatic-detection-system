@@ -17,7 +17,7 @@
 //#include "spi.h"
 
 //戴帽用电机参数
-#define HAT_ANGLE		(1140)
+#define HAT_ANGLE		(1500)
 #define HAT_SPEED		(500)
 
 //电机移动一工位参数

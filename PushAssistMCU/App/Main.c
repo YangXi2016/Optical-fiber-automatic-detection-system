@@ -28,8 +28,8 @@ void push_draw(void);
 int main(void)
 {
 	InitAll();
-	position_init();
-	clamp_init();
+	//position_init();
+	//clamp_init();
 	printf("Push Ready\n");
 	SYS_STATE = READY_STATE;
 // 	while(1){
@@ -70,6 +70,12 @@ int main(void)
 			}
 			else if(Is_Stop(MASTER_CMD)){
 				Fixture_Stop();
+			}
+			else if(Is_Init(MASTER_CMD)){
+				SYS_STATE = WORK_STATE;
+				clamp_init();
+				position_init();
+				SYS_STATE = READY_STATE;
 			}
 			else if(MASTER_CMD == 0x80){	//test the motor and driver
 				//GPIO_SetBits(GPIOA,GPIO_Pin_12);
@@ -132,8 +138,14 @@ int main(void)
 void position_init()
 {
 	int s_flag_m=0,s_flag_c=0;
-	PushMotion(400, PUSH_DIR, PUSH_SPEED);
-	PCMotion(400,PUSH_DIR,PUSH_SPEED);
+	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_6)==1)		//已经处在初始位置时，不执行运动
+		PushMotion(400, PUSH_DIR, PUSH_SPEED);
+	else
+		s_flag_m = 1;
+	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5)==1)
+		PCMotion(400,PUSH_DIR,PUSH_SPEED);
+	else
+		s_flag_c = 1;
 	Position_Flag_M = 0;
 	Position_Flag_C = 0;
 	while(IsMotActDone('P')==0 || IsMotActDone('C')==0){

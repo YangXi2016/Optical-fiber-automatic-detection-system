@@ -19,7 +19,7 @@ void InitAll(void)
 	usart_init(115200);	
 	
 	StepMotorInit();
-	Hat_Init();
+	//Hat_Init();
 	
 	HatExistDectInit();
 	

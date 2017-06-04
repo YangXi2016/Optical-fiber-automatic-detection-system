@@ -69,11 +69,12 @@ int main(void)
 				SYS_STATE = WORK_STATE;
 				status = IsHatExist();
 				if(status == 0){
-					SYS_STATE = HATNULL_STATE;
+					SYS_STATE |= HATNULL_STATE;
 					printf("HAT NULL\n");
 					//while(1);
 				}
 				else{
+					SYS_STATE &= (~HATNULL_STATE);
 					Hat();
 					printf("HAT exist\n");
 				}
@@ -82,6 +83,11 @@ int main(void)
 // 					Hat();
 // 				}
 // 				Hat();
+			}
+			else if(MASTER_CMD == CMD_HatInit){
+				SYS_STATE = WORK_STATE;
+				Hat_Init();
+				SYS_STATE = READY_STATE;
 			}
 			else if(MASTER_CMD == CMD_HatCheck){
 				SYS_STATE = WORK_STATE;
@@ -137,6 +143,11 @@ int main(void)
 				delay_ms(1000);					
 				}
 			}
+			else if(MASTER_CMD == 0xe1)
+				HMotion(HAT_ANGLE, '+', HAT_SPEED);
+			else if(MASTER_CMD == 0xe2)
+				HMotion(HAT_ANGLE, '-', HAT_SPEED);
+			
 			MASTER_CMD = DUMY;
 		}
 		

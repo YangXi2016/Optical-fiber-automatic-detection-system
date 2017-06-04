@@ -21,6 +21,7 @@
 #define FAULT					0xff
 #define CHECK					0x02
 
+#define Is_Init(CMD)								(CMD ==0x88)
 #define Is_Push(CMD)								(CMD ==0x40)
 #define Is_Draw(CMD)								(CMD ==0x20)
 #define Is_Open(CMD)								(CMD ==0x10)

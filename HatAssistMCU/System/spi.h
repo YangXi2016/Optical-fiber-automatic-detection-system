@@ -32,7 +32,7 @@
 #define CMD_RailStop 						0xC7	//(CMD & 0xC7)			//1100,0111
 #define CMD_HatCheck						0x04
 #define CMD_AllStop							0x87
-
+#define CMD_HatInit							0x88
 
 #define READY_STATE							0x40
 #define WORK_STATE							0x00
