@@ -174,8 +174,8 @@ int main(void)
 		
 		/*added by yangxi in 2017/2/15*/
 		if(MASTER_CMD != DUMY){
-				USART1->DR=MASTER_CMD;
-				while((USART1->SR&0X40)==0);
+// 				USART1->DR=MASTER_CMD;
+// 				while((USART1->SR&0X40)==0);
 				if(Is_Detect(MASTER_CMD))
 				{
 					//Detect();

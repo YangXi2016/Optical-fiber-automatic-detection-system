@@ -99,8 +99,8 @@ void SPI1_IRQHandler(void)
 					//USART1->DR=STM_STATE;
 					//while((USART1->SR&0X40)==0);//等待发送结束
 				}
-				USART1->DR=STM_STATE;
-				while((USART1->SR&0X40)==0);//等待发送结束
+// 				USART1->DR=STM_STATE;
+// 				while((USART1->SR&0X40)==0);//等待发送结束
 			}
 		}else{
 			if(Slave_Temp == HEAD){
@@ -114,6 +114,7 @@ void SPI1_IRQHandler(void)
 // 				
 // 				SPI_Cmd(SPI1, ENABLE); //使能SPI外设
 // 				SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断
+				SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
 			}
 		}
 	
