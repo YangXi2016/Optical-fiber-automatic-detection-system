@@ -211,6 +211,7 @@ u8 Check_CleanMCU_Ready(void)
 		Inform_Detect(CMD_TissueNull);
 		Stop_All();
 		sys_error = tissueNull;
+		printf("Tissue Null\n");
 		while(1){
 			if(Check_DetectMCU_CleanSet()){
 				Clean_Set();
@@ -271,6 +272,7 @@ u8 Check_HatMCU_Ready(void)
 		Inform_Detect(CMD_HatNull);
 		Stop_All();
 		sys_error = hatNull;
+		printf("Hat Null\n");
 		while(1);
 	}
 	if(Is_Ready(RxData))

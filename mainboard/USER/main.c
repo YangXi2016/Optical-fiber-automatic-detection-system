@@ -76,8 +76,10 @@ int main(void)
 			Clean_Set();
 			Inform_Detect(CMD_ClearFlag);
 		}
-		COMPRESS();		//夹具上载前电磁铁吸合
 		while (Check_Clip_Upload() == 0)	;			//等待夹具上载
+		printf("upload done\n");
+		delay_ms(500);
+		COMPRESS();		//夹具上载前电磁铁吸合
 		for(temp=0;temp<WAIT_TIME;temp++)
 			delay_ms(1000);
 		
@@ -104,17 +106,20 @@ int main(void)
 			while(Check_Limit_L()==0){
 				Rail_TuneBack();
 			}
-			
+			printf("back to limit_L done\n");
 			status_station2 = 0;
 			while (status_station2 == 0){		//	弹夹到达第一个工位的前方
 				Rail_TuneForward();
 				while(Check_HatMCU_Ready()==0)
 					delay_ms(CHECK_INTERVAL);
+				
 			}
+			
 		}
-		
+		printf("arrive at init position\n");
 		UNCOMPRESS();
 		while (Check_Clip_Unload() == 0);
+		printf("unload done\n");
 		for(temp=0;temp<WAIT_TIME;temp++)
 			delay_ms(1000);
 		while (Check_Clip_Unload() == 0);
