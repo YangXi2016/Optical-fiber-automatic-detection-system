@@ -103,7 +103,7 @@ int main(void)
 				//Rail_RunStation();
 			}
 			else if(MASTER_CMD == CMD_RailRunToStation){
-				printf("RunToStation\n");
+				//printf("RunToStation\n");
 				SYS_STATE = WORK_STATE;
 				position = 1;
 				MTMotion(relative_angles[position], '+', RAIL_STATION_SPEED);

@@ -87,10 +87,14 @@ int main(void)
 		temp = 1;
 		get_period(temp);
 		Rail_RunTo_Station();
+		while(Check_HatMCU_Ready()==0)
+			delay_ms(CHECK_INTERVAL);
 		station_work(period);
 		printf("done the work in first station\n");
 		for (temp = 2; temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
 			Rail_RunStation();
+			while(Check_HatMCU_Ready()==0)
+				delay_ms(CHECK_INTERVAL);
 			get_period(temp);
 			station_work(period);
 			
@@ -213,7 +217,7 @@ void get_period(u8 temp) {
 
 void station_work(u8 period) {
 	while (1) {
-		delay_ms(800);
+		//delay_ms(800);
 		Fixture_Push();
 		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 		CLAMP();

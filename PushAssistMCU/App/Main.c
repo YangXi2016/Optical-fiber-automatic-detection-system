@@ -49,7 +49,7 @@ int main(void)
 				SYS_STATE = WORK_STATE;
 				
 				push_clamp();
-				delay_ms(500);
+				//delay_ms(500);
 				push_forward();
 				
 				SYS_STATE = READY_STATE;
