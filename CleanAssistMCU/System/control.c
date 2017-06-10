@@ -35,7 +35,7 @@ void Clean(void)
 		StepMotion(SM_ANGLE, '-', SM_SPEED);
 		while(IsStepMotActDone() == 0);
 		SYS_STATE = READY_STATE;
-		
+		delay_ms(500);
 		CMotStart(CM_SPEED);
 		MMotMotion(MM_ANGLE, '+', MM_SPEED);
 		//delay_ms(ROLL_TIME);
@@ -57,7 +57,7 @@ void Clean(void)
 		StepMotion(SM_ANGLE*1.2, '+', SM_SPEED);
 		while(IsStepMotActDone() == 0);
 		SYS_STATE = READY_STATE;
-		
+		delay_ms(500);
 		CMotStart(CM_SPEED);
 		MMotMotion(MM_ANGLE*1.2, '+', MM_SPEED);//因为在低端和顶端，与拉纸电机空间距离发生了变化，因为额外的拉扯需要1.2来修正
 		//delay_ms(ROLL_TIME);
