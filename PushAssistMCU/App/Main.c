@@ -195,8 +195,8 @@ void push_loosen(void)
 void push_draw(void)
 {
 	SCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
-	position_init();
 	while((IsMotActDone('S')==0));
+	position_init();
 }
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/
