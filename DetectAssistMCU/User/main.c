@@ -56,7 +56,7 @@ int main(void)
 	/*Clamp_Motor init*/
 	/*added by yangxi in 2016/12/23*/
 	ClampMotor_Init();
-	
+	 
 
 	
 	/* light sources init */
@@ -104,7 +104,7 @@ int main(void)
 			}
 			switch(Ins_Table[1])
 			{
-				case 'C': printf("CE\n");break;
+				case 'C': printf("CEN\n");break;
 				case 'M': Move(Ins_Table[2],Pace);printf("OKE\n");break;
 				case 'A': MoveTo(Stage_Tar_Coord);printf("OKE\n");break;
 				case 'X': Move_LineMotorX(Ins_Table[2],Pace);printf("OKE\n");break;
@@ -154,7 +154,7 @@ int main(void)
 					if(Ins_Table[2] == '1')
 						STM_STATE |= START_STATE;
 					else
-						STM_STATE &= (!START_STATE);
+						STM_STATE &= (~START_STATE);
 					printf("OKE\n");
 					break;
 				case 'V':
@@ -198,16 +198,19 @@ int main(void)
 				{
 					COM_STATUS.ERROR_Status = 1;
 					INFORM_COM(CMD_ERROR);
+					STM_STATE &= (~START_STATE);
 				}
 				else if(Is_HatNull(MASTER_CMD))
 				{
 					COM_STATUS.ERROR_Status = 2;
 					INFORM_COM(CMD_ERROR);
+					STM_STATE &= (~START_STATE);
 				}
 				else if(Is_TissueNull(MASTER_CMD))
 				{
 					COM_STATUS.Period_Status = 3;
 					INFORM_COM(CMD_ERROR);
+					STM_STATE &= (~START_STATE);
 				}
 				else if(Is_ClearFlag(MASTER_CMD))
 				{
