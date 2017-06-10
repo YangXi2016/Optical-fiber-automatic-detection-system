@@ -124,8 +124,8 @@ void EXTI4_IRQHandler(void)
 			
 			SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断	
 			SPI_Cmd(SPI1, ENABLE); //使能SPI外设
-			USART1->DR=0x99;
-			while((USART1->SR&0X40)==0);//等待发送结束
+// 			USART1->DR=0x99;
+// 			while((USART1->SR&0X40)==0);//等待发送结束
 			
 		}else{
 			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 ;
@@ -135,8 +135,8 @@ void EXTI4_IRQHandler(void)
 			
 			SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,DISABLE);//开启中断	
 			SPI_Cmd(SPI1, DISABLE); //使能SPI外设
-			USART1->DR=0x88;
-			while((USART1->SR&0X40)==0);//等待发送结束
+// 			USART1->DR=0x88;
+// 			while((USART1->SR&0X40)==0);//等待发送结束
 			
 		}
 	EXTI_ClearITPendingBit(EXTI_Line4);  //清除EXTI4线路挂起
@@ -151,8 +151,8 @@ void SPI1_IRQHandler(void)
 {	
 	  if(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE)==SET){
 			Slave_Temp = SPI_I2S_ReceiveData(SPI1);
-			USART1->DR=Slave_Temp;
-			while((USART1->SR&0X40)==0);//等待发送结束
+// 			USART1->DR=Slave_Temp;
+// 			while((USART1->SR&0X40)==0);//等待发送结束
 		if(head_flag == 1){
 			if(Slave_Temp == DUMY){
 				while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
@@ -174,8 +174,8 @@ void SPI1_IRQHandler(void)
 					//printf("%c",SYS_STATE);
 
 				}
-				USART1->DR=SYS_STATE;
-				while((USART1->SR&0X40)==0);//等待发送结束			
+// 				USART1->DR=SYS_STATE;
+// 				while((USART1->SR&0X40)==0);//等待发送结束			
 			}
 		}else{
 			if(Slave_Temp == HEAD){

@@ -72,8 +72,8 @@ u8 SPI1_ReadWriteByte(u8 TxData)
 
 u8 DETECT_ReadWriteByte(u8 TxData){
 	u8 RxData;
-	//RxData = SPI1_ReadWriteByte(DUMY);
-	//delay_us(500);
+	RxData = SPI1_ReadWriteByte(DUMY);
+	delay_ms(10);
 	RxData = SPI1_ReadWriteByte(HEAD);
 	delay_ms(10);
 	RxData = SPI1_ReadWriteByte(TxData);

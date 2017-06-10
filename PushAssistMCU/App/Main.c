@@ -127,7 +127,7 @@ int main(void)
 					delay_ms(1500);
 				}
 			}			
-			printf("%c",MASTER_CMD);
+// 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;
 			
 		}

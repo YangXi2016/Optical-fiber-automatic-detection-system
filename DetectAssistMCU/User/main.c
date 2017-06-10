@@ -162,7 +162,7 @@ int main(void)
 					printf("OKE\n");
 					break;
 				case 'I':
-					printf("SI%d%d%d%d%dE/n",COM_STATUS.Union_Status,COM_STATUS.Detect_Status,COM_STATUS.Clamp_Status,COM_STATUS.Period_Status,COM_STATUS.ERROR_Status);
+					printf("SI%d%d%d%d%dE\n",COM_STATUS.Union_Status,COM_STATUS.Detect_Status,COM_STATUS.Clamp_Status,COM_STATUS.Period_Status,COM_STATUS.ERROR_Status);
 					break;
 				
 				default	: printf("PE\n");break;

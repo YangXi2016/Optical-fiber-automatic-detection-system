@@ -56,8 +56,8 @@ int main(void)
 // 		if(IsMotActDone('T'))
 // 			MotorEN('T','D');		
 		if(MASTER_CMD != DUMY){
-			USART1->DR=MASTER_CMD;
-			while((USART1->SR&0X40)==0);
+// 			USART1->DR=MASTER_CMD;
+// 			while((USART1->SR&0X40)==0);
 			
 // 			if(MASTER_CMD == 0x01){
 // 				HMotion(10, '+', HAT_SPEED);
@@ -70,9 +70,9 @@ int main(void)
 				status = IsHatExist();
 				if(status == 0){
 					SYS_STATE |= HATNULL_STATE;
-					printf("HAT NULL\n");
+// 					printf("HAT NULL\n");
 					while(IsHatExist()==0);
-					printf("HAT exist again\n");
+// 					printf("HAT exist again\n");
 					SYS_STATE &= (~HATNULL_STATE);
 					delay_ms(1000);
 					Hat();
@@ -81,7 +81,7 @@ int main(void)
 				else{
 					SYS_STATE &= (~HATNULL_STATE);
 					Hat();
-					printf("HAT exist\n");
+// 					printf("HAT exist\n");
 				}
 // 				while(1){
 // 					while(IsMotActDone('H')==0);

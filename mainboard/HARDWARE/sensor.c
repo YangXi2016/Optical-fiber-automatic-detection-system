@@ -134,10 +134,10 @@ void EXTI15_10_IRQHandler(void)
 		
 		state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
 		if( state == 1){
-			printf("laser2 loacat IRQ1\n");
+// 			printf("laser2 loacat IRQ1\n");
 			status_station2 = 1;
 		}else{
-			printf("laser2 loacat IRQ0\n");
+// 			printf("laser2 loacat IRQ0\n");
 			status_station2 = 2;
 		}
 	EXTI_ClearITPendingBit(EXTI_Line11);  //清除EXTI4线路挂起		
