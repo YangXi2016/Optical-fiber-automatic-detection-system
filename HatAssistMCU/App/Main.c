@@ -20,7 +20,7 @@ u32 pulses[38];
 
 void coordinate_conversion(){
 	absolute_angles[0]=0;
-	absolute_angles[1]=(52.0*360/75);
+	absolute_angles[1]=(52.5*360/75);
 	pulses[0]=0;
 	relative_angles[0]=0;
 	for(temp = 2;temp<38;temp++){
@@ -71,6 +71,11 @@ int main(void)
 				if(status == 0){
 					SYS_STATE |= HATNULL_STATE;
 					printf("HAT NULL\n");
+					while(IsHatExist()==0);
+					printf("HAT exist again\n");
+					SYS_STATE &= (~HATNULL_STATE);
+					delay_ms(1000);
+					Hat();
 					//while(1);
 				}
 				else{

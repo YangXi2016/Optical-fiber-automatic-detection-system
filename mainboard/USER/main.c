@@ -241,7 +241,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_CleanMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
+			while ((Check_CleanMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 		}
@@ -250,7 +250,7 @@ void station_work(u8 period) {
 			if (g_status[g_num_hat] == 1) {
 				Hat();
 			}
-			while ((Check_DetectMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
+			while ((Check_HatMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
 			detect_result = Check_DetectMCU_Result();
 			g_status[g_num_detect - 1] = detect_result;
 

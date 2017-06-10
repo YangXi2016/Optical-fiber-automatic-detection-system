@@ -32,7 +32,7 @@
 #define RAIL_FREE_SPEED		(600)
 
 //电机微调移动参数
-#define TUNE_ANGLE		(2)
+#define TUNE_ANGLE		(1)
 #define TUNE_SPEED		(800)
 
 void Hat(void);
