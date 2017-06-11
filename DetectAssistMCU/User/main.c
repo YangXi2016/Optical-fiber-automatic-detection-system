@@ -21,6 +21,7 @@
 #include "clampmotor.h"			/*added by yangxi in 2016/12/23*/
 
 #include "spi.h"						/*added by yangxi in 2017/2/15*/
+#include "stmflash.h"
 
 #define INTERACTION		1
 #if INTERACTION	
@@ -28,9 +29,10 @@
 #else
 	#define INFORM_COM(MSG)		
 #endif
-
+extern u8 SPI_ERR_FLAG;
 extern uint8_t MASTER_CMD, STM_STATE;	//used in communicating with STM32
 struct STATUS COM_STATUS = {0,0,0,0,0};							//used in communicating with COMPUTER
+u8 FLASH_DATA[3];
 
 uint8_t 	Ins_Flag = 0;
 uint8_t 	Ins_Count = 0;
@@ -51,7 +53,7 @@ int main(void)
 	uint16_t Pace;
 	int16_t  Stage_Tar_Coord;
 	
-	Delayms(1000);
+	//Delayms(1000);
 	
 	/*Clamp_Motor init*/
 	/*added by yangxi in 2016/12/23*/
@@ -76,11 +78,32 @@ int main(void)
 	Delayms(100);
 	
 	/*added by yangxi in 2017/2/15*/
+	
+	STMFLASH_Read(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
+	if(FLASH_DATA[0] == 1){
+		STM_STATE = FLASH_DATA[1];
+		MASTER_CMD = FLASH_DATA[2];
+		FLASH_DATA[0] = 0;
+		STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
+	}
+	else{
+		STM_STATE |= READY_STATE;
+		MASTER_CMD = DUMY;
+		printf("detect ready\n");
+	}
 	SPI1_Init(SPI_Mode_Slave);		   //初始化SPI
-	STM_STATE |= READY_STATE;
-	printf("detect ready\n");
+	
 	while(1)
 	{
+		if(SPI_ERR_FLAG == 50){
+			FLASH_DATA[0]=1;
+			FLASH_DATA[1]=STM_STATE;
+			FLASH_DATA[2]=MASTER_CMD;
+			STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
+			__set_FAULTMASK(1);      // 关闭所有中端
+			NVIC_SystemReset();// 复位
+			SPI_ERR_FLAG = 0;
+		}
 		/* 指令执行标志位有效，执行指令 */
 		if(Ins_Flag == Ins_Enable)
 		{
@@ -121,7 +144,6 @@ int main(void)
 						else	printf("FE\n");
 					}
 					break;				
-				
 				case 'Z':
 					switch(Ins_Table[2])
 					{
@@ -151,10 +173,14 @@ int main(void)
 					break;
 				
 				case 'T':
-					if(Ins_Table[2] == '1')
+					if(Ins_Table[2] == '1'){
 						STM_STATE |= START_STATE;
-					else
+						STM_STATE |= READY_STATE;
+					}
+					else{
 						STM_STATE &= (~START_STATE);
+						STM_STATE &= (~READY_STATE);
+					}
 					printf("OKE\n");
 					break;
 				case 'V':
@@ -216,6 +242,11 @@ int main(void)
 				{
 					STM_STATE &= (~CLEANSET_STATE);
 				}				
+				else if(Is_CLAMP(MASTER_CMD))
+				{
+					STM_STATE &= (~READY_STATE);
+					printf("SBQE\n");
+				}
 
 				MASTER_CMD=DUMY;
 			}

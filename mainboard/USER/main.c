@@ -93,12 +93,13 @@ int main(void)
 		printf("done the work in first station\n");
 		for (temp = 2; temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
 			Rail_RunStation();
+			printf("arrive at station %d\n",temp);
 			while(Check_HatMCU_Ready()==0)
 				delay_ms(CHECK_INTERVAL);
 			get_period(temp);
 			station_work(period);
+			printf("done the work in station %d\n",temp);
 			
-			printf("arrive at station %d\n",temp);
 
 		}
 		period = back;
@@ -208,10 +209,18 @@ void get_period(u8 temp) {
 		printf("ERROR\n");
 	}
 	
-	if(g_num_detect == 1)	
-		while(Inform_Detect(CMD_Head)==0);			//弹夹检查开始发送CMD_Head指令
-	if(g_num_detect == NUM_TOTAL) 
-		while(Inform_Detect(CMD_Tail)==0);	//弹夹检查结束发送CMD_Tail指令
+	if(g_num_detect == 1){		
+		while(Inform_Detect(CMD_Head)==0){
+			printf("Inform_Detect(CMD_Head)\n");
+			delay_ms(CHECK_INTERVAL);			//弹夹检查开始发送CMD_Head指令
+		}
+	}
+	if(g_num_detect == NUM_TOTAL){ 
+		while(Inform_Detect(CMD_Tail)==0){
+			printf("Inform_Detect(CMD_Tail)\n");
+			delay_ms(CHECK_INTERVAL);	//弹夹检查结束发送CMD_Tail指令
+		}
+	}
 }
 
 
@@ -220,7 +229,11 @@ void station_work(u8 period) {
 		//delay_ms(800);
 		Fixture_Push();
 		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
-		CLAMP();
+		//CLAMP();
+		if((period > clean) && (period < hat)){
+			Inform_Detect(CMD_CLAMP);
+			while(Check_DetectMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
+		}
 		Fixture_Open();
 		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 

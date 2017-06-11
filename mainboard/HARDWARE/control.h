@@ -55,6 +55,7 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_HatNull							0x81
 #define CMD_TissueNull					0xC1
 #define CMD_ClearFlag						0x08
+#define CMD_CLAMP								0x04
 
 //the cmd sent to CleanAssistMCU
 #define CMD_Clean 							0x40	//(CMD | 0x40)     //0100,0000

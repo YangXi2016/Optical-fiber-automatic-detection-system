@@ -30,6 +30,7 @@
 #define Is_HatNull(CMD)			((CMD & 0x81) == 0x81)
 #define Is_TissueNull(CMD)	((CMD & 0xC1) == 0xC1)
 #define Is_ClearFlag(CMD)		((CMD & 0x08)	== 0x08)
+#define Is_CLAMP(CMD)				((CMD & 0x04)	== 0x04)
 
 //准备发送给STM32的状态
 #define START_STATE			0x80

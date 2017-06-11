@@ -13,7 +13,8 @@
 
 #include "spi.h"
 //#include "delay.h"
- 	  
+#include "bsp_timer.h"
+
 /*STM_STATE为全局变量，可代表当前的系统状态*/ 
 u8 STM_STATE = DUMY;
 u8 MASTER_CMD = DUMY;
@@ -48,8 +49,8 @@ void SPI1_Init(uint16_t Mode)
 
   NVIC_InitStructure.NVIC_IRQChannel=SPI1_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority=0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority=1;
   NVIC_Init(&NVIC_InitStructure);	 
 	
 	
@@ -59,7 +60,7 @@ void SPI1_Init(uint16_t Mode)
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;		//选择了串行时钟的稳态:时钟悬空高
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;	//数据捕获于第二个时钟沿
 	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;		//NSS信号由硬件（NSS管脚）还是软件（使用SSI位）管理:内部NSS信号有SSI位控制
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;		//定义波特率预分频的值:波特率预分频值为256
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128;		//定义波特率预分频的值:波特率预分频值为256
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;	//指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始
 	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRC值计算的多项式
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
@@ -67,19 +68,20 @@ void SPI1_Init(uint16_t Mode)
 	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断	
 	//SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_TXE,ENABLE);//开启中断
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
-	SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
-	 
+	//SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
+	SPI1->SR &=(0xfffe);
+	SPI_I2S_SendData(SPI1,DUMY); 
 }   
 
 
-
+u8 SPI_ERR_FLAG=0;
 void SPI1_IRQHandler(void)
 {	
 	  if(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE)==SET){
-
+			SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,DISABLE);//关闭中断
 			Slave_Temp = SPI_I2S_ReceiveData(SPI1);
-			//USART1->DR=Slave_Temp;
-			//while((USART1->SR&0X40)==0);//等待发送结束
+// 			USART1->DR=Slave_Temp;
+// 			while((USART1->SR&0X40)==0);//等待发送结束
 		if(head_flag == 1){
 			if(Slave_Temp == DUMY){
 				while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
@@ -108,15 +110,10 @@ void SPI1_IRQHandler(void)
 				SPI_I2S_SendData(SPI1, HEAD);
 			}
 			else{
-				Slave_Temp = SPI_I2S_ReceiveData(SPI1);
-// 				SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,DISABLE);//关闭中断
-// 				SPI_Cmd(SPI1, DISABLE); //失能SPI外设
-// 				
-// 				SPI_Cmd(SPI1, ENABLE); //使能SPI外设
-// 				SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断
-				SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
+				SPI_ERR_FLAG +=1;
 			}
 		}
-	
+		SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//关闭中断
+		Slave_Temp = SPI_I2S_ReceiveData(SPI1);
 	}	
 } 
