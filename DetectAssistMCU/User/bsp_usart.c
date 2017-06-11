@@ -47,9 +47,12 @@ void USART1_ITConfigure()
 /* 重定向C库函数printf到USART1 */
 int fputc(int ch,FILE *f)
 {
-	USART_SendData(USART1,(uint8_t)ch);	//使用USART1发送一个字节
-	while(USART_GetFlagStatus(USART1,USART_FLAG_TC) == RESET);	//等待发送完成 
-	return(ch);
+// 	USART_SendData(USART1,(uint8_t)ch);	//使用USART1发送一个字节
+// 	while(USART_GetFlagStatus(USART1,USART_FLAG_TC) == RESET);	//等待发送完成 
+// 	return(ch);
+	while((USART1->SR&0X40)==0);//循环发送,直到发送完毕   
+    USART1->DR = (u8) ch;      
+	return ch;
 }
 
 /* 重定向C库函数scanf到USART1 */
@@ -64,7 +67,7 @@ static void NVIC_USART1_Configure()
 {
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);						//抢占1位，响应3位
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);						//抢占1位，响应3位
 	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
