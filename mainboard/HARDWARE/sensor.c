@@ -147,10 +147,10 @@ void EXTI15_10_IRQHandler(void)
 
 
 u8 Check_Locat(void){
-	if(LOCAT==1)
+	if(LOCAT==0)
 	{
 		delay_ms(10); 
-		if(LOCAT==1)return 1;
+		if(LOCAT==0)return 1;
 	}     
 	return 0;
 }

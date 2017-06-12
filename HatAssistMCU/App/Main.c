@@ -16,32 +16,48 @@ extern u8 SYS_STATE,MASTER_CMD;
 u8 position,temp;
 //u32 tatal_angles,last_angles,angles,total_pulses,last_pulses,pulses;
 double absolute_angles[38],relative_angles[38];
-u32 pulses[38];
+u32 pulses[38],relative_pulses[38],real_pulses[38];
 
 void coordinate_conversion(){
 	absolute_angles[0]=0;
 	absolute_angles[1]=(52.5*360/75);
 	pulses[0]=0;
 	relative_angles[0]=0;
+	relative_pulses[0]=0;
+	real_pulses[0]=0;
 	for(temp = 2;temp<38;temp++){
 		absolute_angles[temp]=absolute_angles[temp-1]+(14.0*360/75);
+//		printf("absolute_angles[%d] = %.4f\n",temp,absolute_angles[temp]);
 	}
 
 	for(temp =1;temp<38;temp++){
 		pulses[temp]=(u32)(absolute_angles[temp]/360*MT_MOTOR_DIV + 0.5);
+//		printf("pulses[%d] = %d\n",temp,pulses[temp]);
 	}
 
 	for(temp =1;temp<38;temp++){
-		relative_angles[temp]=((pulses[temp]-pulses[temp-1])-0.5)/MT_MOTOR_DIV*360;
+		relative_angles[temp]=(1.0*(pulses[temp]-pulses[temp-1]))/MT_MOTOR_DIV*360;
+//		printf("relative_angles[%d] = %.4f\n",temp,relative_angles[temp]);
 	}
+	
+// 	for(temp =1;temp<38;temp++){
+// 		relative_pulses[temp]=(u32)(relative_angles[temp]/360*MT_MOTOR_DIV + 0.5);;
+// 		printf("relative_pulses[%d] = %d\n",temp,relative_pulses[temp]);
+// 	}
+// 	for(temp =1;temp<38;temp++){
+// 		real_pulses[temp]=real_pulses[temp-1]+ relative_pulses[temp];
+// 		printf("real_pulses[%d] = %d\n",temp,real_pulses[temp]);
+// 	}
+// 	
+	
 }
 int main(void)
 {
 	//u8 CCDRes[128] = {0};
 	//u16 i = 0;
 	u8 status;
-	InitAll();
 	coordinate_conversion();
+	InitAll();
 	printf("HAT ready\n");
 	SYS_STATE = READY_STATE;
 	while(1)
@@ -108,7 +124,7 @@ int main(void)
 				//Rail_RunStation();
 			}
 			else if(MASTER_CMD == CMD_RailRunToStation){
-				//printf("RunToStation\n");
+				printf("RunToStation\n");
 				SYS_STATE = WORK_STATE;
 				position = 1;
 				MTMotion(relative_angles[position], '+', RAIL_STATION_SPEED);
@@ -116,6 +132,8 @@ int main(void)
 				
 			}
 			else if(MASTER_CMD == CMD_RailBack){
+				printf("RailBack:\n");
+				printf("position: %d \t absolute_angle: %.4f \t RAIL_STATION_SPEED: %d \n",position,absolute_angles[position],RAIL_STATION_SPEED);
 				SYS_STATE = WORK_STATE;
 				MTMotion(absolute_angles[position], '-', RAIL_STATION_SPEED);
 				//Rail_Back();
@@ -153,6 +171,12 @@ int main(void)
 			else if(MASTER_CMD == 0xe2)
 				HMotion(HAT_ANGLE, '-', HAT_SPEED);
 			
+			else if(MASTER_CMD == 0xee){
+				position = 29;
+				printf("absolute_angle:%.4f\n",absolute_angles[position]);
+				printf("absolute_pulse:%d\n",pulses[position]);
+				MTMotion(absolute_angles[position], '+', 300);
+			}
 			MASTER_CMD = DUMY;
 		}
 		

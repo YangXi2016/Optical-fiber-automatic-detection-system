@@ -107,7 +107,8 @@ int main(void)
 		g_num_detect = 0;
 		g_num_hat = 0;
 		Rail_Back();
-		if(GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11)==1){		//返回时出现了误差
+		delay_ms(1000);
+		if(Check_Locat() == 1){		//返回时出现了误差
 			while(Check_Limit_L()==0){
 				Rail_TuneBack();
 			}
@@ -140,8 +141,8 @@ void Init_All() {
 	delay_init();	    	 //延时函数初始化	 
 	delay_ms(1000);
 	delay_ms(1000);
-	delay_ms(1000);
-	delay_ms(1000);
+// 	delay_ms(1000);
+// 	delay_ms(1000);
 	Sensor_gpio_init();
 	Control_gpio_init();
 	 

@@ -89,7 +89,7 @@ void StepMotorTIMInit(void)
 	//配置定时器中断
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM1~3全局中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //先占优先级1，优先级次高
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;  //先占优先级1，优先级次高
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
 	NVIC_Init(&NVIC_InitStructure); 

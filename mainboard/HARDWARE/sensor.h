@@ -37,7 +37,7 @@ u8 Check_Limit_R(void);
 
 /*********************************红外反射定位/防掉落检测********************************/
 
-//见GPIOD10/GPIOD11中断处理函数;后面实际只使用了D10.
+//见GPIOD10/GPIOD11中断处理函数;后面实际只使用了D11.
 #define LOCAT		GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_11)
 u8 Check_Locat(void);
 //above is for check the method, below is for interrupt method
