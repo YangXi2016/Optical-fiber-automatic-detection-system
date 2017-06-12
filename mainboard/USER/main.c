@@ -64,10 +64,13 @@ int main(void)
 	}
 	
 	/********初始化阶段***********/
+	while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 	Hat_Init();
+	while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 	Fixture_Init();
 	while ((Check_HatMCU_Ready() == 0) || Check_PushMCU_Ready() == 0);
 	MOTION_ON();
+	while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 	rail_state_init();
 
 	while (1) {
@@ -86,35 +89,48 @@ int main(void)
 		period = upload;
 		temp = 1;
 		get_period(temp);
+		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_RunTo_Station();
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
+		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		station_work(period);
 		printf("done the work in first station\n");
+		
 		for (temp = 2; temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
+			while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 			Rail_RunStation();
 			printf("arrive at station %d\n",temp);
 			while(Check_HatMCU_Ready()==0)
 				delay_ms(CHECK_INTERVAL);
 			get_period(temp);
+			while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 			station_work(period);
 			printf("done the work in station %d\n",temp);
 			
 
 		}
+		
 		period = back;
 		g_num_clean = 0;
 		g_num_detect = 0;
 		g_num_hat = 0;
 		Rail_Back();
-		delay_ms(1000);
-		if(Check_Locat() == 1){		//返回时出现了误差
+		while(Check_HatMCU_Ready()==0){
+			if(Check_DetectMCU_Start()==0)
+				Stop_All();
+			delay_ms(CHECK_INTERVAL);
+		}
+		if(Check_Locat() == 0){		//返回时出现了误差
+			printf("RAIL BACK done\n");
 			while(Check_Limit_L()==0){
+ 				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneBack();
 			}
 			printf("back to limit_L done\n");
 			status_station2 = 0;
 			while (status_station2 == 0){		//	弹夹到达第一个工位的前方
+ 				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneForward();
 				while(Check_HatMCU_Ready()==0)
 					delay_ms(CHECK_INTERVAL);
@@ -161,11 +177,13 @@ void rail_state_init(void){
 	//Rail_Back();
 	int i=0;
 	while(Check_Limit_L()==0){
+		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_TuneBack();
 	}
 	printf("back to limit_L done\n");
 	status_station2 = 0;
 	while (status_station2 == 0){		//	弹夹到达第一个工位的前方
+		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_TuneForward();
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
@@ -247,12 +265,12 @@ void station_work(u8 period) {
 			Detect();
 			while ((Check_CleanMCU_Ready() == 0) || Check_DetectMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
 			detect_result = Check_DetectMCU_Result();
-			g_status[g_num_detect] = detect_result;
+			g_status[g_num_detect-1] = detect_result;
 		}
 		else if (period == clean_detect_hat) {
 			Clean();
 			Detect();
-			if (g_status[g_num_hat] == 1) {
+			if (g_status[g_num_hat-1] == 1) {
 				Hat();
 			}
 			while ((Check_CleanMCU_Ready() == 0) || (Check_HatMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
@@ -261,7 +279,7 @@ void station_work(u8 period) {
 		}
 		else if (period == detect_hat) {
 			Detect();
-			if (g_status[g_num_hat] == 1) {
+			if (g_status[g_num_hat-1] == 1) {
 				Hat();
 			}
 			while ((Check_HatMCU_Ready() == 0) || (Check_DetectMCU_Ready() == 0)) delay_ms(CHECK_INTERVAL);
@@ -270,7 +288,7 @@ void station_work(u8 period) {
 
 		}
 		else if (period == hat) {
-			if (g_status[g_num_hat] == 1) {
+			if (g_status[g_num_hat-1] == 1) {
 				Hat();
 			}
 			while (Check_HatMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
