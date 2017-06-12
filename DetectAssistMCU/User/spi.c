@@ -22,7 +22,7 @@ u8 MASTER_CMD = DUMY;
 //收发过程由中断完成
 
 /*局部变量,接收中断中使用*/
-static u8 head_flag=0,Slave_Temp = 0 ;
+u8 head_flag=0,Slave_Temp = 0 ;
 
 					  
 //SPI口初始化
@@ -75,6 +75,7 @@ void SPI1_Init(uint16_t Mode)
 
 
 u8 SPI_ERR_FLAG=0;
+u8 SPI_REC_FLAG=0;
 void SPI1_IRQHandler(void)
 {	
 	  if(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE)==SET){
@@ -82,6 +83,7 @@ void SPI1_IRQHandler(void)
 			Slave_Temp = SPI_I2S_ReceiveData(SPI1);
 // 			USART1->DR=Slave_Temp;
 // 			while((USART1->SR&0X40)==0);//等待发送结束
+			SPI_REC_FLAG = 1;
 		if(head_flag == 1){
 			if(Slave_Temp == DUMY){
 				while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
@@ -111,6 +113,7 @@ void SPI1_IRQHandler(void)
 			}
 			else{
 				SPI_ERR_FLAG +=1;
+				SPI_I2S_SendData(SPI1, DUMY);
 			}
 		}
 		SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//关闭中断

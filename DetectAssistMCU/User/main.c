@@ -29,7 +29,7 @@
 #else
 	#define INFORM_COM(MSG)		
 #endif
-extern u8 SPI_ERR_FLAG;
+extern u8 SPI_ERR_FLAG,SPI_REC_FLAG,Slave_Temp;
 extern uint8_t MASTER_CMD, STM_STATE;	//used in communicating with STM32
 struct STATUS COM_STATUS = {0,0,0,0,0};							//used in communicating with COMPUTER
 u8 FLASH_DATA[3];
@@ -95,14 +95,23 @@ int main(void)
 	
 	while(1)
 	{
-		if(SPI_ERR_FLAG == 50){
-			FLASH_DATA[0]=1;
-			FLASH_DATA[1]=STM_STATE;
-			FLASH_DATA[2]=MASTER_CMD;
-			STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
-			__set_FAULTMASK(1);      // 关闭所有中端
-			NVIC_SystemReset();// 复位
+// 		if(SPI_REC_FLAG == 1){
+// 			printf("%02X\n",Slave_Temp);
+// 			SPI_REC_FLAG = 0;
+// 		}
+		if(SPI_ERR_FLAG == 1){
+// 			FLASH_DATA[0]=1;
+// 			FLASH_DATA[1]=STM_STATE;
+// 			FLASH_DATA[2]=MASTER_CMD;
+// 			STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
+// 			__set_FAULTMASK(1);      // 关闭所有中端
+// 			NVIC_SystemReset();// 复位
+// 			SPI_ERR_FLAG = 0;
 			SPI_ERR_FLAG = 0;
+			SPI_Cmd(SPI1, DISABLE);
+			SPI_I2S_ReceiveData(SPI1);
+			Delayms(10);
+			SPI_Cmd(SPI1, ENABLE);
 		}
 		/* 指令执行标志位有效，执行指令 */
 		if(Ins_Flag == Ins_Enable)

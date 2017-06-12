@@ -75,10 +75,10 @@ u8 DETECT_ReadWriteByte(u8 TxData){
 // 	RxData = SPI1_ReadWriteByte(DUMY);
 // 	delay_ms(10);
 	RxData = SPI1_ReadWriteByte(HEAD);
-	delay_ms(2);
+	delay_ms(10);
 	RxData = SPI1_ReadWriteByte(TxData);
 	if(RxData != HEAD) return FAULT;
-	delay_ms(2);
+	delay_ms(10);
 	RxData = SPI1_ReadWriteByte(DUMY);
 	return RxData;
 }
