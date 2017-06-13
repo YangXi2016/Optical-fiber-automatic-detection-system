@@ -15,7 +15,6 @@
 #include "control.h"
 #include "variable.h"
 
-
 void Control_gpio_init(void)
 {
 	
@@ -82,6 +81,7 @@ void EXTI9_5_IRQHandler(void)
 		printf("Safe Gate Work\n");
 		sys_error = safeGate_error;
 		EXTI_ClearITPendingBit(EXTI_Line9); 
+		while(Inform_Detect(CMD_SafeGateErr)==0) delay_ms(CHECK_INTERVAL);
 		while(1);
 	}
 
