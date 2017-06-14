@@ -209,7 +209,7 @@ u8 Check_CleanMCU_Ready(void)
 	if(Is_TissueNull(RxData)){
 		MOTION_OFF();
 		Inform_Detect(CMD_TissueNull);
-		Stop_All();
+		//Stop_All();
 		sys_error = tissueNull;
 		printf("Tissue Null\n");
 		while(1){
@@ -306,7 +306,7 @@ u8 Check_DetectMCU_Ready(void)
 	
 	if(Is_Stop(RxData)){
 		MOTION_OFF();
-		Stop_All();
+//		Stop_All();
 		sys_error = detect_error;
 		while(1){
 			RxData = DETECT_ReadWriteByte(CHECK);

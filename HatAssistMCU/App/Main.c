@@ -20,7 +20,7 @@ u32 pulses[38],relative_pulses[38],real_pulses[38];
 
 void coordinate_conversion(){
 	absolute_angles[0]=0;
-	absolute_angles[1]=(52.5*360/75);
+	absolute_angles[1]=(54.3*360/75);
 	pulses[0]=0;
 	relative_angles[0]=0;
 	relative_pulses[0]=0;
@@ -74,7 +74,7 @@ int main(void)
 		if(MASTER_CMD != DUMY){
 // 			USART1->DR=MASTER_CMD;
 // 			while((USART1->SR&0X40)==0);
-			
+				printf("%02X\n",MASTER_CMD);
 // 			if(MASTER_CMD == 0x01){
 // 				HMotion(10, '+', HAT_SPEED);
 // 			}
@@ -89,9 +89,10 @@ int main(void)
 // 					printf("HAT NULL\n");
 					while(IsHatExist()==0);
 // 					printf("HAT exist again\n");
-					SYS_STATE &= (~HATNULL_STATE);
-					delay_ms(1000);
 					Hat();
+					delay_ms(1000);
+					SYS_STATE &= (~HATNULL_STATE);
+					SYS_STATE |= READY_STATE;
 					//while(1);
 				}
 				else{
@@ -135,7 +136,7 @@ int main(void)
 				printf("RailBack:\n");
 				printf("position: %d \t absolute_angle: %.4f \t RAIL_STATION_SPEED: %d \n",position,absolute_angles[position],RAIL_STATION_SPEED);
 				SYS_STATE = WORK_STATE;
-				MTMotion(absolute_angles[position], '-', RAIL_STATION_SPEED);
+				MTMotion(absolute_angles[position], '-', RAIL_FREE_SPEED);
 				//Rail_Back();
 			}
 			else if(MASTER_CMD == CMD_RailForward){

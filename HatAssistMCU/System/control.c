@@ -18,10 +18,7 @@ extern u8 SYS_STATE;
 void Hat(void)
 {
 	HMotion(HAT_ANGLE, '+', HAT_SPEED);
-	while(IsMotActDone('H')==0){
-		if(SYS_STATE != WORK_STATE)
-			return;
-	}
+	while(IsMotActDone('H')==0);
 	HMotion(HAT_ANGLE, '-', HAT_SPEED);
 }
 

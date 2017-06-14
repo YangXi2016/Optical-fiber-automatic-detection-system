@@ -49,7 +49,7 @@ int main(void)
 	period = ready;
 	sys_error = normal;
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
-		Stop_All();
+//		Stop_All();
 		while(1){
 			printf("check_ready error\n");
 			delay_ms(1000);
@@ -93,6 +93,7 @@ int main(void)
 		Rail_RunTo_Station();
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
+		
 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		station_work(period);
 		printf("done the work in first station\n");
@@ -117,20 +118,20 @@ int main(void)
 		g_num_hat = 0;
 		Rail_Back();
 		while(Check_HatMCU_Ready()==0){
-			if(Check_DetectMCU_Start()==0)
-				Stop_All();
+// 			if(Check_DetectMCU_Start()==0)
+// 				Stop_All();
 			delay_ms(CHECK_INTERVAL);
 		}
 		if(Check_Locat() == 0){		//返回时出现了误差
 			printf("RAIL BACK done\n");
 			while(Check_Limit_L()==0){
- 				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
+//  				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneBack();
 			}
 			printf("back to limit_L done\n");
 			status_station2 = 0;
 			while (status_station2 == 0){		//	弹夹到达第一个工位的前方
- 				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
+//  				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneForward();
 				while(Check_HatMCU_Ready()==0)
 					delay_ms(CHECK_INTERVAL);
@@ -177,13 +178,13 @@ void rail_state_init(void){
 	//Rail_Back();
 	int i=0;
 	while(Check_Limit_L()==0){
-		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
+// 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_TuneBack();
 	}
 	printf("back to limit_L done\n");
 	status_station2 = 0;
 	while (status_station2 == 0){		//	弹夹到达第一个工位的前方
-		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
+// 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_TuneForward();
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
