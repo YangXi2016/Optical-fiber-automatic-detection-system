@@ -96,115 +96,143 @@ u8 MASTER_CMD = 0x00;
 //检测仪的控制
 u8 Detect(void)
 {
-	u8 status;
-	status = DETECT_ReadWriteByte(CMD_Detect);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = DETECT_ReadWriteByte(CMD_Detect);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(DETECT_ReadWriteByte(CMD_Detect)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Inform_Detect(u8 txdata){
-	u8 status;
-	status = DETECT_ReadWriteByte(txdata);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = DETECT_ReadWriteByte(txdata);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(DETECT_ReadWriteByte(txdata)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }	
 
 //擦拭协机的控制
 u8 Clean(void)
 {
-	u8 status;
-	status = CLEAN_ReadWriteByte(CMD_Clean);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = CLEAN_ReadWriteByte(CMD_Clean);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(CLEAN_ReadWriteByte(CMD_Clean)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Clean_Set(void){
-	u8 status;
-	status = CLEAN_ReadWriteByte(CMD_CleanSet);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = CLEAN_ReadWriteByte(CMD_CleanSet);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(CLEAN_ReadWriteByte(CMD_CleanSet)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 //戴帽及平移台移动协机的控制
 u8 Hat(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_Hat);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_Hat);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_Hat)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Hat_Init(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_HatInit);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_HatInit);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_Hat)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Hat_Check(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_HatCheck);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_HatCheck);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_HatCheck)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Rail_Forward(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_RailForward);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_RailForward);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_RailForward)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 
  
 u8 Rail_RunStation(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_RailRunStation);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_RailRunStation);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_RailRunStation)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Rail_RunTo_Station(void){
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_RailRunToStation);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;	
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_RailRunToStation);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;	
+	while(HAT_ReadWriteByte(CMD_RailRunToStation)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Rail_Back(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_RailBack);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_RailBack);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_RailBack)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Rail_Stop(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_RailStop);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_RailStop);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_RailStop)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Rail_TuneBack(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_RailTuneBack);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;	
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_RailTuneBack);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(HAT_ReadWriteByte(CMD_RailTuneBack)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;	
 }
 
 u8 Rail_TuneForward(void)
 {
-	u8 status;
-	status = HAT_ReadWriteByte(CMD_RailTuneForward);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;	
+// 	u8 status;
+// 	status = HAT_ReadWriteByte(CMD_RailTuneForward);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;	
+	while(HAT_ReadWriteByte(CMD_RailTuneForward)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 //戴帽及平移台移动协机的控制
@@ -213,45 +241,55 @@ u8 Rail_TuneForward(void)
 //辅助夹具推夹的协机的控制
 u8 Fixture_Push(void)
 {
-	u8 status;
-	status = PUSH_ReadWriteByte(CMD_Push);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = PUSH_ReadWriteByte(CMD_Push);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(PUSH_ReadWriteByte(CMD_Push)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Fixture_Draw(void)
 {
-	u8 status;
-	status = PUSH_ReadWriteByte(CMD_Draw);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = PUSH_ReadWriteByte(CMD_Draw);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(PUSH_ReadWriteByte(CMD_Draw)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Fixture_Open(void)
 {
-	u8 status;
-	status = PUSH_ReadWriteByte(CMD_Open);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = PUSH_ReadWriteByte(CMD_Open);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(PUSH_ReadWriteByte(CMD_Open)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 u8 Fixture_Init(void)
 {
-	u8 status;
-	status = PUSH_ReadWriteByte(CMD_PushInit);
-	if(status == CMD_COMFIRM)	return 1;
-	else return 0;
+// 	u8 status;
+// 	status = PUSH_ReadWriteByte(CMD_PushInit);
+// 	if(status == CMD_COMFIRM)	return 1;
+// 	else return 0;
+	while(PUSH_ReadWriteByte(CMD_PushInit)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 u8 Stop_All(void)
 {
-	u8 status1,status2,status3;
-	status1 = CLEAN_ReadWriteByte(CMD_CleanStop);
-	status2 = HAT_ReadWriteByte(CMD_AllStop);
-	status3 = PUSH_ReadWriteByte(CMD_PushStop);
-	if((status1==CMD_COMFIRM) && (status2==CMD_COMFIRM) && (status3==CMD_COMFIRM))
-		return 1;
-	else 
-		return 0;
+// 	u8 status1,status2,status3;
+// 	status1 = CLEAN_ReadWriteByte(CMD_CleanStop);
+// 	status2 = HAT_ReadWriteByte(CMD_AllStop);
+// 	status3 = PUSH_ReadWriteByte(CMD_PushStop);
+// 	if((status1==CMD_COMFIRM) && (status2==CMD_COMFIRM) && (status3==CMD_COMFIRM))
+// 		return 1;
+// 	else 
+// 		return 0;
+	while((CLEAN_ReadWriteByte(CMD_CleanStop)!=CMD_COMFIRM) || (HAT_ReadWriteByte(CMD_AllStop)!=CMD_COMFIRM) ||(PUSH_ReadWriteByte(CMD_PushStop)!=CMD_COMFIRM)) delay_ms(CHECK_INTERVAL);
+	return 1;
 }
 
 
