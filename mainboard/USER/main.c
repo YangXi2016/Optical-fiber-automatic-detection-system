@@ -91,6 +91,7 @@ int main(void)
 		get_period(temp);
 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_RunTo_Station();
+		delay_ms(CHECK_INTERVAL);
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
 		
