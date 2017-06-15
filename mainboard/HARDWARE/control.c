@@ -150,7 +150,7 @@ u8 Hat_Init(void)
 // 	status = HAT_ReadWriteByte(CMD_HatInit);
 // 	if(status == CMD_COMFIRM)	return 1;
 // 	else return 0;
-	while(HAT_ReadWriteByte(CMD_Hat)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
+	while(HAT_ReadWriteByte(CMD_HatInit)!=CMD_COMFIRM) delay_ms(CHECK_INTERVAL);
 	return 1;
 }
 
