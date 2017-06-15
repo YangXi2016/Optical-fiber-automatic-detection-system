@@ -18,6 +18,8 @@
 
 //戴帽用电机参数
 #define HAT_ANGLE		(1500)
+#define HAT_ANGLE1	(450)
+#define HAT_ANGLE2	(1050)
 #define HAT_SPEED		(1000)
 #define HAT_INIT_SPEED (500)
 //电机移动一工位参数

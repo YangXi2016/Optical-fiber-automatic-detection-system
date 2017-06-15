@@ -17,15 +17,23 @@
 extern u8 SYS_STATE;
 void Hat(void)
 {
-	HMotion(HAT_ANGLE, '+', HAT_SPEED);
+	HMotion(HAT_ANGLE2, '+', HAT_SPEED);
+	while(IsMotActDone('H')==0);
+	HMotion(HAT_ANGLE, '-', HAT_SPEED);
 	while(IsMotActDone('H')==0);
 	SYS_STATE |= READY_STATE;
-	HMotion(HAT_ANGLE, '-', HAT_SPEED);
+	delay_ms(100);
+	HMotion(HAT_ANGLE1, '+', HAT_INIT_SPEED);
+	while(IsMotActDone('H')==0);
 }
 
 void Hat_Init(void)
 {
+	HMotion(HAT_ANGLE, '+', HAT_INIT_SPEED);
+	while(IsMotActDone('H')==0);
 	HMotion(HAT_ANGLE, '-', HAT_INIT_SPEED);
+	while(IsMotActDone('H')==0);
+	HMotion(HAT_ANGLE1, '+', HAT_INIT_SPEED);
 	while(IsMotActDone('H')==0);
 // 	HMotion(5, '+', HAT_SPEED);
 }
