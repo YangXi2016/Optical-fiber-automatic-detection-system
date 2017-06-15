@@ -29,7 +29,7 @@
 #else
 	#define INFORM_COM(MSG)		
 #endif
-extern u8 SPI_ERR_FLAG,SPI_REC_FLAG,Slave_Temp;
+extern u8 SPI_ERR_FLAG,SPI_REC_FLAG,Slave_Temp,head_flag;
 extern uint8_t MASTER_CMD, STM_STATE;	//used in communicating with STM32
 struct STATUS COM_STATUS = {0,0,0,0,0};							//used in communicating with COMPUTER
 u8 FLASH_DATA[3];
@@ -78,19 +78,9 @@ int main(void)
 	Delayms(100);
 	
 	/*added by yangxi in 2017/2/15*/
-	
-	STMFLASH_Read(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
-	if(FLASH_DATA[0] == 1){
-		STM_STATE = FLASH_DATA[1];
-		MASTER_CMD = FLASH_DATA[2];
-		FLASH_DATA[0] = 0;
-		STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
-	}
-	else{
-		STM_STATE |= READY_STATE;
-		MASTER_CMD = DUMY;
-		printf("detect ready\n");
-	}
+	STM_STATE |= READY_STATE;
+	MASTER_CMD = DUMY;
+	printf("detect ready\n");
 	SPI1_Init(SPI_Mode_Slave);		   //初始化SPI
 	
 	while(1)
@@ -99,7 +89,7 @@ int main(void)
 // 			printf("%02X\n",Slave_Temp);
 // 			SPI_REC_FLAG = 0;
 // 		}
-		if(SPI_ERR_FLAG == 1){
+		if(SPI_ERR_FLAG == 3){
 // 			FLASH_DATA[0]=1;
 // 			FLASH_DATA[1]=STM_STATE;
 // 			FLASH_DATA[2]=MASTER_CMD;
@@ -107,6 +97,7 @@ int main(void)
 // 			__set_FAULTMASK(1);      // 关闭所有中端
 // 			NVIC_SystemReset();// 复位
 // 			SPI_ERR_FLAG = 0;
+			head_flag = 0;
 			SPI_ERR_FLAG = 0;
 			SPI_Cmd(SPI1, DISABLE);
 			SPI_I2S_ReceiveData(SPI1);
@@ -232,19 +223,19 @@ int main(void)
 				else if(Is_SafeGateErr(MASTER_CMD))
 				{
 					COM_STATUS.ERROR_Status = 1;
-					INFORM_COM(CMD_ERROR);
+					INFORM_COM(CMD_ERROR1);
 					STM_STATE &= (~START_STATE);
 				}
 				else if(Is_HatNull(MASTER_CMD))
 				{
 					COM_STATUS.ERROR_Status = 2;
-					INFORM_COM(CMD_ERROR);
+					INFORM_COM(CMD_ERROR2);
 					STM_STATE &= (~START_STATE);
 				}
 				else if(Is_TissueNull(MASTER_CMD))
 				{
-					COM_STATUS.Period_Status = 3;
-					INFORM_COM(CMD_ERROR);
+					COM_STATUS.ERROR_Status = 3;
+					INFORM_COM(CMD_ERROR3);
 					STM_STATE &= (~START_STATE);
 				}
 				else if(Is_ClearFlag(MASTER_CMD))

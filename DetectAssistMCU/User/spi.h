@@ -26,9 +26,12 @@
 #define Is_Head(CMD)				((CMD & 0x20) == 0x20)
 #define Is_Tail(CMD)				((CMD & 0x10) == 0x10)
 
-#define Is_SafeGateErr(CMD)	((CMD & 0x80) == 0x80)
-#define Is_HatNull(CMD)			((CMD & 0x81) == 0x81)
-#define Is_TissueNull(CMD)	((CMD & 0xC1) == 0xC1)
+// #define Is_SafeGateErr(CMD)	((CMD & 0x80) == 0x80)
+// #define Is_HatNull(CMD)			((CMD & 0x02) == 0x02)
+// #define Is_TissueNull(CMD)	((CMD & 0x01) == 0x01)
+#define Is_SafeGateErr(CMD)	(CMD == 0x80)
+#define Is_HatNull(CMD)			(CMD == 0x01)
+#define Is_TissueNull(CMD)	(CMD ==0x81)
 #define Is_ClearFlag(CMD)		((CMD & 0x08)	== 0x08)
 #define Is_CLAMP(CMD)				((CMD & 0x04)	== 0x04)
 

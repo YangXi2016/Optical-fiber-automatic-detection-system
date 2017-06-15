@@ -7,7 +7,9 @@
 #define CMD_Detect	"SDE\n"
 #define CMD_Head		"SHE\n"
 #define CMD_Tail		"STE\n"
-#define CMD_ERROR		"SXE\n"
+#define CMD_ERROR1	"SX1E\n"
+#define CMD_ERROR2	"SX2E\n"
+#define CMD_ERROR3	"SX3E\n"
 
 struct STATUS{
 	u8 Union_Status;		//0代表仅检测仪，1代表自动检测系统

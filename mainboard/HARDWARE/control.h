@@ -52,8 +52,8 @@ static void SAFE_MONITOR_Init(void);
 #define CMD_Head								0x20
 #define CMD_Tail								0x10
 #define CMD_SafeGateErr					0x80
-#define CMD_HatNull							0x81
-#define CMD_TissueNull					0xC1
+#define CMD_HatNull							0x01
+#define CMD_TissueNull					0x81
 #define CMD_ClearFlag						0x08
 #define CMD_CLAMP								0x04
 
