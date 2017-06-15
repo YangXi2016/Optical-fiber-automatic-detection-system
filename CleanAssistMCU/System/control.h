@@ -17,7 +17,7 @@
 #include "StepperMotor.h"
 
 #define CM_SPEED		80
-#define MM_ANGLE		12		//distance/diameter/pi*360=2.5/27.5/3.14*360=10.44
+#define MM_ANGLE		25//12		//distance/diameter/pi*360=2.5/27.5/3.14*360=10.44
 #define MM_SPEED		80
 #define SM_ANGLE		(360*5)
 #define SM_SPEED		1000

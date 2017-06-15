@@ -41,7 +41,7 @@
 //中间夹线电机若干参数
 #define MC_DEFAULT_PRE 10 //电机输出脉冲计数周期
 #define MC_MOTOR_DIV 400 //400脉冲一周
-#define MC_ACC_NUM 100 
+#define MC_ACC_NUM 150 
 #define MCA_COEFF 2.0
 #define MCS_COEFF 5
 #define MC_MIN_SPD 60
@@ -50,7 +50,7 @@
 //两边夹线电机若干参数
 #define SC_DEFAULT_PRE 10 //电机输出脉冲计数周期
 #define SC_MOTOR_DIV 400 //400脉冲一周
-#define SC_ACC_NUM 30 
+#define SC_ACC_NUM 150 
 #define SCA_COEFF 2.0
 #define SCS_COEFF 5
 #define SC_MIN_SPD 60
@@ -72,7 +72,7 @@ void SCMotion(float angleDeg, u8 dir, u16 spd);
 
 u8 IsMotActDone(u8 motor);//检查运动是否完成
 
-#define CLAMP_ANGLE			40		//用于夹紧的电机所需走的距离
+#define CLAMP_ANGLE			50		//用于夹紧的电机所需走的距离
 #define CLAMP_SPEED			200
 //#define	BACKWARD_ANGLE		70		//用于推拉的电机所需走的距离
 #define FORWARD_ANGLE			165		//往回拉的拨片贴紧/移开的距离
