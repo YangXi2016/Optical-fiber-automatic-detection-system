@@ -89,7 +89,7 @@ int main(void)
 // 			printf("%02X\n",Slave_Temp);
 // 			SPI_REC_FLAG = 0;
 // 		}
-		if(SPI_ERR_FLAG == 3){
+		if(SPI_ERR_FLAG == 1){
 // 			FLASH_DATA[0]=1;
 // 			FLASH_DATA[1]=STM_STATE;
 // 			FLASH_DATA[2]=MASTER_CMD;
@@ -97,12 +97,13 @@ int main(void)
 // 			__set_FAULTMASK(1);      // 关闭所有中端
 // 			NVIC_SystemReset();// 复位
 // 			SPI_ERR_FLAG = 0;
-			head_flag = 0;
+//			head_flag = 0;
 			SPI_ERR_FLAG = 0;
 			SPI_Cmd(SPI1, DISABLE);
 			SPI_I2S_ReceiveData(SPI1);
 			Delayms(10);
 			SPI_Cmd(SPI1, ENABLE);
+			SPI_I2S_ReceiveData(SPI1);
 		}
 		/* 指令执行标志位有效，执行指令 */
 		if(Ins_Flag == Ins_Enable)
