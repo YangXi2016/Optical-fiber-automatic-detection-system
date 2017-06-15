@@ -19,14 +19,15 @@ void Hat(void)
 {
 	HMotion(HAT_ANGLE, '+', HAT_SPEED);
 	while(IsMotActDone('H')==0);
+	SYS_STATE |= READY_STATE;
 	HMotion(HAT_ANGLE, '-', HAT_SPEED);
 }
 
 void Hat_Init(void)
 {
-	HMotion(HAT_ANGLE, '-', HAT_SPEED);
+	HMotion(HAT_ANGLE, '-', HAT_INIT_SPEED);
 	while(IsMotActDone('H')==0);
-	HMotion(5, '+', HAT_SPEED);
+// 	HMotion(5, '+', HAT_SPEED);
 }
 
 void Hat_Stop(void)

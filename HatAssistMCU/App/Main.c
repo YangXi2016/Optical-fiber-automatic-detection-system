@@ -18,15 +18,15 @@ u8 position,temp;
 double absolute_angles[38],relative_angles[38];
 u32 pulses[38],relative_pulses[38],real_pulses[38];
 
-void coordinate_conversion(){
+void coordinate_conversion(double first_distance,double station_distance){
 	absolute_angles[0]=0;
-	absolute_angles[1]=(54.3*360/75);
+	absolute_angles[1]=(first_distance*360/75);
 	pulses[0]=0;
 	relative_angles[0]=0;
 	relative_pulses[0]=0;
 	real_pulses[0]=0;
 	for(temp = 2;temp<38;temp++){
-		absolute_angles[temp]=absolute_angles[temp-1]+(14.0*360/75);
+		absolute_angles[temp]=absolute_angles[temp-1]+(station_distance*360/75);
 //		printf("absolute_angles[%d] = %.4f\n",temp,absolute_angles[temp]);
 	}
 
@@ -56,19 +56,26 @@ int main(void)
 	//u8 CCDRes[128] = {0};
 	//u16 i = 0;
 	u8 status;
-	coordinate_conversion();
 	InitAll();
+	if(ModeCheck()==1){
+		printf("mode in 8 degree\n");
+		coordinate_conversion(54.0,14.0);
+	}
+	else{
+		printf("mode in straight\n");
+		coordinate_conversion(53.4,14.0);
+	}
 	printf("HAT ready\n");
 	SYS_STATE = READY_STATE;
 	while(1)
 	{
 		if(IsMotActDone('H') && IsMotActDone('T')){
 			SYS_STATE |= READY_STATE;
-			MotorEN('H','D');
+			//MotorEN('H','D');
 // 			MotorEN('T','D');		this motor's driver can't support
 		}
-		if(IsMotActDone('H'))
-			MotorEN('H','D');
+		//if(IsMotActDone('H'))
+			//MotorEN('H','D');
 // 		if(IsMotActDone('T'))
 // 			MotorEN('T','D');		
 		if(MASTER_CMD != DUMY){

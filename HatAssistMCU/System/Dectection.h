@@ -16,7 +16,8 @@
 
 void HatExistDectInit(void);
 u8 IsHatExist(void);
-
+void ModeCheckInit(void);
+u8 ModeCheck(void);
 #endif 
 
 /******************* (C) COPYRIGHT 2017 *****END OF FILE************************/

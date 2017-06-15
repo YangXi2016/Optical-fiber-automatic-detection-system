@@ -20,10 +20,10 @@ void InitAll(void)
 	
 	StepMotorInit();
 	//Hat_Init();
-	
+	ModeCheckInit();
 	HatExistDectInit();
 	
-	LinCCDInit();
+//	LinCCDInit();
 	SPI1_Init();
 
 
