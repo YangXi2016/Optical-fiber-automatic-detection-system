@@ -18,7 +18,6 @@
 #include "usart.h"
 #include "StepperMotor.h"
 #include "Dectection.h"
-#include "LinearCCD.h"
 #include "spi.h"
 #include "control.h"
 

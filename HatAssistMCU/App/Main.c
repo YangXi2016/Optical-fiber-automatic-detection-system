@@ -16,15 +16,13 @@ extern u8 SYS_STATE,MASTER_CMD;
 u8 position,temp;
 
 double absolute_angles[38],relative_angles[38];
-u32 pulses[38],relative_pulses[38],real_pulses[38];
+u32 pulses[38];
 
 void coordinate_conversion(double first_distance,double station_distance){
 	absolute_angles[0]=0;
 	absolute_angles[1]=(first_distance*360/75);
 	pulses[0]=0;
 	relative_angles[0]=0;
-	relative_pulses[0]=0;
-	real_pulses[0]=0;
 	for(temp = 2;temp<38;temp++){
 		absolute_angles[temp]=absolute_angles[temp-1]+(station_distance*360/75);
 	}
@@ -44,7 +42,7 @@ int main(void)
 	InitAll();
 	if(ModeCheck()==1){
 		printf("mode in 8 degree\n");
-		coordinate_conversion(54.0,14.0);
+		coordinate_conversion(54.0,14.0);	//单位为mm.转8度和正常光纤检测位置出现了偏差。
 	}
 	else{
 		printf("mode in straight\n");
@@ -58,16 +56,12 @@ int main(void)
 			SYS_STATE |= READY_STATE;
 		}	
 		if(MASTER_CMD != DUMY){
-			printf("%02X\n",MASTER_CMD);
-
 			if(MASTER_CMD == CMD_Hat){	//带帽前检测帽子是否还有
 				SYS_STATE = WORK_STATE;
 				status = IsHatExist();
 				if(status == 0){
 					SYS_STATE |= HATNULL_STATE;
-// 					printf("HAT NULL\n");
 					while(IsHatExist()==0);
-// 					printf("HAT exist again\n");
 					Hat();
 					delay_ms(1000);
 					SYS_STATE &= (~HATNULL_STATE);
@@ -83,27 +77,18 @@ int main(void)
 				Hat_Init();
 				SYS_STATE = READY_STATE;
 			}
-			else if(MASTER_CMD == CMD_HatCheck){
-				SYS_STATE = WORK_STATE;
-				status = IsHatDone();		//注意，这里是堵塞式执行，没有得出结果时将一直停留在这里，不能执行新接收到的信号。
-				if(status == 'Y') SYS_STATE = HATED_STATE;
-				else SYS_STATE = UNHAT_STATE;
-			}
 			else if(MASTER_CMD == CMD_RailRunStation){
 				SYS_STATE = WORK_STATE;
 				position++;
 				MTMotion(relative_angles[position], '+', RAIL_STATION_SPEED);
 			}
 			else if(MASTER_CMD == CMD_RailRunToStation){
-				printf("RunToStation\n");
 				SYS_STATE = WORK_STATE;
 				position = 1;
 				MTMotion(relative_angles[position], '+', RAIL_STATION_SPEED);
 				
 			}
 			else if(MASTER_CMD == CMD_RailBack){
-				printf("RailBack:\n");
-				printf("position: %d \t absolute_angle: %.4f \t RAIL_STATION_SPEED: %d \n",position,absolute_angles[position],RAIL_STATION_SPEED);
 				SYS_STATE = WORK_STATE;
 				MTMotion(absolute_angles[position], '-', RAIL_FREE_SPEED);
 			}
@@ -124,27 +109,6 @@ int main(void)
 			else if(MASTER_CMD == CMD_TuneForward){
 				SYS_STATE = WORK_STATE;
 				Tune_Forward();
-			}
-			else if(MASTER_CMD == 0x33){
-				while(1){
-				MTMotion(2700, '+', 800);
-				while(IsMotActDone('T')==0);
-				delay_ms(1000);
-				MTMotion(2700, '-', 800);
-				while(IsMotActDone('T')==0);	
-				delay_ms(1000);					
-				}
-			}
-			else if(MASTER_CMD == 0xe1)
-				HMotion(HAT_ANGLE, '+', HAT_SPEED);
-			else if(MASTER_CMD == 0xe2)
-				HMotion(HAT_ANGLE, '-', HAT_SPEED);
-			
-			else if(MASTER_CMD == 0xee){
-				position = 29;
-				printf("absolute_angle:%.4f\n",absolute_angles[position]);
-				printf("absolute_pulse:%d\n",pulses[position]);
-				MTMotion(absolute_angles[position], '+', 300);
 			}
 			MASTER_CMD = DUMY;
 		}
