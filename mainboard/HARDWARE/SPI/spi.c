@@ -43,7 +43,6 @@ void SPI1_Init(void)
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
 	SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
 	SPI_I2S_SendData(SPI1, DUMY);
-	//SPI1_ReadWriteByte(0xff);//启动传输		 
 }   
 
 //SPIx 读写一个字节
@@ -118,7 +117,6 @@ void SPI2_Init()
 	SPI_Cmd(SPI2, ENABLE); //使能SPI外设
 	SPI_I2S_ClearITPendingBit(SPI2, SPI_I2S_IT_RXNE);
 	SPI_I2S_SendData(SPI2, DUMY);
-	//SPI1_ReadWriteByte(0xff);//启动传输		 
 }   
 
 //TxData:要写入的字节

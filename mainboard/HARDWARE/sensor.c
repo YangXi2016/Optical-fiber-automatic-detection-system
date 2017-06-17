@@ -94,8 +94,6 @@ static void LOCAT_Init(void)
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling; //沿触发 
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&EXTI_InitStructure);		
-// 	EXTI_InitStructure.EXTI_Line = EXTI_Line10 ;
-// 	EXTI_Init(&EXTI_InitStructure);	
 	
 	//中断参数设定
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
@@ -107,40 +105,27 @@ static void LOCAT_Init(void)
 	
 }
 
-//GPIOD10/GPIOD11中断处理函数
+//GPIOD11中断处理函数
 u8 status_station1 = 0,status_station2 = 0;
-//u8 status_station = 0;
 u8 state;
 
 void EXTI15_10_IRQHandler(void)
 {
 	int t;
 	if(EXTI_GetITStatus(EXTI_Line10) == SET){
-// 		
-// 		state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
-// 		if( state == 1){
-// 			printf("laser1 loacat IRQ1\n");
-// 			status_station1 = 1;
-// 		}else{
-// 			printf("laser1 loacat IRQ0\n");
-// 			status_station1 = 1;
-// 		}
 		for(t=0;t<1000;t++);
-	EXTI_ClearITPendingBit(EXTI_Line10);  //清除EXTI4线路挂起
+	EXTI_ClearITPendingBit(EXTI_Line10);
 	}
-	//printf("EXTI15_10_IRQHandler\n");
 	
 	if(EXTI_GetITStatus(EXTI_Line11) == SET){
 		
 		state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
 		if( state == 1){
-// 			printf("laser2 loacat IRQ1\n");
 			status_station2 = 1;
 		}else{
-// 			printf("laser2 loacat IRQ0\n");
 			status_station2 = 2;
 		}
-	EXTI_ClearITPendingBit(EXTI_Line11);  //清除EXTI4线路挂起		
+	EXTI_ClearITPendingBit(EXTI_Line11);  	
 	}
 	
 }
@@ -209,7 +194,6 @@ u8 Check_CleanMCU_Ready(void)
 	if(Is_TissueNull(RxData)){
 		MOTION_OFF();
 		Inform_Detect(CMD_TissueNull);
-		//Stop_All();
 		sys_error = tissueNull;
 		printf("Tissue Null\n");
 		while(1){
@@ -270,7 +254,6 @@ u8 Check_HatMCU_Ready(void)
 	if(Is_HatNull(RxData)){
 		//MOTION_OFF();
 		Inform_Detect(CMD_HatNull);
-		//Stop_All();
 		sys_error = hatNull;
 		printf("Hat Null\n");
 		while(1){
@@ -306,7 +289,6 @@ u8 Check_DetectMCU_Ready(void)
 	
 	if(Is_Stop(RxData)){
 		MOTION_OFF();
-//		Stop_All();
 		sys_error = detect_error;
 		while(1){
 			RxData = DETECT_ReadWriteByte(CHECK);

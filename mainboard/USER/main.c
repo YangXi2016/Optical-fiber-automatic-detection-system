@@ -20,13 +20,11 @@
 void Init_All(void);
 void get_period(u8 temp);
 void station_work(u8 period);
-void mutual_test(void);
-void peripheral_test(void);
+void mutual_test(void);//used for communication test
+void peripheral_test(void);//used for peripheral test
 void rail_state_init(void);
-void section_test(void);
+void section_test(void);//used for process test
 u8 i,len,t;
-//u8 MASTER_CMD=((u8)?0B11110000));
-//u8 master_temp;
 u8 temp;
 u8 detect_result;
 
@@ -40,16 +38,12 @@ enum running_status period;
 enum system_status sys_error;
 int main(void)
 {
-	//section_test();
-	//peripheral_test();
-	//mutual_test();
-	/********初始化阶段***********/
+	/********通信初始化阶段***********/
 	Init_All();
 	printf("Mainboard ready\r\n");
 	period = ready;
 	sys_error = normal;
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
-//		Stop_All();
 		while(1){
 			printf("check_ready error\n");
 			delay_ms(1000);
@@ -62,9 +56,10 @@ int main(void)
 			break;
 		delay_ms(CHECK_INTERVAL);
 	}
+	/********通信初始化阶段***********/
 	
-	/********初始化阶段***********/
-	while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
+	/********位置初始化阶段***********/
+	while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);	//before each action,Check DetectMCU start or stop
 	Hat_Init();
 	while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 	Fixture_Init();
@@ -72,16 +67,20 @@ int main(void)
 	MOTION_ON();
 	while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 	rail_state_init();
-
+	/********位置初始化阶段***********/
+	
+	/********正常工作阶段（重复）***********/
 	while (1) {
 		if(Check_DetectMCU_CleanSet()){		//周期开始前检测是否有纸巾校准信号
 			printf("calibrate issue\n");
 			Clean_Set();
 			Inform_Detect(CMD_ClearFlag);
 		}
+		
 		while (Check_Clip_Upload() == 0)	;			//等待夹具上载
 		printf("upload done\n");
 		delay_ms(500);
+		
 		COMPRESS();		//夹具上载前电磁铁吸合
 		for(temp=0;temp<WAIT_TIME;temp++)
 			delay_ms(1000);
@@ -90,56 +89,60 @@ int main(void)
 		temp = 1;
 		get_period(temp);
 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
-		Rail_RunTo_Station();
+		Rail_RunTo_Station();	//运动到第一个工位
 		delay_ms(CHECK_INTERVAL);
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
 		
 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
-		station_work(period);
+		station_work(period);	//完成在第一个工位上的动作
 		printf("done the work in first station\n");
 		
 		for (temp = 2; temp <= NUM_TOTAL + DISTANCE1 + DISTANCE2; temp++) {
+			
 			while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
-			Rail_RunStation();
+			Rail_RunStation();	//运动到第n个工位
 			printf("arrive at station %d\n",temp);
 			while(Check_HatMCU_Ready()==0)
 				delay_ms(CHECK_INTERVAL);
-			get_period(temp);
+			
+			get_period(temp);	//根据工位位置得到当前的时期
+			
 			while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
-			station_work(period);
+			station_work(period);	//根据当前的时期执行当前工位的动作
 			printf("done the work in station %d\n",temp);
 			
 
 		}
 		
+		/********返回到初始位置***********/
 		period = back;
 		g_num_clean = 0;
 		g_num_detect = 0;
 		g_num_hat = 0;
+		
 		Rail_Back();
 		while(Check_HatMCU_Ready()==0){
-// 			if(Check_DetectMCU_Start()==0)
-// 				Stop_All();
 			delay_ms(CHECK_INTERVAL);
 		}
+		
 		if(Check_Locat() == 0){		//返回时出现了误差
 			printf("RAIL BACK done\n");
 			while(Check_Limit_L()==0){
-//  				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneBack();
 			}
 			printf("back to limit_L done\n");
+			
 			status_station2 = 0;
 			while (status_station2 == 0){		//	弹夹到达第一个工位的前方
-//  				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneForward();
 				while(Check_HatMCU_Ready()==0)
 					delay_ms(CHECK_INTERVAL);
-				
 			}
 			
 		}
+		/********返回到初始位置***********/
+		
 		printf("arrive at init position\n");
 		UNCOMPRESS();
 		while (Check_Clip_Unload() == 0);
@@ -150,7 +153,7 @@ int main(void)
 		period = unload;
 
 	}
-
+	/********正常工作阶段（重复）***********/
 }
 
 
@@ -159,8 +162,6 @@ void Init_All() {
 	delay_init();	    	 //延时函数初始化	 
 	delay_ms(1000);
 	delay_ms(1000);
-// 	delay_ms(1000);
-// 	delay_ms(1000);
 	Sensor_gpio_init();
 	Control_gpio_init();
 	 
@@ -170,35 +171,24 @@ void Init_All() {
 }
 
 void rail_state_init(void){
-	//Rail_Back();
-	//while (Check_Limit_L() == 0);
-	//Rail_Stop();
-	
-	//Rail_Forward();
-	//printf("Begin\n");
-	//Rail_Back();
 	int i=0;
-	while(Check_Limit_L()==0){
-// 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
+	while(Check_Limit_L()==0){			//	弹夹到达左极限位置
 		Rail_TuneBack();
 	}
 	printf("back to limit_L done\n");
+	
 	status_station2 = 0;
 	while (status_station2 == 0){		//	弹夹到达第一个工位的前方
-// 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_TuneForward();
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
 		i++;
 	}
-// 	while(status_station2 == 0);
   	status_station2 = 0;
-//  	Rail_Stop();
 	printf("arrive at init position\n");
- 	//printf("%d\n",i);
-	//printf("stop\n");
 }
 
+//根据工位位置得到当前的时期
 void get_period(u8 temp) {
 	if (temp <= DISTANCE1) {
 		period = clean;
@@ -244,13 +234,11 @@ void get_period(u8 temp) {
 	}
 }
 
-
+//根据当前的时期执行当前工位的动作
 void station_work(u8 period) {
 	while (1) {
-		//delay_ms(800);
 		Fixture_Push();
 		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
-		//CLAMP();
 		if((period > clean) && (period < hat)){
 			Inform_Detect(CMD_CLAMP);
 			while(Check_DetectMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
@@ -298,12 +286,11 @@ void station_work(u8 period) {
 
 		LOOSEN();
 
-		if ((g_num_hat >= 0 ) && (g_num_hat <= NUM_TOTAL ) && (g_status[g_num_hat] == 1)) {
+		if ((g_num_hat >= 0 ) && (g_num_hat <= NUM_TOTAL ) && (g_status[g_num_hat] == 1)) {//当需要带帽时，Fixture_Draw的过程中需要检测戴帽是否成功
 			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
 			Fixture_Draw();
 //			Hat_Check();								//回退时检测是否戴帽成功
 			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
-
 //			while (Check_HatMCU_Ready()== 0) delay_ms(CHECK_INTERVAL);				//等待戴帽的结果
 
 // 			if (Check_HatMCU_Result()== 1)	break;
@@ -457,12 +444,7 @@ void section_test(void){
 		Rail_Back();
 		for(i=0;i<3;i++)
 			delay_ms(1000);
-// 	}
-// 	{
-// 		status_station2 = 0;
-// 		printf("back begin\n");
-// 		while(status_station2!=2);
-// 		status_station2 = 0;
+
 		i = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
 		if(i==0){
 			printf("back suitable %d\n",i);
