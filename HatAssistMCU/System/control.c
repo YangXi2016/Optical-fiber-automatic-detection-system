@@ -35,7 +35,6 @@ void Hat_Init(void)
 	while(IsMotActDone('H')==0);
 	HMotion(HAT_ANGLE1, '+', HAT_INIT_SPEED);
 	while(IsMotActDone('H')==0);
-// 	HMotion(5, '+', HAT_SPEED);
 }
 
 void Hat_Stop(void)
@@ -79,7 +78,6 @@ void All_Stop(void)
 {
 	MotorEN('H','D');
 	MotorEN('T','D');
-	//SYS_STATE = ACCIDENT_STATE;
 }
 
 void Tune_Back(void)
