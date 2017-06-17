@@ -35,7 +35,7 @@ void Clean(void)
 		StepMotion(SM_ANGLE, '-', SM_SPEED);
 		while(IsStepMotActDone() == 0);
 		SYS_STATE = READY_STATE;
-		delay_ms(500);
+		delay_ms(500);//adding delay will make CMot and MMot run after fixture draw back
 		CMotStart(CM_SPEED);
 		MMotMotion(MM_ANGLE, '+', MM_SPEED);
 		while(IsDCMotActDone() == 0 );
