@@ -12,7 +12,6 @@
 
 #ifndef __SPI_H
 #define __SPI_H
-//#include "sys.h"
 #include "stm32f10x.h"
 
 #define DUMY				0x00
@@ -26,9 +25,6 @@
 #define Is_Head(CMD)				((CMD & 0x20) == 0x20)
 #define Is_Tail(CMD)				((CMD & 0x10) == 0x10)
 
-// #define Is_SafeGateErr(CMD)	((CMD & 0x80) == 0x80)
-// #define Is_HatNull(CMD)			((CMD & 0x02) == 0x02)
-// #define Is_TissueNull(CMD)	((CMD & 0x01) == 0x01)
 #define Is_SafeGateErr(CMD)	(CMD == 0x80)
 #define Is_HatNull(CMD)			(CMD == 0x01)
 #define Is_TissueNull(CMD)	(CMD ==0x81)
@@ -39,8 +35,8 @@
 #define START_STATE			0x80
 #define TRUE_RESULT			0x20 
 //#define FALSE_RESULT		0x40 //该状态即TRUE_SRATE取反，废除
-#define READY_STATE			0x40 //STM_STATE = (STM_STATE | 0x40)
-#define CLEANSET_STATE	0x10 //after change tissue reset the record.
+#define READY_STATE			0x40 
+#define CLEANSET_STATE	0x10 
 //#define WORK_STATE			0x00 //STM_STATE = (STM_STATE & 0xBF)  该状态即READY_SRATE取反，废除
 //除WORK_STATE使用&来清除标志位，其他状态都使用'|'来置标志位
 
