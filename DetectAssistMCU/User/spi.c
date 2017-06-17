@@ -12,7 +12,6 @@
 
 
 #include "spi.h"
-//#include "delay.h"
 #include "bsp_timer.h"
 
 /*STM_STATE为全局变量，可代表当前的系统状态*/ 
@@ -21,7 +20,7 @@ u8 MASTER_CMD = DUMY;
 /*MASTER_CMD为接收到的指令，有命令和查询两种*/
 //收发过程由中断完成
 
-/*局部变量,接收中断中使用*/
+/*接收中断中使用的变量*/
 u8 head_flag=0,Slave_Temp = 0 ;
 
 					  
@@ -66,11 +65,7 @@ void SPI1_Init(uint16_t Mode)
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
  	
 	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断	
-	//SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_TXE,ENABLE);//开启中断
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
-	//SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
-	SPI1->SR &=(0xfffe);
-	SPI_I2S_SendData(SPI1,DUMY); 
 }   
 
 
@@ -81,8 +76,6 @@ void SPI1_IRQHandler(void)
 	  if(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE)==SET){
 			SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,DISABLE);//关闭中断
 			Slave_Temp = SPI_I2S_ReceiveData(SPI1);
-// 			USART1->DR=Slave_Temp;
-// 			while((USART1->SR&0X40)==0);//等待发送结束
 			SPI_REC_FLAG = 1;
 		if(head_flag == 1){
 			if(Slave_Temp == DUMY){
@@ -97,14 +90,7 @@ void SPI1_IRQHandler(void)
 				}else{
 					while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
 					SPI_I2S_SendData(SPI1, CMD_COMFIRM);
-					//if(MASTER_CMD == FAULT)
-						//MASTER_CMD = DUMY;
-					//printf("%c",STM_STATE);
-					//USART1->DR=STM_STATE;
-					//while((USART1->SR&0X40)==0);//等待发送结束
 				}
-// 				USART1->DR=STM_STATE;
-// 				while((USART1->SR&0X40)==0);//等待发送结束
 			}
 		}else{
 			if(Slave_Temp == HEAD){
@@ -116,7 +102,7 @@ void SPI1_IRQHandler(void)
 				SPI_I2S_SendData(SPI1, DUMY);
 			}
 		}
-		SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//关闭中断
+		SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);//开启中断
 		Slave_Temp = SPI_I2S_ReceiveData(SPI1);
 	}	
 } 

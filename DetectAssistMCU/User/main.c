@@ -21,7 +21,6 @@
 #include "clampmotor.h"			/*added by yangxi in 2016/12/23*/
 
 #include "spi.h"						/*added by yangxi in 2017/2/15*/
-#include "stmflash.h"
 
 #define INTERACTION		1
 #if INTERACTION	
@@ -52,8 +51,6 @@ int main(void)
 	uint16_t DAC_Code;
 	uint16_t Pace;
 	int16_t  Stage_Tar_Coord;
-	
-	//Delayms(1000);
 	
 	/*Clamp_Motor init*/
 	/*added by yangxi in 2016/12/23*/
@@ -89,15 +86,8 @@ int main(void)
 // 			printf("%02X\n",Slave_Temp);
 // 			SPI_REC_FLAG = 0;
 // 		}
+//		above is used for debugging spi communication
 		if(SPI_ERR_FLAG == 1){
-// 			FLASH_DATA[0]=1;
-// 			FLASH_DATA[1]=STM_STATE;
-// 			FLASH_DATA[2]=MASTER_CMD;
-// 			STMFLASH_Write(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
-// 			__set_FAULTMASK(1);      // 关闭所有中端
-// 			NVIC_SystemReset();// 复位
-// 			SPI_ERR_FLAG = 0;
-//			head_flag = 0;
 			SPI_ERR_FLAG = 0;
 			SPI_Cmd(SPI1, DISABLE);
 			SPI_I2S_ReceiveData(SPI1);
@@ -248,7 +238,8 @@ int main(void)
 					STM_STATE &= (~READY_STATE);
 					printf("SBQE\n");
 				}
-
+				//the CLAMP cmd is received after optical fiber insert into detector.
+				//the CLAMP cmd is only used for demostration. the related code in mainboard is also need comment.
 				MASTER_CMD=DUMY;
 			}
 	
