@@ -12,7 +12,6 @@
 
 #ifndef __SPI_H
 #define __SPI_H
-//#include "sys.h"
 #include "stm32f10x.h"
 
 //spi comunication 

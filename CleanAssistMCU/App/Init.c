@@ -26,7 +26,6 @@ void InitAll(void)
 	StepMotorInit();
 	
 	SPI1_Init();
-	//printf("CLEAN ready\n");
 	STMFLASH_Read(FLASH_SAVE_ADDR,(u16*)FLASH_DATA,3);
 	
 	if(FLASH_DATA[0] == 1){

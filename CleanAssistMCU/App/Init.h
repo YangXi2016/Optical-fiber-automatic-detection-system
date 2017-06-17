@@ -16,7 +16,6 @@
 #include "stm32f10x.h"
 #include "delay.h"
 #include "usart.h"
-//#include "Motor.h"
 #include "control.h"
 #include "spi.h"
 #include "stmflash.h"
