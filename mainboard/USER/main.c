@@ -25,8 +25,6 @@ void peripheral_test(void);
 void rail_state_init(void);
 void section_test(void);
 u8 i,len,t;
-//u8 MASTER_CMD=((u8)?0B11110000));
-//u8 master_temp;
 u8 temp;
 u8 detect_result;
 
@@ -40,16 +38,12 @@ enum running_status period;
 enum system_status sys_error;
 int main(void)
 {
-	//section_test();
-	//peripheral_test();
-	//mutual_test();
 	/********初始化阶段***********/
 	Init_All();
 	printf("Mainboard ready\r\n");
 	period = ready;
 	sys_error = normal;
 	if (Check_Ready(3000) == 0) {				//检测所有从机的连接状态，如果设备连接处问题，则制停并输出信息
-//		Stop_All();
 		while(1){
 			printf("check_ready error\n");
 			delay_ms(1000);
@@ -119,20 +113,16 @@ int main(void)
 		g_num_hat = 0;
 		Rail_Back();
 		while(Check_HatMCU_Ready()==0){
-// 			if(Check_DetectMCU_Start()==0)
-// 				Stop_All();
 			delay_ms(CHECK_INTERVAL);
 		}
 		if(Check_Locat() == 0){		//返回时出现了误差
 			printf("RAIL BACK done\n");
 			while(Check_Limit_L()==0){
-//  				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneBack();
 			}
 			printf("back to limit_L done\n");
 			status_station2 = 0;
 			while (status_station2 == 0){		//	弹夹到达第一个工位的前方
-//  				while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 				Rail_TuneForward();
 				while(Check_HatMCU_Ready()==0)
 					delay_ms(CHECK_INTERVAL);
@@ -159,8 +149,6 @@ void Init_All() {
 	delay_init();	    	 //延时函数初始化	 
 	delay_ms(1000);
 	delay_ms(1000);
-// 	delay_ms(1000);
-// 	delay_ms(1000);
 	Sensor_gpio_init();
 	Control_gpio_init();
 	 
@@ -170,33 +158,20 @@ void Init_All() {
 }
 
 void rail_state_init(void){
-	//Rail_Back();
-	//while (Check_Limit_L() == 0);
-	//Rail_Stop();
-	
-	//Rail_Forward();
-	//printf("Begin\n");
-	//Rail_Back();
 	int i=0;
 	while(Check_Limit_L()==0){
-// 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_TuneBack();
 	}
 	printf("back to limit_L done\n");
 	status_station2 = 0;
 	while (status_station2 == 0){		//	弹夹到达第一个工位的前方
-// 		while(Check_DetectMCU_Start()==0) delay_ms(CHECK_INTERVAL);
 		Rail_TuneForward();
 		while(Check_HatMCU_Ready()==0)
 			delay_ms(CHECK_INTERVAL);
 		i++;
 	}
-// 	while(status_station2 == 0);
   	status_station2 = 0;
-//  	Rail_Stop();
 	printf("arrive at init position\n");
- 	//printf("%d\n",i);
-	//printf("stop\n");
 }
 
 void get_period(u8 temp) {
@@ -247,10 +222,8 @@ void get_period(u8 temp) {
 
 void station_work(u8 period) {
 	while (1) {
-		//delay_ms(800);
 		Fixture_Push();
 		while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
-		//CLAMP();
 		if((period > clean) && (period < hat)){
 			Inform_Detect(CMD_CLAMP);
 			while(Check_DetectMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);
@@ -301,12 +274,7 @@ void station_work(u8 period) {
 		if ((g_num_hat >= 0 ) && (g_num_hat <= NUM_TOTAL ) && (g_status[g_num_hat] == 1)) {
 			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
 			Fixture_Draw();
-//			Hat_Check();								//回退时检测是否戴帽成功
 			while (Check_PushMCU_Ready() == 0) delay_ms(CHECK_INTERVAL);	//等待回退完成
-
-//			while (Check_HatMCU_Ready()== 0) delay_ms(CHECK_INTERVAL);				//等待戴帽的结果
-
-// 			if (Check_HatMCU_Result()== 1)	break;
 			break;		//	暂时不检测带帽
 		}
 		else {
@@ -457,12 +425,7 @@ void section_test(void){
 		Rail_Back();
 		for(i=0;i<3;i++)
 			delay_ms(1000);
-// 	}
-// 	{
-// 		status_station2 = 0;
-// 		printf("back begin\n");
-// 		while(status_station2!=2);
-// 		status_station2 = 0;
+
 		i = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
 		if(i==0){
 			printf("back suitable %d\n",i);

@@ -15,7 +15,6 @@
 
 //system parameter
 #define NUM_TOTAL 20
-//#define DISTANCE  4			//弹夹通过红外反射定位时弹夹距离擦拭工位的距离(该距离应该在HatAssistMCU内设定)
 #define DISTANCE1 9
 #define DISTANCE2 8
 #define WAIT_TIME	2			//换弹夹时电磁铁掉电时间(单位s)
@@ -48,7 +47,6 @@ enum system_status
 	communication_error,
 };
 
-//u8 rail_run = 0;
 
 
 #endif
