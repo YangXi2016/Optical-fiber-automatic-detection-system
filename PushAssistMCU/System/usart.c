@@ -107,11 +107,6 @@ void USART1_IRQHandler(void)                	//串口1中断服务程序
 		{
 			Res =USART_ReceiveData(USART1);	//读取接收到的数据
 			MASTER_CMD = Res;
-			//if(MASTER_CMD == CMD_AllStop)	All_Stop();
-			//else if(MASTER_CMD == CMD_HatStop) Hat_Stop();
-			//else if(MASTER_CMD == CMD_RailStop) Rail_Stop();
-			//USART1->DR=MASTER_CMD;
-			//while((USART1->SR&0X40)==0);			
      } 
 #if SYSTEM_SUPPORT_OS 	//如果SYSTEM_SUPPORT_OS为真，则需要支持OS.
 	OSIntExit();  											 

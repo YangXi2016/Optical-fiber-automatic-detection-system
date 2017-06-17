@@ -28,20 +28,8 @@ void push_draw(void);
 int main(void)
 {
 	InitAll();
-	//position_init();
-	//clamp_init();
 	printf("Push Ready\n");
 	SYS_STATE = READY_STATE;
-// 	while(1){
-// 		if(Check_Position_C() != last_state_c){
-// 			last_state_c = Check_Position_C();
-// 			printf("Check clean\n");
-// 		}
-// 		if(Check_Position_M() != last_state_m){
-// 			last_state_m = Check_Position_M();
-// 			printf("Check mid\n");
-// 		}
-// 	}
 	while(1)
 	{
 		if(MASTER_CMD!=DUMY){
@@ -49,7 +37,6 @@ int main(void)
 				SYS_STATE = WORK_STATE;
 				
 				push_clamp();
-				//delay_ms(500);
 				push_forward();
 				
 				SYS_STATE = READY_STATE;
@@ -78,15 +65,11 @@ int main(void)
 				SYS_STATE = READY_STATE;
 			}
 			else if(MASTER_CMD == 0x80){	//test the motor and driver
-				//GPIO_SetBits(GPIOA,GPIO_Pin_12);
-				//while(1){
 				PushMotion(100, '-', 100);
 				PCMotion(100, '-', 100);
 					while(IsMotActDone('P')==0);
 				//MCMotion(CLAMP_ANGLE, '-', SPEED);
 				printf("done1\n");
-					//delay_ms(100);
-				//}
 			}
 			else if(MASTER_CMD == 0x60){	//test the optical gate
 				while(1){
@@ -100,33 +83,7 @@ int main(void)
 					Fixture_Stop();
 					printf("done0\n");
 				}
-			}
-			else if(MASTER_CMD == 0x70){
-				SCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
-				while(IsMotActDone('S')==0);
-				printf("done2\n");
-			}
-			else if(MASTER_CMD == 0x71){
-				SCMotion(CLAMP_ANGLE, '+', CLAMP_SPEED);
-				while(IsMotActDone('S')==0);
-				printf("done2\n");
-			}
-			else if(MASTER_CMD == 0x72){
-				while(1){
-					SCMotion(CLAMP_ANGLE, '+', CLAMP_SPEED);
-					while(IsMotActDone('S')==0);
-					delay_ms(1500);
-					SCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
-					while(IsMotActDone('S')==0);
-					delay_ms(1500);
-					MCMotion(CLAMP_ANGLE, '+', CLAMP_SPEED);
-					while(IsMotActDone('M')==0);
-					delay_ms(1500);
-					MCMotion(CLAMP_ANGLE, '-', CLAMP_SPEED);
-					while(IsMotActDone('M')==0);
-					delay_ms(1500);
-				}
-			}			
+			}		
 // 			printf("%c",MASTER_CMD);
 			MASTER_CMD = DUMY;
 			
