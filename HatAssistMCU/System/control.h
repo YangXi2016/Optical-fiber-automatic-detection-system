@@ -13,7 +13,6 @@
 #ifndef __CONTROL_H
 #define __CONTROL_H	
 #include "StepperMotor.h"
-#include "LinearCCD.h"
 //#include "spi.h"
 
 //戴帽用电机参数

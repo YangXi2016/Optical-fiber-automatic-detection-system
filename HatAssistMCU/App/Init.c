@@ -19,11 +19,9 @@ void InitAll(void)
 	usart_init(115200);	
 	
 	StepMotorInit();
-	//Hat_Init();
 	ModeCheckInit();
 	HatExistDectInit();
 	
-//	LinCCDInit();
 	SPI1_Init();
 
 
